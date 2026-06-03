@@ -1,0 +1,19 @@
+{
+  "unknown": "An error has ocurred.",
+  "alreadyExists": "Already exists",
+  "sessionTokenExpired": "Session token expired",
+  "byDomainCode": {
+    "USER_ALREADY_REGISTERED": "User is already registered.",
+    "ERR_CONNECTION_REFUSED": "Connection refused. Please check if the backend is running."
+  },
+  "byHttpCode": {
+    "400": "Check the fields",
+    "401": "Not authorized",
+    "403": "Unauthorized to perform this action"
+  },
+  "upload": {
+    "required": "File required",
+    "unsupported": "Unsupported file type",
+    "fileTooLarge": "File too large"
+  }
+}

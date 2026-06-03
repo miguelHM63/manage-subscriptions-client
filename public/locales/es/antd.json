@@ -1,0 +1,14 @@
+{
+  "antd": {
+    "validateMessages": {
+      "required": "Campo requerido",
+      "string": {
+        "min": "Mínimo ${min} caracteres",
+        "max": "Demasiado largo"
+      },
+      "types": {
+        "email": "Correo no válido"
+      }
+    }
+  }
+}
