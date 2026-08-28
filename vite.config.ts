@@ -16,6 +16,8 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       port: 3000,
+      // Permite exponer el dev server por túneles (p. ej. Cloudflare trycloudflare.com)
+      allowedHosts: ['.trycloudflare.com'],
     },
     resolve: {
       alias: [

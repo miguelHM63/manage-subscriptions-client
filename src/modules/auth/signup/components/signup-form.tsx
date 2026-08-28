@@ -16,8 +16,6 @@ export function SignupForm() {
   const { setSession } = useAuth();
   const fieldTranslation = useMemo(() => {
     return {
-      firstName: t('signUp.fields.firstName'),
-      lastName: t('signUp.fields.lastName'),
       businessName: t('signUp.fields.businessName'),
       email: t('signUp.fields.email'),
       password: t('signUp.fields.password'),
@@ -69,8 +67,6 @@ export function SignupForm() {
 
   const onFinish = (values: SignupBody) => {
     signup({
-      firstName: values.firstName,
-      lastName: values.lastName,
       businessName: values.businessName,
       email: values.email,
       password: values.password,
@@ -81,12 +77,6 @@ export function SignupForm() {
     <Form layout="vertical" size="large" className="mt-8 w-full" onFinish={onFinish} form={form}>
       <Form.Item label={fieldTranslation.businessName} name="businessName" rules={REQUIRED_TEXT}>
         <Input placeholder={fieldTranslation.businessName} disabled={isLoading} />
-      </Form.Item>
-      <Form.Item label={fieldTranslation.firstName} name="firstName" rules={REQUIRED_TEXT}>
-        <Input placeholder={fieldTranslation.firstName} disabled={isLoading} />
-      </Form.Item>
-      <Form.Item label={fieldTranslation.lastName} name="lastName" rules={REQUIRED_TEXT}>
-        <Input placeholder={fieldTranslation.lastName} disabled={isLoading} />
       </Form.Item>
       <Form.Item label={fieldTranslation.email} name="email" rules={REQUIRED_TEXT}>
         <Input type="email" placeholder={fieldTranslation.email} disabled={isLoading} />

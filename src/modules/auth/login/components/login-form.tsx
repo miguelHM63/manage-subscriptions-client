@@ -9,21 +9,31 @@ export default function LoginForm() {
   const onFinish: FormProps<ILoginForm>['onFinish'] = values => {
     login?.(values);
   };
+
   return (
-    <Form name="login-form" onFinish={onFinish} className="mt-8 w-full lg:max-w-2/4">
-      <Form.Item<ILoginForm> name="email" rules={REQUIRED_TEXT}>
-        <Input placeholder="Email" />
+    <Form
+      layout="vertical"
+      size="large"
+      name="login-form"
+      onFinish={onFinish}
+      className="mt-8 w-full"
+    >
+      <Form.Item<ILoginForm> label="Email" name="email" rules={REQUIRED_TEXT}>
+        <Input type="email" placeholder="tucorreo@email.com" disabled={isLoggingIn} />
       </Form.Item>
 
-      <Form.Item<ILoginForm> name="password" rules={REQUIRED_TEXT}>
-        <Input.Password placeholder="Password" />
+      <Form.Item<ILoginForm> label="Contraseña" name="password" rules={REQUIRED_TEXT}>
+        <Input.Password placeholder="Tu contraseña" disabled={isLoggingIn} />
       </Form.Item>
-      <p className="text-center mt-3 text-xs font-bold text-slate-800">Forgot your password?</p>
-      <div className="mt-6">
-        <Button type="primary" htmlType="submit" className="w-full" loading={isLoggingIn}>
-          Log in
-        </Button>
-      </div>
+
+      <Button
+        type="primary"
+        htmlType="submit"
+        className="mt-2 w-full"
+        loading={isLoggingIn}
+      >
+        Iniciar sesión
+      </Button>
     </Form>
   );
 }

@@ -12,6 +12,7 @@ export const REQUIRED_TEXT: PredefinedFormRules = [RULE_REQUIRED, RULE_WHITESPAC
 
 export const LOCAL_STORAGE_USER = 'user';
 export const LOCAL_STORAGE_TOKEN = 'token';
+export const LOCAL_STORAGE_THEME = 'theme';
 
 /* Date format constants */
 export const MONTH_DAY_YEAR_FORMAT = 'MM/DD/YYYY';

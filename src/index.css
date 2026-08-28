@@ -42,7 +42,44 @@
   --color-warning: #f59e0b;
   --color-danger: #ef4444;
   --color-info: #3b82f6;
+
+  /* ===== Tokens de superficie/contenido (cambian con .dark) =====
+     Úsalos en el panel: bg-surface / bg-surface-muted / border-border /
+     text-content / text-content-muted / text-content-subtle */
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-content: var(--content);
+  --color-content-muted: var(--content-muted);
+  --color-content-subtle: var(--content-subtle);
 }
+
+/* Modo oscuro basado en clase `.dark` en <html> (gestionada por ThemeProvider). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+  --surface: #ffffff; /* tarjetas / elementos elevados */
+  --surface-muted: #f8fafc; /* fondo de página (slate-50) */
+  --surface-hover: #f1f5f9; /* hover (slate-100) */
+  --border: #e2e8f0; /* slate-200 */
+  --content: #0f172a; /* texto principal (slate-900) */
+  --content-muted: #64748b; /* texto secundario (slate-500) */
+  --content-subtle: #94a3b8; /* texto terciario (slate-400) */
+}
+
+.dark {
+  color-scheme: dark;
+  --surface: #1e293b; /* tarjetas (slate-800) */
+  --surface-muted: #0f172a; /* fondo de página (slate-900) */
+  --surface-hover: #334155; /* hover (slate-700) */
+  --border: #334155; /* slate-700 */
+  --content: #f1f5f9; /* texto principal (slate-100) */
+  --content-muted: #94a3b8; /* texto secundario (slate-400) */
+  --content-subtle: #64748b; /* texto terciario (slate-500) */
+}
+
 @layer base {
   * {
     font-family: var(--font-inter);

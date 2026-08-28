@@ -7,19 +7,23 @@ import { SIGNUP_ROUTE } from '@/routes/routes';
 export function LoginPage() {
   return (
     <PublicLayout>
-      [Logo here]
-      <div className="text-center mt-9">
-        <h1 className="text-neutral-600 font-bold text-xl">Demo app</h1>
-        <p className="my-6 text-sm text-slate-500">Tagline demo app</p>
-      </div>
-      <LoginForm />
-      <div className="mt-20 text-center">
-        <p className="text-slate-700 font-bold text-xs">Not registered yet?</p>
-        <Link to={SIGNUP_ROUTE}>
-          <Button className="font-bold text-xs" type="link">
-            Create an account
-          </Button>
-        </Link>
+      <div className="flex w-full max-w-md flex-col items-center px-5 md:px-16">
+        <span className="text-2xl font-black text-brand-primary">Plancito</span>
+        <div className="mt-6 text-center">
+          <h1 className="text-lg font-bold text-content">Inicia sesión</h1>
+          <p className="text-sm text-content-muted">Bienvenido de vuelta 👋</p>
+        </div>
+
+        <LoginForm />
+
+        <div className="mt-8 text-center text-sm">
+          <span className="text-content-muted">¿No tienes cuenta?</span>
+          <Link to={SIGNUP_ROUTE}>
+            <Button type="link" className="!px-1 font-semibold">
+              Crear cuenta
+            </Button>
+          </Link>
+        </div>
       </div>
     </PublicLayout>
   );

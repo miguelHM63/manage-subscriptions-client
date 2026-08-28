@@ -3,8 +3,6 @@ import type { IAuthResponse } from '@/context/auth/auth-context.interfaces';
 import { useMutation } from '@tanstack/react-query';
 
 export interface SignupBody {
-  firstName: string;
-  lastName: string;
   businessName: string;
   email: string;
   password: string;

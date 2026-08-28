@@ -1,6 +1,5 @@
 import { useMemo, type ReactNode } from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 interface IReactQueryProvider {
   children: ReactNode;
@@ -23,7 +22,7 @@ export function ReactQueryProvider({ children }: IReactQueryProvider) {
   return (
     <QueryClientProvider client={client}>
       {children}
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }
