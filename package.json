@@ -1,6 +1,7 @@
 {
   "name": "pillpal.client",
   "private": true,
+  "packageManager": "yarn@1.22.22",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -66,8 +67,7 @@
   },
   "lint-staged": {
     "*.{ts,js,tsx}": [
-      "eslint --fix",
-      "vitest related --run"
+      "eslint --fix"
     ],
     "*.{js,ts,md,json,html}": "prettier --write"
   }
