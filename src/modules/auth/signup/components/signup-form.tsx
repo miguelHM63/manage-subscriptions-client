@@ -49,18 +49,6 @@ export function SignupForm() {
       if (!value || value.length < 8) {
         return Promise.reject(new Error(t('signUp.validation.password.minLength')));
       }
-      if (!value.match(/[A-Z]/)) {
-        return Promise.reject(new Error(t('signUp.validation.password.uppercase')));
-      }
-      if (!value.match(/[a-z]/)) {
-        return Promise.reject(new Error(t('signUp.validation.password.lowercase')));
-      }
-      if (!value.match(/\d/)) {
-        return Promise.reject(new Error(t('signUp.validation.password.number')));
-      }
-      if (!value.match(/\W/)) {
-        return Promise.reject(new Error(t('signUp.validation.password.specialCharacter')));
-      }
       return Promise.resolve();
     },
   });
