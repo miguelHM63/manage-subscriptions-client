@@ -4,7 +4,17 @@
   "sessionTokenExpired": "Sesión expirada",
   "byDomainCode": {
     "USER_ALREADY_REGISTERED": "Usuario ya registrado.",
-    "ERR_CONNECTION_REFUSED": "Conexión rechazada. Por favor, comprueba que el backend esté corriendo."
+    "ERR_CONNECTION_REFUSED": "Conexión rechazada. Por favor, comprueba que el backend esté corriendo.",
+    "CUSTOMER_EMAIL_ALREADY_EXISTS": "Ya existe un cliente con este email.",
+    "PLAN_LIMIT_REACHED": "Has alcanzado el límite de clientes de tu plan.",
+    "ORGANIZATION_NOT_FOUND": "Organización no encontrada.",
+    "NO_AVAILABLE_SLOTS": "La cuenta no tiene cupos disponibles.",
+    "CAPACITY_BELOW_USED_SLOTS": "La capacidad no puede ser menor a los cupos ya ocupados.",
+    "PROVIDER_ACCOUNT_IN_USE": "No se puede eliminar una cuenta con suscripciones activas.",
+    "SUBSCRIPTION_ALREADY_CANCELLED": "La suscripción ya está cancelada.",
+    "SUBSCRIPTION_CANCELLED": "Una suscripción cancelada no se puede renovar.",
+    "SUBSCRIPTION_NOT_PAUSABLE": "Esta suscripción no se puede pausar en su estado actual.",
+    "SUBSCRIPTION_NOT_PAUSED": "Solo se puede reanudar una suscripción pausada."
   },
   "byHttpCode": {
     "400": "Verifique los campos",

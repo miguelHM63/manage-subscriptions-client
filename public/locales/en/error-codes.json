@@ -4,7 +4,17 @@
   "sessionTokenExpired": "Session token expired",
   "byDomainCode": {
     "USER_ALREADY_REGISTERED": "User is already registered.",
-    "ERR_CONNECTION_REFUSED": "Connection refused. Please check if the backend is running."
+    "ERR_CONNECTION_REFUSED": "Connection refused. Please check if the backend is running.",
+    "CUSTOMER_EMAIL_ALREADY_EXISTS": "A customer with this email already exists.",
+    "PLAN_LIMIT_REACHED": "You have reached your plan's customer limit.",
+    "ORGANIZATION_NOT_FOUND": "Organization not found.",
+    "NO_AVAILABLE_SLOTS": "The provider account has no available slots.",
+    "CAPACITY_BELOW_USED_SLOTS": "Capacity cannot be lower than the slots already in use.",
+    "PROVIDER_ACCOUNT_IN_USE": "Cannot delete an account with active subscriptions.",
+    "SUBSCRIPTION_ALREADY_CANCELLED": "The subscription is already cancelled.",
+    "SUBSCRIPTION_CANCELLED": "A cancelled subscription cannot be renewed.",
+    "SUBSCRIPTION_NOT_PAUSABLE": "This subscription cannot be paused in its current status.",
+    "SUBSCRIPTION_NOT_PAUSED": "Only a paused subscription can be resumed."
   },
   "byHttpCode": {
     "400": "Check the fields",
