@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { BRANDFETCH_CLIENT_ID } from '@/config';
+import { resolveLogoUrl } from '@/helpers/logo-url';
 
 export interface BrandResult {
   brandId: string;
@@ -13,9 +14,12 @@ export interface BrandResult {
 /** La búsqueda solo está disponible si hay un clientId de Brandfetch configurado. */
 export const isBrandSearchEnabled = Boolean(BRANDFETCH_CLIENT_ID);
 
-/** Logo a usar para una marca (su icon, o el CDN de Brandfetch por dominio). */
+/**
+ * Logo a guardar para una marca: su icon (o el CDN por dominio) con el clientId
+ * en lugar del token temporal que trae la búsqueda.
+ */
 export const brandLogoUrl = (brand: BrandResult): string =>
-  brand.icon ||
+  resolveLogoUrl(brand.icon) ||
   `https://cdn.brandfetch.io/${brand.domain}/w/128/h/128?c=${BRANDFETCH_CLIENT_ID}`;
 
 export const useBrandSearch = (query: string) =>

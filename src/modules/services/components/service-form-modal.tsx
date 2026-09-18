@@ -1,6 +1,7 @@
-import { Form, Input, Modal } from 'antd';
+import { Form, Input } from 'antd';
 import { useEffect } from 'react';
 
+import { ResponsiveModal } from '@/components/panel/responsive-modal';
 import { REQUIRED_TEXT } from '@/constants';
 import { useFormErrorHandler } from '@/hooks/use-form-error-handler';
 import {
@@ -44,7 +45,7 @@ export function ServiceFormModal({ open, onClose, service }: ServiceFormModalPro
   };
 
   return (
-    <Modal
+    <ResponsiveModal
       title={isEdit ? 'Editar servicio' : 'Nuevo servicio'}
       open={open}
       onCancel={onClose}
@@ -61,6 +62,6 @@ export function ServiceFormModal({ open, onClose, service }: ServiceFormModalPro
           <LogoPicker />
         </Form.Item>
       </Form>
-    </Modal>
+    </ResponsiveModal>
   );
 }

@@ -1,6 +1,8 @@
 import { apiAxiosInstance, type HttpError } from '@/api/config';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { invalidateMyOrganization } from '@/modules/organization/hooks/use-my-organization';
+
 export interface ICustomer {
   id: string;
   name: string;
@@ -23,22 +25,23 @@ const CUSTOMERS_KEY = ['customers'];
 export const useCustomers = () =>
   useQuery<ICustomer[], HttpError>({
     queryKey: CUSTOMERS_KEY,
-    queryFn: () =>
-      apiAxiosInstance.get<ICustomer[]>('/customers').then(({ data }) => data),
+    queryFn: () => apiAxiosInstance.get<ICustomer[]>('/customers').then(({ data }) => data),
   });
 
 const useInvalidateCustomers = () => {
   const queryClient = useQueryClient();
-  return () => queryClient.invalidateQueries({ queryKey: CUSTOMERS_KEY });
+  return () => {
+    queryClient.invalidateQueries({ queryKey: CUSTOMERS_KEY });
+    // El uso del plan (clientes) depende de este conteo.
+    invalidateMyOrganization(queryClient);
+  };
 };
 
 export const useCreateCustomer = (onSuccess?: () => void) => {
   const invalidate = useInvalidateCustomers();
   return useMutation<ICustomer, HttpError, CustomerBody>({
     mutationFn: body =>
-      apiAxiosInstance
-        .post<ICustomer>('/customers', body)
-        .then(({ data }) => data),
+      apiAxiosInstance.post<ICustomer>('/customers', body).then(({ data }) => data),
     onSuccess: () => {
       invalidate();
       onSuccess?.();
@@ -50,9 +53,7 @@ export const useUpdateCustomer = (onSuccess?: () => void) => {
   const invalidate = useInvalidateCustomers();
   return useMutation<ICustomer, HttpError, { id: string; body: CustomerBody }>({
     mutationFn: ({ id, body }) =>
-      apiAxiosInstance
-        .patch<ICustomer>(`/customers/${id}`, body)
-        .then(({ data }) => data),
+      apiAxiosInstance.patch<ICustomer>(`/customers/${id}`, body).then(({ data }) => data),
     onSuccess: () => {
       invalidate();
       onSuccess?.();

@@ -1,4 +1,5 @@
 import { REQUIRED_TEXT } from '@/constants';
+import { LockOutlined, MailOutlined, ShopOutlined } from '@ant-design/icons';
 import { Button, Form, Input, message } from 'antd';
 import type { RuleObject } from 'antd/es/form';
 import type { StoreValue } from 'antd/es/form/interface';
@@ -9,6 +10,7 @@ import { LOGIN_ROUTE } from '@/routes/routes';
 import { useFormErrorHandler } from '@/hooks/use-form-error-handler';
 import { useAuth } from '@/hooks/use-auth';
 import { useMemo } from 'react';
+import { PasswordHint } from './password-hint';
 
 export function SignupForm() {
   const { t } = useTranslation('auth');
@@ -23,6 +25,7 @@ export function SignupForm() {
     };
   }, [t]);
   const [invalidateForm, form] = useFormErrorHandler();
+  const password = Form.useWatch('password', form) ?? '';
 
   const { mutate: signup, isPending: isLoading } = useSignup({
     onSuccess: data => {
@@ -62,19 +65,38 @@ export function SignupForm() {
   };
 
   return (
-    <Form layout="vertical" size="large" className="mt-8 w-full" onFinish={onFinish} form={form}>
+    <Form layout="vertical" size="large" requiredMark={false} className="w-full" onFinish={onFinish} form={form}>
       <Form.Item label={fieldTranslation.businessName} name="businessName" rules={REQUIRED_TEXT}>
-        <Input placeholder={fieldTranslation.businessName} disabled={isLoading} />
+        <Input
+          prefix={<ShopOutlined className="text-content-subtle" />}
+          placeholder="Streaming Miguel"
+          disabled={isLoading}
+        />
       </Form.Item>
       <Form.Item label={fieldTranslation.email} name="email" rules={REQUIRED_TEXT}>
-        <Input type="email" placeholder={fieldTranslation.email} disabled={isLoading} />
+        <Input
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          prefix={<MailOutlined className="text-content-subtle" />}
+          placeholder="tucorreo@email.com"
+          disabled={isLoading}
+        />
       </Form.Item>
       <Form.Item
         label={fieldTranslation.password}
         name="password"
         rules={[...REQUIRED_TEXT, validateSecurePassword()]}
+        // Mientras escribe guía la barra; el error se muestra al salir del campo.
+        validateTrigger="onBlur"
+        extra={<PasswordHint value={password} />}
       >
-        <Input type="password" placeholder={fieldTranslation.password} disabled={isLoading} />
+        <Input.Password
+          autoComplete="new-password"
+          prefix={<LockOutlined className="text-content-subtle" />}
+          placeholder={fieldTranslation.password}
+          disabled={isLoading}
+        />
       </Form.Item>
       <Form.Item
         label={fieldTranslation.confirmPassword}
@@ -82,19 +104,28 @@ export function SignupForm() {
         dependencies={['password']}
         rules={[validateConfirmPassword]}
       >
-        <Input
-          type="password"
+        <Input.Password
+          autoComplete="new-password"
+          prefix={<LockOutlined className="text-content-subtle" />}
           placeholder={fieldTranslation.confirmPassword}
           disabled={isLoading}
         />
       </Form.Item>
 
-      <Button type="primary" htmlType="submit" className="w-full mt-2" loading={isLoading}>
+      <Button
+        type="primary"
+        htmlType="submit"
+        className="!mt-2 !h-12 w-full !font-semibold"
+        loading={isLoading}
+      >
         {t('signUp.summitText')}
       </Button>
+      <p className="!mt-3 text-center text-xs text-content-subtle">
+        Plan gratis · Sin tarjeta · Hasta 20 clientes
+      </p>
       <Button
         type="link"
-        className="w-full mt-2"
+        className="!mt-1 w-full !font-semibold"
         onClick={() => navigate(LOGIN_ROUTE)}
         disabled={isLoading}
       >
