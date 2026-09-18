@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+import { BrandLogo } from '@/components/brand-logo';
 import { PROFILE_ROUTE } from '@/routes/routes';
 import { UserAvatar } from './user-avatar';
 
@@ -10,7 +11,7 @@ import { UserAvatar } from './user-avatar';
 export function PanelTopBar() {
   return (
     <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-border bg-surface/95 px-4 backdrop-blur md:hidden">
-      <span className="text-lg font-black tracking-tight text-brand-ink">Plancito</span>
+      <BrandLogo size={28} />
       <Link
         to={PROFILE_ROUTE}
         aria-label="Mi cuenta"

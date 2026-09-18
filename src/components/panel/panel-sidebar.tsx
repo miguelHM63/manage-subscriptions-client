@@ -2,6 +2,7 @@ import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import type { ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 
+import { BrandLogo } from '@/components/brand-logo';
 import cn from '@/helpers/cn';
 import { useAuth } from '@/hooks/use-auth';
 import { PROFILE_ROUTE, SUBSCRIPTIONS_ROUTE } from '@/routes/routes';
@@ -59,7 +60,7 @@ export function PanelSidebar() {
   return (
     <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-surface md:flex">
       <div className="flex h-16 items-center px-6">
-        <span className="text-xl font-black tracking-tight text-brand-ink">Plancito</span>
+        <BrandLogo size={32} />
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 px-3">

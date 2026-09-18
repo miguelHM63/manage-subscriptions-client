@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 
 import { BrandLogo } from '@/components/brand-logo';
 import { ThemeToggle } from '@/components/panel/theme-toggle';
+import { APP_NAME } from '@/config';
 import cn from '@/helpers/cn';
 import { PLAN_LABEL } from '@/modules/organization/hooks/use-my-organization';
 import { PLAN_OFFERS } from '@/modules/organization/plans';
@@ -28,7 +29,7 @@ const STEPS = [
   {
     icon: <CreditCardOutlined />,
     title: 'Vende un cupo',
-    text: 'Asigna el cupo a tu cliente y Plancito calcula cuándo vence.',
+    text: `Asigna el cupo a tu cliente y ${APP_NAME} calcula cuándo vence.`,
   },
   {
     icon: <ReloadOutlined />,
@@ -99,7 +100,7 @@ function ProductPreview() {
     >
       <div className="overflow-hidden rounded-[26px] bg-surface-muted">
         <div className="border-b border-border bg-surface px-4 pt-5 pb-3 text-[15px] font-black tracking-tight text-brand-ink">
-          Plancito
+          {APP_NAME}
         </div>
         <div className="flex flex-col gap-2 p-3 pb-10">
           <div className="rounded-xl bg-brand-600 p-3 text-white">
@@ -322,7 +323,7 @@ export function LandingPage() {
 
       <footer className="border-t border-border">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-5 py-8 text-sm text-content-subtle md:flex-row md:justify-between md:px-8">
-          <span>© {new Date().getFullYear()} Plancito · plancito.pe</span>
+          <span>© {new Date().getFullYear()} {APP_NAME}</span>
           <nav className="flex gap-5 font-semibold">
             <a href="#precios" className="!text-content-muted">
               Precios

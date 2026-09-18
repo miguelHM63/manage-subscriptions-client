@@ -69,7 +69,7 @@ export function SignupForm() {
       <Form.Item label={fieldTranslation.businessName} name="businessName" rules={REQUIRED_TEXT}>
         <Input
           prefix={<ShopOutlined className="text-content-subtle" />}
-          placeholder="Streaming Miguel"
+          placeholder="Nombre de tu negocio"
           disabled={isLoading}
         />
       </Form.Item>
