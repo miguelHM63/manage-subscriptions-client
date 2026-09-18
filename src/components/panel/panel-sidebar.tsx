@@ -4,9 +4,10 @@ import { NavLink } from 'react-router-dom';
 
 import cn from '@/helpers/cn';
 import { useAuth } from '@/hooks/use-auth';
-import { PROFILE_ROUTE } from '@/routes/routes';
+import { PROFILE_ROUTE, SUBSCRIPTIONS_ROUTE } from '@/routes/routes';
 import { PANEL_NAV_ITEMS } from './panel-nav-items';
 import { ThemeToggle } from './theme-toggle';
+import { useAttentionCount } from './use-attention-count';
 
 // El color va en este <span> interno (no en el <a>) para no ser pisado por el
 // reset de enlaces de AntD (`a { color: colorLink }`).
@@ -14,10 +15,12 @@ function SidebarLink({
   to,
   icon,
   label,
+  badge,
 }: {
   to: string;
   icon: ReactNode;
   label: string;
+  badge?: number;
 }) {
   return (
     <NavLink to={to} className="block">
@@ -31,7 +34,17 @@ function SidebarLink({
           )}
         >
           <span className="text-lg">{icon}</span>
-          <span>{label}</span>
+          <span className="flex-1">{label}</span>
+          {Boolean(badge) && (
+            <span
+              className={cn(
+                'min-w-5 rounded-full px-1.5 text-center text-[11px] leading-5 font-bold',
+                isActive ? 'bg-white/25 text-white' : 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300',
+              )}
+            >
+              {badge}
+            </span>
+          )}
         </span>
       )}
     </NavLink>
@@ -41,16 +54,23 @@ function SidebarLink({
 /** Navegación lateral para pantallas medianas en adelante (oculta en móvil). */
 export function PanelSidebar() {
   const { logout } = useAuth();
+  const attention = useAttentionCount();
 
   return (
     <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-surface md:flex">
       <div className="flex h-16 items-center px-6">
-        <span className="text-xl font-black text-brand-primary">Plancito</span>
+        <span className="text-xl font-black tracking-tight text-brand-ink">Plancito</span>
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 px-3">
         {PANEL_NAV_ITEMS.map(item => (
-          <SidebarLink key={item.to} to={item.to} icon={item.icon} label={item.label} />
+          <SidebarLink
+            key={item.to}
+            to={item.to}
+            icon={item.icon}
+            label={item.label}
+            badge={item.to === SUBSCRIPTIONS_ROUTE ? attention : undefined}
+          />
         ))}
         <SidebarLink to={PROFILE_ROUTE} icon={<UserOutlined />} label="Mi cuenta" />
       </nav>

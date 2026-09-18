@@ -53,6 +53,9 @@
   --color-content: var(--content);
   --color-content-muted: var(--content-muted);
   --color-content-subtle: var(--content-subtle);
+  /* Texto/iconos de marca (links, ítem activo): indigo-600 en claro,
+     indigo-300 en oscuro para mantener contraste sobre slate-900. */
+  --color-brand-ink: var(--brand-ink);
 }
 
 /* Modo oscuro basado en clase `.dark` en <html> (gestionada por ThemeProvider). */
@@ -67,6 +70,7 @@
   --content: #0f172a; /* texto principal (slate-900) */
   --content-muted: #64748b; /* texto secundario (slate-500) */
   --content-subtle: #94a3b8; /* texto terciario (slate-400) */
+  --brand-ink: #4f46e5; /* brand-600 */
 }
 
 .dark {
@@ -78,6 +82,7 @@
   --content: #f1f5f9; /* texto principal (slate-100) */
   --content-muted: #94a3b8; /* texto secundario (slate-400) */
   --content-subtle: #64748b; /* texto terciario (slate-500) */
+  --brand-ink: #a5b4fc; /* brand-300 */
 }
 
 @layer base {
@@ -87,6 +92,18 @@
 }
 @layer antd;
 @layer components {
+  /* Bottom sheet de ResponsiveModal: alto según contenido, con tope. */
+  .panel-sheet {
+    height: auto !important;
+    max-height: 92dvh;
+  }
+  .panel-sheet .ant-drawer-section {
+    border-radius: 20px 20px 0 0;
+  }
+  .panel-sheet .ant-drawer-footer {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+
   .btn-brand-secondary {
     background-color: var(--color-brand-secondary);
     border-color: var(--color-brand-secondary);

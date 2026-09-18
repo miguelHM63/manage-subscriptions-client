@@ -4,6 +4,7 @@ export enum EventBusTypes {
   UNAUTHORIZED = 'unauthorized',
   LOGOUT = 'logout',
   SHOW_ERROR = 'show_error',
+  PLAN_LIMIT_REACHED = 'plan_limit_reached',
 }
 
 interface IEventBus {

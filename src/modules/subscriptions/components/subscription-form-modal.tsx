@@ -6,13 +6,13 @@ import {
   Form,
   Input,
   InputNumber,
-  Modal,
   Segmented,
   Select,
 } from 'antd';
 import dayjs, { type Dayjs } from 'dayjs';
 import { useEffect, useMemo, useState } from 'react';
 
+import { ResponsiveModal } from '@/components/panel/responsive-modal';
 import { REQUIRED } from '@/constants';
 import { ServiceAvatar } from '@/components/panel/service-avatar';
 import { solesToCents } from '@/helpers/money';
@@ -38,33 +38,43 @@ interface FormValues {
 interface Props {
   open: boolean;
   onClose: () => void;
+  /** Valores precargados (cliente desde su detalle, cuenta desde "Vender cupo"). */
+  preset?: Partial<Pick<FormValues, 'customerId' | 'serviceId' | 'providerAccountId'>>;
 }
 
-export function SubscriptionFormModal({ open, onClose }: Props) {
+export function SubscriptionFormModal({ open, onClose, preset }: Props) {
   const [invalidateForm, form] = useFormErrorHandler();
   const { data: customers } = useCustomers();
   const { data: services } = useServices();
   const { data: accounts } = useProviderAccounts();
-
-  const { mutate: create, isPending } = useCreateSubscription(onClose);
-  const { mutate: createCustomer, isPending: creatingCustomer } = useCreateCustomer();
 
   const [showNewCustomer, setShowNewCustomer] = useState(false);
   const [newCustomerName, setNewCustomerName] = useState('');
   const [newCustomerPhone, setNewCustomerPhone] = useState('');
   const [fullAccount, setFullAccount] = useState(false);
 
+  // El estado local se limpia al cerrar (en el handler, no en un efecto), así
+  // la próxima apertura empieza de cero.
+  const handleClose = () => {
+    setShowNewCustomer(false);
+    setNewCustomerName('');
+    setNewCustomerPhone('');
+    setFullAccount(false);
+    onClose();
+  };
+
+  const { mutate: create, isPending } = useCreateSubscription(handleClose);
+  const { mutate: createCustomer, isPending: creatingCustomer } = useCreateCustomer();
+
   const selectedServiceId = Form.useWatch('serviceId', form);
 
+  // Al abrir: formulario limpio y, si viene, precargado.
   useEffect(() => {
     if (open) {
       form.resetFields();
-      setShowNewCustomer(false);
-      setNewCustomerName('');
-      setNewCustomerPhone('');
-      setFullAccount(false);
+      if (preset) form.setFieldsValue(preset);
     }
-  }, [open, form]);
+  }, [open, form, preset]);
 
   // Crea un cliente con datos mínimos sin salir del modal y lo deja seleccionado.
   const handleQuickCreateCustomer = () => {
@@ -143,12 +153,12 @@ export function SubscriptionFormModal({ open, onClose }: Props) {
   };
 
   return (
-    <Modal
-      title="Nueva suscripción"
+    <ResponsiveModal
+      title="Nueva venta"
       open={open}
-      onCancel={onClose}
+      onCancel={handleClose}
       onOk={() => form.submit()}
-      okText="Crear"
+      okText="Registrar venta"
       cancelText="Cancelar"
       confirmLoading={isPending}
     >
@@ -274,7 +284,7 @@ export function SubscriptionFormModal({ open, onClose }: Props) {
               className="!mb-4 !-mt-1"
               type="warning"
               showIcon
-              message={`La cuenta ${accountExpiryPhrase} y esta suscripción terminaría el ${projectedEnd?.format(
+              title={`La cuenta ${accountExpiryPhrase} y esta suscripción terminaría el ${projectedEnd?.format(
                 'DD/MM/YYYY',
               )}.`}
             />
@@ -298,8 +308,8 @@ export function SubscriptionFormModal({ open, onClose }: Props) {
           <Form.Item label="Duración" name="durationMonths" rules={REQUIRED}>
             <Select options={DURATION_OPTIONS} />
           </Form.Item>
-          <Form.Item label="Precio (S/.)" name="price" rules={REQUIRED}>
-            <InputNumber min={0} step={0.5} className="w-full" placeholder="0.00" />
+          <Form.Item label="Precio" name="price" rules={REQUIRED}>
+            <InputNumber min={0} step={0.5} precision={2} prefix="S/" className="!w-full" placeholder="0.00" />
           </Form.Item>
         </div>
 
@@ -307,6 +317,6 @@ export function SubscriptionFormModal({ open, onClose }: Props) {
           <DatePicker className="w-full" format="DD/MM/YYYY" />
         </Form.Item>
       </Form>
-    </Modal>
+    </ResponsiveModal>
   );
 }

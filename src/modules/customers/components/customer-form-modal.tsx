@@ -1,6 +1,7 @@
-import { Form, Input, Modal } from 'antd';
+import { Form, Input } from 'antd';
 import { useEffect } from 'react';
 
+import { ResponsiveModal } from '@/components/panel/responsive-modal';
 import { REQUIRED_TEXT } from '@/constants';
 import { useFormErrorHandler } from '@/hooks/use-form-error-handler';
 import {
@@ -50,7 +51,7 @@ export function CustomerFormModal({ open, onClose, customer }: CustomerFormModal
   };
 
   return (
-    <Modal
+    <ResponsiveModal
       title={isEdit ? 'Editar cliente' : 'Nuevo cliente'}
       open={open}
       onCancel={onClose}
@@ -73,6 +74,6 @@ export function CustomerFormModal({ open, onClose, customer }: CustomerFormModal
           <Input.TextArea rows={2} placeholder="Notas internas" />
         </Form.Item>
       </Form>
-    </Modal>
+    </ResponsiveModal>
   );
 }

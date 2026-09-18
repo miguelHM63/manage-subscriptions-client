@@ -51,14 +51,14 @@ describe('SignupForm', () => {
     mockedSetSession.mockClear();
   });
 
+  // El formulario pide solo negocio, correo y contraseña (nombre/apellido se
+  // completan después en Mi cuenta).
   it('should render the input fields', () => {
-    const { getByPlaceholderText } = render(<SignupForm />);
-    expect(getByPlaceholderText('signUp.fields.businessName')).toBeInTheDocument();
-    expect(getByPlaceholderText('signUp.fields.firstName')).toBeInTheDocument();
-    expect(getByPlaceholderText('signUp.fields.lastName')).toBeInTheDocument();
-    expect(getByPlaceholderText('signUp.fields.email')).toBeInTheDocument();
-    expect(getByPlaceholderText('signUp.fields.password')).toBeInTheDocument();
-    expect(getByPlaceholderText('signUp.fields.confirmPassword')).toBeInTheDocument();
+    const { getByLabelText } = render(<SignupForm />);
+    expect(getByLabelText('signUp.fields.businessName')).toBeInTheDocument();
+    expect(getByLabelText('signUp.fields.email')).toBeInTheDocument();
+    expect(getByLabelText('signUp.fields.password')).toBeInTheDocument();
+    expect(getByLabelText('signUp.fields.confirmPassword')).toBeInTheDocument();
   });
 
   it('should render the submit button', () => {
@@ -73,8 +73,6 @@ describe('SignupForm', () => {
 
     await waitFor(() => {
       expect(getByText("'businessName' is required")).toBeInTheDocument();
-      expect(getByText("'firstName' is required")).toBeInTheDocument();
-      expect(getByText("'lastName' is required")).toBeInTheDocument();
       expect(getByText("'email' is required")).toBeInTheDocument();
       expect(getByText("'password' is required")).toBeInTheDocument();
     });
@@ -87,13 +85,11 @@ describe('SignupForm', () => {
       error: null,
     } as unknown as UseMutationResult<IAuthResponse, HttpError, SignupBody, unknown>);
 
-    const { getByPlaceholderText, getByText } = render(<SignupForm />);
-    expect(getByPlaceholderText('signUp.fields.businessName')).toBeDisabled();
-    expect(getByPlaceholderText('signUp.fields.firstName')).toBeDisabled();
-    expect(getByPlaceholderText('signUp.fields.lastName')).toBeDisabled();
-    expect(getByPlaceholderText('signUp.fields.email')).toBeDisabled();
-    expect(getByPlaceholderText('signUp.fields.password')).toBeDisabled();
-    expect(getByPlaceholderText('signUp.fields.confirmPassword')).toBeDisabled();
+    const { getByLabelText, getByText } = render(<SignupForm />);
+    expect(getByLabelText('signUp.fields.businessName')).toBeDisabled();
+    expect(getByLabelText('signUp.fields.email')).toBeDisabled();
+    expect(getByLabelText('signUp.fields.password')).toBeDisabled();
+    expect(getByLabelText('signUp.fields.confirmPassword')).toBeDisabled();
     const button = getByText('signUp.summitText').closest('button');
     expect(button).toHaveClass('ant-btn-loading');
   });

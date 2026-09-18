@@ -7,3 +7,8 @@ export const IS_DEV = import.meta.env.DEV;
 // Crea uno gratis en https://developers.brandfetch.com
 export const BRANDFETCH_CLIENT_ID: string =
   (import.meta.env.VITE_BRANDFETCH_CLIENT_ID as string | undefined) || '';
+
+// WhatsApp de ventas (solo dígitos, con código de país). Si está, "Quiero Pro"
+// abre el chat; los planes de pago se activan a mano.
+export const SALES_WHATSAPP: string =
+  (import.meta.env.VITE_SALES_WHATSAPP as string | undefined) || '';

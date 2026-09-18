@@ -1,7 +1,8 @@
-import { DatePicker, Form, Input, InputNumber, Modal, Select } from 'antd';
+import { DatePicker, Form, Input, InputNumber, Select } from 'antd';
 import dayjs, { type Dayjs } from 'dayjs';
 import { useEffect } from 'react';
 
+import { ResponsiveModal } from '@/components/panel/responsive-modal';
 import { REQUIRED, REQUIRED_TEXT } from '@/constants';
 import { ServiceAvatar } from '@/components/panel/service-avatar';
 import { centsToSoles, formatMoney, solesToCents } from '@/helpers/money';
@@ -96,7 +97,7 @@ export function ProviderAccountFormModal({ open, onClose, account }: Props) {
   };
 
   return (
-    <Modal
+    <ResponsiveModal
       title={isEdit ? 'Editar cuenta de proveedor' : 'Nueva cuenta de proveedor'}
       open={open}
       onCancel={onClose}
@@ -135,7 +136,7 @@ export function ProviderAccountFormModal({ open, onClose, account }: Props) {
             name="cost"
             tooltip="Lo que pagas por toda la cuenta. El costo por perfil se calcula solo."
           >
-            <InputNumber min={0} step={0.5} className="w-full" placeholder="0.00" />
+            <InputNumber min={0} step={0.5} precision={2} prefix="S/" className="!w-full" placeholder="0.00" />
           </Form.Item>
         </div>
         {perProfile && (
@@ -173,6 +174,6 @@ export function ProviderAccountFormModal({ open, onClose, account }: Props) {
           <Input.TextArea rows={2} placeholder="PIN, perfil asignado, etc." />
         </Form.Item>
       </Form>
-    </Modal>
+    </ResponsiveModal>
   );
 }

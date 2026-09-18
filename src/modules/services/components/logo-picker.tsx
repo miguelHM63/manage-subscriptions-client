@@ -1,5 +1,5 @@
 import { CloseCircleFilled, LinkOutlined, SearchOutlined } from '@ant-design/icons';
-import { Avatar, Button, Input, Spin } from 'antd';
+import { Button, Input, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { ServiceAvatar } from '@/components/panel/service-avatar';
@@ -41,7 +41,7 @@ export function LogoPicker({ value, onChange, disabled, name }: LogoPickerProps)
   if (value) {
     return (
       <div className="flex items-center gap-3 rounded-lg border border-border p-2">
-        <Avatar src={value} shape="square" size={40} />
+        <ServiceAvatar name={name ?? ''} iconUrl={value} size={40} />
         <span className="min-w-0 flex-1 truncate text-xs text-content-muted">{value}</span>
         <Button
           type="text"

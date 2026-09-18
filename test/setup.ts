@@ -14,6 +14,13 @@ Object.defineProperty(window, 'matchMedia', {
   }),
 });
 
+// jsdom no implementa ResizeObserver y varios componentes de AntD lo usan.
+globalThis.ResizeObserver ??= class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+
 import { afterEach } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';

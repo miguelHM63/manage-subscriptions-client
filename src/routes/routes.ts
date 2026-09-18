@@ -9,3 +9,6 @@ export const SUBSCRIPTIONS_ROUTE = '/subscriptions';
 export const PROVIDER_ACCOUNTS_ROUTE = '/provider-accounts';
 export const SERVICES_ROUTE = '/services';
 export const PROFILE_ROUTE = '/perfil';
+export const RECOVER_PASSWORD_ROUTE = '/recuperar';
+// Ruta fija: la usa el correo de recuperación (api: recover-password.handler).
+export const RESET_PASSWORD_ROUTE = '/reset-password';

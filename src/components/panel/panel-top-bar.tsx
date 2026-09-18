@@ -1,34 +1,23 @@
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { useAuth } from '@/hooks/use-auth';
 import { PROFILE_ROUTE } from '@/routes/routes';
-import { ThemeToggle } from './theme-toggle';
+import { UserAvatar } from './user-avatar';
 
-/** Cabecera superior visible solo en móvil (marca + perfil + tema + salir). */
+/**
+ * Cabecera superior solo en móvil: marca + acceso a Mi cuenta (ahí viven tema,
+ * idioma y cerrar sesión, para no llenar la barra de iconos sueltos).
+ */
 export function PanelTopBar() {
-  const { logout } = useAuth();
-  const navigate = useNavigate();
-
   return (
-    <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-border bg-surface px-4 md:hidden">
-      <span className="text-lg font-black text-brand-primary">Plancito</span>
-      <div className="flex items-center">
-        <Button
-          type="text"
-          onClick={() => navigate(PROFILE_ROUTE)}
-          aria-label="Mi cuenta"
-          icon={<UserOutlined />}
-        />
-        <ThemeToggle />
-        <Button
-          type="text"
-          onClick={() => logout?.()}
-          aria-label="Cerrar sesión"
-          icon={<LogoutOutlined />}
-        />
-      </div>
+    <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-border bg-surface/95 px-4 backdrop-blur md:hidden">
+      <span className="text-lg font-black tracking-tight text-brand-ink">Plancito</span>
+      <Link
+        to={PROFILE_ROUTE}
+        aria-label="Mi cuenta"
+        className="-mr-1.5 flex h-11 w-11 items-center justify-center rounded-full"
+      >
+        <UserAvatar />
+      </Link>
     </header>
   );
 }
