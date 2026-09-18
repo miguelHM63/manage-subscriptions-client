@@ -17,6 +17,7 @@
     "@ant-design/icons": "^6.1.0",
     "@casl/ability": "^6.8.0",
     "@casl/react": "^5.0.1",
+    "@react-oauth/google": "^0.13.5",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-query": "^5.90.20",
     "antd": "^6.2.3",

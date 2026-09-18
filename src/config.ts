@@ -15,3 +15,8 @@ export const SALES_WHATSAPP: string =
 
 // Nombre del producto que se muestra en la interfaz (logo, títulos, textos).
 export const APP_NAME: string = (import.meta.env.VITE_APP_NAME as string | undefined) || 'Plancito';
+
+// ID de cliente OAuth de Google (público, seguro en el frontend). Sin él, el
+// botón "Continuar con Google" no se muestra.
+export const GOOGLE_CLIENT_ID: string =
+  (import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined) || '';

@@ -5,6 +5,7 @@ import { BrandMark } from '@/components/brand-logo';
 import { APP_NAME } from '@/config';
 import { PublicLayout } from '@/components/layouts/public-layout';
 import { SIGNUP_ROUTE } from '@/routes/routes';
+import { GoogleSignInButton } from '../../components/google-sign-in-button';
 import LoginForm from '../components/login-form';
 
 export function LoginPage() {
@@ -24,6 +25,8 @@ export function LoginPage() {
         <div className="my-5 flex items-center gap-3 text-xs text-content-subtle">
           <span className="h-px flex-1 bg-border" />o<span className="h-px flex-1 bg-border" />
         </div>
+
+        <GoogleSignInButton />
 
         <Link to={SIGNUP_ROUTE}>
           <Button size="large" block className="!h-12 !font-semibold">

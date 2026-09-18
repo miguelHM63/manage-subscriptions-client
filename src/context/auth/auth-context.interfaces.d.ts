@@ -4,6 +4,8 @@ import type { IUser } from '../../types/user.interfaces';
 export interface IAuthContext {
   user?: IUser | null;
   login?: (userData: ILoginForm) => void;
+  /** Inicia sesión (o registra) con el ID token que entrega Google. */
+  loginWithGoogle?: (credential: string) => void;
   logout?: () => void;
   updateLoggedUser?: (user: IUser | null) => void;
   setSession?: (token: string, user: IUser) => void;

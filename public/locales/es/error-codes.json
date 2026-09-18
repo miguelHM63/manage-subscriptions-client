@@ -4,6 +4,7 @@
   "sessionTokenExpired": "Sesión expirada",
   "byDomainCode": {
     "USER_ALREADY_REGISTERED": "Usuario ya registrado.",
+    "GOOGLE_SIGN_IN_DISABLED": "El acceso con Google no está disponible.",
     "ERR_CONNECTION_REFUSED": "Conexión rechazada. Por favor, comprueba que el backend esté corriendo.",
     "CUSTOMER_EMAIL_ALREADY_EXISTS": "Ya existe un cliente con este email.",
     "PLAN_LIMIT_REACHED": "Has alcanzado el límite de clientes de tu plan.",

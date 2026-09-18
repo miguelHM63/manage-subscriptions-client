@@ -58,13 +58,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useUnauthorizedHandler(logout);
 
-  const login = async ({ email, password }: ILoginForm) => {
+  const authenticate = async (path: string, body: object) => {
     try {
       setIsLoggingIn(true);
-      const { data } = await apiAxiosInstance.post<IAuthResponse>('/users/sign-in', {
-        email,
-        password,
-      });
+      const { data } = await apiAxiosInstance.post<IAuthResponse>(path, body);
       const { token, user } = data;
       setUser(user);
       setItem(LOCAL_STORAGE_USER, JSON.stringify(user));
@@ -82,6 +79,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const login = ({ email, password }: ILoginForm) => authenticate('/users/sign-in', { email, password });
+
+  const loginWithGoogle = (credential: string) => authenticate('/users/sign-in/google', { credential });
+
   if (isVerifyingToken) {
     return <LoadingScreen />;
   }
@@ -91,6 +92,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         user,
         login,
+        loginWithGoogle,
         logout,
         updateLoggedUser,
         setSession,
