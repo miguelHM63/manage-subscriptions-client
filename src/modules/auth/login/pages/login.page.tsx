@@ -2,6 +2,7 @@ import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 
 import { BrandMark } from '@/components/brand-logo';
+import { APP_NAME } from '@/config';
 import { PublicLayout } from '@/components/layouts/public-layout';
 import { SIGNUP_ROUTE } from '@/routes/routes';
 import LoginForm from '../components/login-form';
@@ -13,7 +14,7 @@ export function LoginPage() {
         <div className="mb-8 flex flex-col items-center gap-3.5 text-center">
           <BrandMark size={56} className="shadow-lg shadow-brand-600/25" />
           <div>
-            <h1 className="text-[26px] font-black tracking-tight text-brand-ink">Plancito</h1>
+            <h1 className="text-[26px] font-black tracking-tight text-brand-ink">{APP_NAME}</h1>
             <p className="mt-1 text-sm text-content-muted">Controla tus planes y cobros</p>
           </div>
         </div>

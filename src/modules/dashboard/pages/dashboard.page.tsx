@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { useMemo, useState, type ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { APP_NAME } from '@/config';
 import { ServiceAvatar } from '@/components/panel/service-avatar';
 import { SlotBar } from '@/components/panel/slot-bar';
 import cn from '@/helpers/cn';
@@ -170,7 +171,7 @@ function DashboardPageComponent() {
       <>
         <div className="mb-4">
           <h1 className="text-[22px] font-bold tracking-tight text-content md:text-2xl">
-            Bienvenido a Plancito
+            Bienvenido a {APP_NAME}
           </h1>
           <p className="mt-1 text-sm text-content-muted">
             Configura tu negocio en 4 pasos. Solo lo haces una vez.

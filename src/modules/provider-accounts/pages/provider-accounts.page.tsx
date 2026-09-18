@@ -17,6 +17,7 @@ import { LoadError } from '@/components/panel/load-error';
 import { PageHeader } from '@/components/panel/page-header';
 import { ServiceAvatar } from '@/components/panel/service-avatar';
 import { SlotBar } from '@/components/panel/slot-bar';
+import { APP_NAME } from '@/config';
 import cn from '@/helpers/cn';
 import { daysUntil, dueLabel, shortDate } from '@/helpers/dates';
 import { formatMoney } from '@/helpers/money';
@@ -267,7 +268,7 @@ function ProviderAccountsPageComponent() {
         <EmptyState
           icon={<CloudServerOutlined />}
           title="Registra la cuenta que compras"
-          description="Indica cuántos cupos tiene y cuánto te cuesta. Plancito te dirá cuántos te quedan por vender y tu costo por cupo."
+          description={`Indica cuántos cupos tiene y cuánto te cuesta. ${APP_NAME} te dirá cuántos te quedan por vender y tu costo por cupo.`}
           actions={
             <Button type="primary" size="large" block icon={<PlusOutlined />} onClick={openCreate}>
               Agregar cuenta

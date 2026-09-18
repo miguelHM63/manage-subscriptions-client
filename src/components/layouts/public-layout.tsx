@@ -2,6 +2,7 @@ import { CheckCircleFilled } from '@ant-design/icons';
 import type React from 'react';
 
 import { BrandMark } from '@/components/brand-logo';
+import { APP_NAME } from '@/config';
 import { ThemeToggle } from '@/components/panel/theme-toggle';
 
 const HIGHLIGHTS = [
@@ -17,7 +18,7 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
       <div className="hidden w-1/2 flex-col justify-center gap-6 bg-brand-700 p-12 text-white md:flex">
         <span className="flex items-center gap-3">
           <BrandMark size={44} className="!bg-white/15" />
-          <span className="text-3xl font-black tracking-tight">Plancito</span>
+          <span className="text-3xl font-black tracking-tight">{APP_NAME}</span>
         </span>
         <p className="max-w-sm text-lg text-white/90">
           Gestiona tus clientes, cuentas y vencimientos sin que se te pase nada.

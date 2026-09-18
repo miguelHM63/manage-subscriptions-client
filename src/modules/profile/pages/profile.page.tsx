@@ -149,7 +149,7 @@ function ProfilePageComponent() {
           requiredMark={false}
         >
           <Form.Item label="Nombre del negocio" name="businessName" rules={[{ required: true, whitespace: true }]}>
-            <Input size="large" placeholder="Streaming Miguel" maxLength={80} />
+            <Input size="large" placeholder="Nombre de tu negocio" maxLength={80} />
           </Form.Item>
           <div className="grid grid-cols-1 gap-x-3 sm:grid-cols-2">
             <Form.Item label="Nombre" name="firstName">

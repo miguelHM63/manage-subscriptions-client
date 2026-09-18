@@ -3,6 +3,7 @@ import { App, Button, Form, Input } from 'antd';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { PublicLayout } from '@/components/layouts/public-layout';
+import { APP_NAME } from '@/config';
 import { REQUIRED_TEXT } from '@/constants';
 import { LOGIN_ROUTE, RECOVER_PASSWORD_ROUTE } from '@/routes/routes';
 import { PasswordHint, MIN_PASSWORD_LENGTH } from '../../signup/components/password-hint';
@@ -53,7 +54,7 @@ export function ResetPasswordPage() {
           <>
             <div>
               <h1 className="text-2xl font-extrabold tracking-tight text-content">Crea una nueva contraseña</h1>
-              <p className="mt-1.5 text-sm text-content-muted">La usarás para entrar a Plancito.</p>
+              <p className="mt-1.5 text-sm text-content-muted">La usarás para entrar a {APP_NAME}.</p>
             </div>
             <Form form={form} layout="vertical" size="large" requiredMark={false} onFinish={onFinish}>
               <Form.Item

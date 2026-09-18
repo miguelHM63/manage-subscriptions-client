@@ -97,8 +97,16 @@
     height: auto !important;
     max-height: 92dvh;
   }
+  /* El tope también va en el panel interno: si solo lo tiene el wrapper, el
+     contenido se sale de la pantalla y ni el cuerpo hace scroll ni se ve el pie. */
   .panel-sheet .ant-drawer-section {
     border-radius: 20px 20px 0 0;
+    max-height: 92dvh;
+  }
+  .panel-sheet .ant-drawer-body {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
   .panel-sheet .ant-drawer-footer {
     padding-bottom: calc(12px + env(safe-area-inset-bottom));

@@ -1,10 +1,8 @@
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input, type FormProps } from 'antd';
-import { Link } from 'react-router-dom';
 
 import { REQUIRED_TEXT } from '@/constants';
 import { useAuth } from '@/hooks/use-auth';
-import { RECOVER_PASSWORD_ROUTE } from '@/routes/routes';
 import type { ILoginForm } from '../login.interfaces';
 
 export default function LoginForm() {
@@ -34,19 +32,8 @@ export default function LoginForm() {
         />
       </Form.Item>
 
-      <Form.Item<ILoginForm>
-        label={
-          <span className="flex w-full items-center justify-between">
-            Contraseña
-            <Link to={RECOVER_PASSWORD_ROUTE} className="!text-sm !font-semibold !text-brand-ink">
-              ¿La olvidaste?
-            </Link>
-          </span>
-        }
-        name="password"
-        rules={REQUIRED_TEXT}
-        className="[&_.ant-form-item-label>label]:w-full"
-      >
+      {/* TODO: mostrar el enlace "¿La olvidaste?" (RECOVER_PASSWORD_ROUTE) cuando exista la recuperación de contraseña */}
+      <Form.Item<ILoginForm> label="Contraseña" name="password" rules={REQUIRED_TEXT}>
         <Input.Password
           autoComplete="current-password"
           prefix={<LockOutlined className="text-content-subtle" />}

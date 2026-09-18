@@ -12,3 +12,6 @@ export const BRANDFETCH_CLIENT_ID: string =
 // abre el chat; los planes de pago se activan a mano.
 export const SALES_WHATSAPP: string =
   (import.meta.env.VITE_SALES_WHATSAPP as string | undefined) || '';
+
+// Nombre del producto que se muestra en la interfaz (logo, títulos, textos).
+export const APP_NAME: string = (import.meta.env.VITE_APP_NAME as string | undefined) || 'Plancito';
