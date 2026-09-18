@@ -20,3 +20,7 @@ export const APP_NAME: string = (import.meta.env.VITE_APP_NAME as string | undef
 // botón "Continuar con Google" no se muestra.
 export const GOOGLE_CLIENT_ID: string =
   (import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined) || '';
+
+// Correo de contacto que se muestra en las páginas legales (privacidad y términos).
+export const SUPPORT_EMAIL: string =
+  (import.meta.env.VITE_SUPPORT_EMAIL as string | undefined) || '';

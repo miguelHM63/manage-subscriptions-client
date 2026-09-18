@@ -18,7 +18,7 @@ import { APP_NAME } from '@/config';
 import cn from '@/helpers/cn';
 import { PLAN_LABEL } from '@/modules/organization/hooks/use-my-organization';
 import { PLAN_OFFERS } from '@/modules/organization/plans';
-import { LOGIN_ROUTE, SIGNUP_ROUTE } from '@/routes/routes';
+import { LOGIN_ROUTE, PRIVACY_ROUTE, SIGNUP_ROUTE, TERMS_ROUTE } from '@/routes/routes';
 
 const STEPS = [
   {
@@ -324,10 +324,16 @@ export function LandingPage() {
       <footer className="border-t border-border">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-5 py-8 text-sm text-content-subtle md:flex-row md:justify-between md:px-8">
           <span>© {new Date().getFullYear()} {APP_NAME}</span>
-          <nav className="flex gap-5 font-semibold">
+          <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2 font-semibold whitespace-nowrap">
             <a href="#precios" className="!text-content-muted">
               Precios
             </a>
+            <Link to={PRIVACY_ROUTE} className="!text-content-muted">
+              Privacidad
+            </Link>
+            <Link to={TERMS_ROUTE} className="!text-content-muted">
+              Términos
+            </Link>
             <Link to={LOGIN_ROUTE} className="!text-content-muted">
               Iniciar sesión
             </Link>

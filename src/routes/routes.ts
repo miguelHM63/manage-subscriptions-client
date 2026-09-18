@@ -12,3 +12,5 @@ export const PROFILE_ROUTE = '/perfil';
 export const RECOVER_PASSWORD_ROUTE = '/recuperar';
 // Ruta fija: la usa el correo de recuperación (api: recover-password.handler).
 export const RESET_PASSWORD_ROUTE = '/reset-password';
+export const PRIVACY_ROUTE = '/privacidad';
+export const TERMS_ROUTE = '/terminos';
