@@ -1,4 +1,4 @@
-import { MoreOutlined, ReloadOutlined, SwapOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import { MoreOutlined, ReloadOutlined, SwapOutlined, UserOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import { Button, Dropdown, type MenuProps } from 'antd';
 
 import { ServiceAvatar } from '@/components/panel/service-avatar';
@@ -15,6 +15,8 @@ interface SubscriptionCardProps {
   customerName: string;
   /** Teléfono y correo del cliente, si tiene. */
   customerContact?: string;
+  /** Correo/usuario de la cuenta de proveedor asignada. */
+  accountLogin?: string;
   service?: IService;
   menu: MenuProps;
   onRenew: () => void;
@@ -41,6 +43,7 @@ export function SubscriptionCard({
   subscription: sub,
   customerName,
   customerContact,
+  accountLogin,
   service,
   menu,
   onRenew,
@@ -52,7 +55,6 @@ export function SubscriptionCard({
   const closed = isClosed(sub.status);
   const inactive = sub.status === 'paused' || closed;
   const detail = [
-    service?.name ?? 'Servicio',
     sub.fullAccount ? 'Cuenta completa' : `${sub.seats} ${sub.seats === 1 ? 'cupo' : 'cupos'}`,
     formatMoney(sub.price),
   ].join(' · ');
@@ -68,13 +70,15 @@ export function SubscriptionCard({
         <ServiceAvatar name={service?.name ?? ''} iconUrl={service?.iconUrl} size={40} />
         <div className="min-w-0 flex-1">
           <div className="flex min-w-0 items-center gap-1.5">
-            <span className="truncate text-[15px] font-semibold text-content">{customerName}</span>
+            <span className="truncate text-[15px] font-semibold text-content">
+              {service?.name ?? 'Servicio'}
+            </span>
             <StatusPill status={sub.status} />
           </div>
-          {customerContact && (
-            <p className="mt-0.5 truncate text-[12.5px] text-content-muted">{customerContact}</p>
+          {accountLogin && (
+            <p className="mt-0.5 truncate text-[12.5px] text-content-muted">{accountLogin}</p>
           )}
-          <p className="mt-0.5 truncate text-[12.5px] text-content-muted">{detail}</p>
+          <p className="mt-0.5 truncate text-[12.5px] text-content-subtle">{detail}</p>
         </div>
         <div className="shrink-0 text-right">
           <p className={cn('text-[13px] font-bold', DUE_TEXT[sub.status])}>
@@ -96,6 +100,19 @@ export function SubscriptionCard({
             <Button type="text" aria-label="Más acciones" icon={<MoreOutlined />} className="!-mr-1 !h-10 !w-10" />
           </Dropdown>
         )}
+      </div>
+
+      {/* Cliente: separado de los datos de la cuenta */}
+      <div className="flex items-start gap-2.5 border-t border-dashed border-border pt-2.5">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-hover text-content-muted">
+          <UserOutlined />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-[14px] font-semibold text-content">{customerName}</p>
+          {customerContact && (
+            <p className="mt-0.5 truncate text-[12.5px] text-content-muted">{customerContact}</p>
+          )}
+        </div>
       </div>
 
       {!inactive && (

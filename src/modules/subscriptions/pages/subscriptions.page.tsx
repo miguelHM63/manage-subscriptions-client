@@ -23,6 +23,7 @@ import { ServiceAvatar } from '@/components/panel/service-avatar';
 import cn from '@/helpers/cn';
 import { daysUntil, dueLabel } from '@/helpers/dates';
 import { formatMoney } from '@/helpers/money';
+import { formatPhone } from '@/helpers/phone';
 import { withErrorBoundary } from '@/hoc/with-error-boundary';
 import { useOpenFromQuery } from '@/hooks/use-open-from-query';
 import { useProviderAccounts } from '@/modules/provider-accounts/hooks/use-provider-accounts';
@@ -64,7 +65,7 @@ function SubscriptionsPageComponent() {
   const { data: subscriptions, isLoading, isError, refetch, isRefetching } = useSubscriptions();
   const { data: services } = useServices();
   const { data: accounts } = useProviderAccounts();
-  const { customerName, customerContact, service } = useLookups();
+  const { customer, customerName, customerContact, service, accountLogin } = useLookups();
   const share = useShareSubscription();
   const { mutate: runAction } = useSubscriptionAction();
 
@@ -96,14 +97,15 @@ function SubscriptionsPageComponent() {
           !term ||
           normalize(customerName(s.customerId)).includes(term) ||
           normalize(customerContact(s.customerId)).includes(term) ||
-          normalize(service(s.serviceId)?.name ?? '').includes(term),
+          normalize(service(s.serviceId)?.name ?? '').includes(term) ||
+          normalize(accountLogin(s.providerAccountId)).includes(term),
       )
       .sort(
         (a, b) =>
           STATUS_ORDER[a.status] - STATUS_ORDER[b.status] ||
           dayjs(a.endDate).valueOf() - dayjs(b.endDate).valueOf(),
       );
-  }, [subscriptions, statuses, search, customerName, customerContact, service]);
+  }, [subscriptions, statuses, search, customerName, customerContact, service, accountLogin]);
 
   const confirmCancel = (sub: ISubscription) => {
     modal.confirm({
@@ -151,27 +153,39 @@ function SubscriptionsPageComponent() {
 
   const columns: ColumnsType<ISubscription> = [
     {
-      title: 'Cliente',
-      key: 'customer',
+      title: 'Cuenta',
+      key: 'account',
       render: (_, sub) => {
         const svc = service(sub.serviceId);
+        const login = accountLogin(sub.providerAccountId);
         return (
           <span className="flex items-center gap-2.5">
             <ServiceAvatar name={svc?.name ?? ''} iconUrl={svc?.iconUrl} size={32} />
             <span className="min-w-0">
-              <span className="block truncate font-semibold text-content">
-                {customerName(sub.customerId)}
-              </span>
-              {customerContact(sub.customerId) && (
-                <span className="block truncate text-xs text-content-muted">
-                  {customerContact(sub.customerId)}
-                </span>
-              )}
+              <span className="block truncate font-semibold text-content">{svc?.name ?? 'Servicio'}</span>
+              {login && <span className="block truncate text-xs text-content-muted">{login}</span>}
               <span className="block truncate text-xs text-content-subtle">
-                {svc?.name ?? 'Servicio'} ·{' '}
                 {sub.fullAccount ? 'Cuenta completa' : `${sub.seats} cupo${sub.seats === 1 ? '' : 's'}`}
               </span>
             </span>
+          </span>
+        );
+      },
+    },
+    {
+      title: 'Cliente',
+      key: 'customer',
+      render: (_, sub) => {
+        const c = customer(sub.customerId);
+        return (
+          <span className="block min-w-0">
+            <span className="block truncate font-semibold text-content">
+              {customerName(sub.customerId)}
+            </span>
+            {c?.phone && (
+              <span className="block truncate text-xs text-content-muted">{formatPhone(c.phone)}</span>
+            )}
+            {c?.email && <span className="block truncate text-xs text-content-muted">{c.email}</span>}
           </span>
         );
       },
@@ -305,6 +319,7 @@ function SubscriptionsPageComponent() {
                     subscription={sub}
                     customerName={customerName(sub.customerId)}
                     customerContact={customerContact(sub.customerId)}
+                    accountLogin={accountLogin(sub.providerAccountId)}
                     service={service(sub.serviceId)}
                     menu={menuFor(sub, !['expired', 'expiring_soon'].includes(sub.status))}
                     onRenew={() => setRenewing(sub)}
@@ -349,7 +364,7 @@ function SubscriptionsPageComponent() {
             allowClear
             size="large"
             prefix={<SearchOutlined className="text-content-subtle" />}
-            placeholder="Buscar cliente o servicio"
+            placeholder="Buscar cliente o cuenta"
             value={search}
             onChange={e => setSearch(e.target.value)}
             className="min-w-0 flex-1 md:!w-72 md:flex-none"
