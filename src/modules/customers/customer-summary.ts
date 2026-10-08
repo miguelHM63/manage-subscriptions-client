@@ -2,6 +2,7 @@ import type {
   ISubscription,
   SubscriptionStatus,
 } from '@/modules/subscriptions/hooks/use-subscriptions';
+import { isClosed } from '@/modules/subscriptions/subscription-meta';
 
 // Prioridad para resumir a un cliente con su estado "más urgente".
 const PRIORITY: SubscriptionStatus[] = [
@@ -10,12 +11,13 @@ const PRIORITY: SubscriptionStatus[] = [
   'active',
   'paused',
   'cancelled',
+  'migrated',
 ];
 
 export interface CustomerSummary {
-  /** Suscripciones no canceladas. */
+  /** Suscripciones vigentes (ni canceladas ni cambiadas). */
   current: ISubscription[];
-  /** Estado más urgente entre las no canceladas (undefined si no tiene). */
+  /** Estado más urgente entre las vigentes (undefined si no tiene). */
   status?: SubscriptionStatus;
   /** Suma de precios de las vencidas (lo que debe). */
   due: number;
@@ -28,7 +30,7 @@ export function summarizeByCustomer(subscriptions: ISubscription[]): Map<string,
   const map = new Map<string, CustomerSummary>();
   for (const sub of subscriptions) {
     const entry = map.get(sub.customerId) ?? { current: [], due: 0, monthly: 0 };
-    if (sub.status !== 'cancelled') {
+    if (!isClosed(sub.status)) {
       entry.current.push(sub);
       if (!entry.status || PRIORITY.indexOf(sub.status) < PRIORITY.indexOf(entry.status)) {
         entry.status = sub.status;

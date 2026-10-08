@@ -11,6 +11,8 @@ export interface IProviderAccount {
   id: string;
   serviceId: string;
   label?: string;
+  /** Usuario/correo de acceso (solo en el listado; sin contraseña). */
+  username?: string;
   capacity: number;
   usedSlots: number;
   availableSlots: number;
@@ -35,9 +37,7 @@ export const useProviderAccounts = () =>
   useQuery<IProviderAccount[], HttpError>({
     queryKey: KEY,
     queryFn: () =>
-      apiAxiosInstance
-        .get<IProviderAccount[]>('/provider-accounts')
-        .then(({ data }) => data),
+      apiAxiosInstance.get<IProviderAccount[]>('/provider-accounts').then(({ data }) => data),
   });
 
 const useInvalidate = () => {
@@ -49,9 +49,7 @@ export const useCreateProviderAccount = (onSuccess?: () => void) => {
   const invalidate = useInvalidate();
   return useMutation<IProviderAccount, HttpError, ProviderAccountBody>({
     mutationFn: body =>
-      apiAxiosInstance
-        .post<IProviderAccount>('/provider-accounts', body)
-        .then(({ data }) => data),
+      apiAxiosInstance.post<IProviderAccount>('/provider-accounts', body).then(({ data }) => data),
     onSuccess: () => {
       invalidate();
       onSuccess?.();
@@ -61,11 +59,7 @@ export const useCreateProviderAccount = (onSuccess?: () => void) => {
 
 export const useUpdateProviderAccount = (onSuccess?: () => void) => {
   const invalidate = useInvalidate();
-  return useMutation<
-    IProviderAccount,
-    HttpError,
-    { id: string; body: ProviderAccountBody }
-  >({
+  return useMutation<IProviderAccount, HttpError, { id: string; body: ProviderAccountBody }>({
     mutationFn: ({ id, body }) =>
       apiAxiosInstance
         .patch<IProviderAccount>(`/provider-accounts/${id}`, body)

@@ -1,4 +1,4 @@
-import { MoreOutlined, ReloadOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import { MoreOutlined, ReloadOutlined, SwapOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import { Button, Dropdown, type MenuProps } from 'antd';
 
 import { ServiceAvatar } from '@/components/panel/service-avatar';
@@ -7,15 +7,20 @@ import { daysUntil, dueShort, shortDate } from '@/helpers/dates';
 import { formatMoney } from '@/helpers/money';
 import type { IService } from '@/modules/services/hooks/use-services';
 import type { ISubscription } from '../hooks/use-subscriptions';
+import { isClosed } from '../subscription-meta';
 import { DUE_BAR, DUE_TEXT, StatusPill } from './status-pill';
 
 interface SubscriptionCardProps {
   subscription: ISubscription;
   customerName: string;
+  /** Teléfono y correo del cliente, si tiene. */
+  customerContact?: string;
   service?: IService;
   menu: MenuProps;
   onRenew: () => void;
   onShare: () => void;
+  /** Abre el detalle del cambio (solo en suscripciones cambiadas). */
+  onShowChange?: () => void;
 }
 
 const URGENT = ['expired', 'expiring_soon'];
@@ -35,14 +40,17 @@ const elapsed = (start: string, end: string) => {
 export function SubscriptionCard({
   subscription: sub,
   customerName,
+  customerContact,
   service,
   menu,
   onRenew,
   onShare,
+  onShowChange,
 }: SubscriptionCardProps) {
   const days = daysUntil(sub.endDate);
   const urgent = URGENT.includes(sub.status);
-  const inactive = sub.status === 'paused' || sub.status === 'cancelled';
+  const closed = isClosed(sub.status);
+  const inactive = sub.status === 'paused' || closed;
   const detail = [
     service?.name ?? 'Servicio',
     sub.fullAccount ? 'Cuenta completa' : `${sub.seats} ${sub.seats === 1 ? 'cupo' : 'cupos'}`,
@@ -63,15 +71,27 @@ export function SubscriptionCard({
             <span className="truncate text-[15px] font-semibold text-content">{customerName}</span>
             <StatusPill status={sub.status} />
           </div>
+          {customerContact && (
+            <p className="mt-0.5 truncate text-[12.5px] text-content-muted">{customerContact}</p>
+          )}
           <p className="mt-0.5 truncate text-[12.5px] text-content-muted">{detail}</p>
         </div>
         <div className="shrink-0 text-right">
           <p className={cn('text-[13px] font-bold', DUE_TEXT[sub.status])}>
-            {sub.status === 'cancelled' ? '—' : dueShort(days)}
+            {closed ? '—' : dueShort(days)}
           </p>
           <p className="mt-0.5 text-[11px] text-content-subtle">{shortDate(sub.endDate)}</p>
         </div>
-        {!urgent && sub.status !== 'cancelled' && (
+        {sub.status === 'migrated' && onShowChange && (
+          <Button
+            type="text"
+            aria-label="Ver cambio"
+            icon={<SwapOutlined />}
+            className="!-mr-1 !h-10 !w-10"
+            onClick={onShowChange}
+          />
+        )}
+        {!urgent && !closed && (
           <Dropdown trigger={['click']} menu={menu}>
             <Button type="text" aria-label="Más acciones" icon={<MoreOutlined />} className="!-mr-1 !h-10 !w-10" />
           </Dropdown>

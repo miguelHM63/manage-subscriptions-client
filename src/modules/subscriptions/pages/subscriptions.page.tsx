@@ -1,10 +1,12 @@
 import {
   CheckCircleFilled,
   CreditCardOutlined,
+  HistoryOutlined,
   MoreOutlined,
   PlusOutlined,
   ReloadOutlined,
   SearchOutlined,
+  SwapOutlined,
   WhatsAppOutlined,
 } from '@ant-design/icons';
 import { App, Button, Dropdown, Input, Skeleton, Space, Table, Tooltip, type MenuProps } from 'antd';
@@ -15,7 +17,6 @@ import { useSearchParams } from 'react-router-dom';
 
 import { EmptyState } from '@/components/panel/empty-state';
 import { Fab } from '@/components/panel/fab';
-import { FilterChips, type FilterChip } from '@/components/panel/filter-chips';
 import { LoadError } from '@/components/panel/load-error';
 import { PageHeader } from '@/components/panel/page-header';
 import { ServiceAvatar } from '@/components/panel/service-avatar';
@@ -36,10 +37,12 @@ import { useLookups } from '../hooks/use-lookups';
 import { useShareSubscription } from '../hooks/use-share-subscription';
 import { SubscriptionFormModal } from '../components/subscription-form-modal';
 import { RenewModal } from '../components/renew-modal';
+import { ChangeServiceModal } from '../components/change-service-modal';
+import { ChangeDetailModal } from '../components/change-detail-modal';
 import { SubscriptionCard } from '../components/subscription-card';
 import { DUE_TEXT, StatusPill } from '../components/status-pill';
-
-type Filter = 'all' | SubscriptionStatus;
+import { StatusFilter } from '../components/status-filter';
+import { isClosed, OPEN_STATUSES } from '../subscription-meta';
 
 // Orden: lo que requiere acción primero, lo inactivo al final.
 const STATUS_ORDER: Record<SubscriptionStatus, number> = {
@@ -48,9 +51,10 @@ const STATUS_ORDER: Record<SubscriptionStatus, number> = {
   active: 2,
   paused: 3,
   cancelled: 4,
+  migrated: 5,
 };
 
-const FILTERS: Filter[] = ['all', 'active', 'expiring_soon', 'expired', 'paused', 'cancelled'];
+const STATUSES = Object.keys(STATUS_ORDER) as SubscriptionStatus[];
 
 const normalize = (text: string) =>
   text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
@@ -60,44 +64,38 @@ function SubscriptionsPageComponent() {
   const { data: subscriptions, isLoading, isError, refetch, isRefetching } = useSubscriptions();
   const { data: services } = useServices();
   const { data: accounts } = useProviderAccounts();
-  const { customerName, service } = useLookups();
+  const { customerName, customerContact, service } = useLookups();
   const share = useShareSubscription();
   const { mutate: runAction } = useSubscriptionAction();
 
   const [formOpen, setFormOpen] = useState(false);
   const [renewing, setRenewing] = useState<ISubscription | null>(null);
+  const [changing, setChanging] = useState<ISubscription | null>(null);
+  const [changeDetail, setChangeDetail] = useState<ISubscription | null>(null);
   // El filtro puede venir en la URL (p. ej. "Cobrar" en el inicio → ?estado=expired).
   const [params] = useSearchParams();
-  const fromUrl = params.get('estado') as Filter | null;
-  const [filter, setFilter] = useState<Filter>(
-    fromUrl && FILTERS.includes(fromUrl) ? fromUrl : 'all',
+  const fromUrl = params.get('estado') as SubscriptionStatus | null;
+  const [statuses, setStatuses] = useState<SubscriptionStatus[]>(
+    fromUrl && STATUSES.includes(fromUrl) ? [fromUrl] : OPEN_STATUSES,
   );
   useOpenFromQuery(useCallback(() => setFormOpen(true), []));
   const [search, setSearch] = useState('');
 
   const counts = useMemo(() => {
-    const byStatus = { active: 0, expiring_soon: 0, expired: 0, paused: 0, cancelled: 0 };
+    const byStatus = { active: 0, expiring_soon: 0, expired: 0, paused: 0, cancelled: 0, migrated: 0 };
     subscriptions?.forEach(s => byStatus[s.status]++);
     return byStatus;
   }, [subscriptions]);
 
-  const chips: FilterChip<Filter>[] = [
-    { value: 'all', label: 'Todas', count: (subscriptions?.length ?? 0) - counts.cancelled },
-    { value: 'expiring_soon', label: 'Por vencer', count: counts.expiring_soon, tone: 'warning' },
-    { value: 'expired', label: 'Vencidas', count: counts.expired, tone: 'danger' },
-    { value: 'active', label: 'Activas', count: counts.active },
-    { value: 'paused', label: 'Pausadas', count: counts.paused },
-    { value: 'cancelled', label: 'Canceladas', count: counts.cancelled },
-  ];
-
   const visible = useMemo(() => {
     const term = normalize(search.trim());
     return (subscriptions ?? [])
-      .filter(s => (filter === 'all' ? s.status !== 'cancelled' : s.status === filter))
+      .filter(s => statuses.includes(s.status))
       .filter(
         s =>
           !term ||
           normalize(customerName(s.customerId)).includes(term) ||
+          normalize(customerContact(s.customerId)).includes(term) ||
           normalize(service(s.serviceId)?.name ?? '').includes(term),
       )
       .sort(
@@ -105,7 +103,7 @@ function SubscriptionsPageComponent() {
           STATUS_ORDER[a.status] - STATUS_ORDER[b.status] ||
           dayjs(a.endDate).valueOf() - dayjs(b.endDate).valueOf(),
       );
-  }, [subscriptions, filter, search, customerName, service]);
+  }, [subscriptions, statuses, search, customerName, customerContact, service]);
 
   const confirmCancel = (sub: ISubscription) => {
     modal.confirm({
@@ -129,6 +127,10 @@ function SubscriptionsPageComponent() {
             { type: 'divider' as const },
           ]
         : []),
+      { key: 'change', label: 'Cambiar de servicio', icon: <SwapOutlined /> },
+      ...(sub.replacesId
+        ? [{ key: 'detail', label: 'Ver cambio anterior', icon: <HistoryOutlined /> }]
+        : []),
       sub.status === 'paused'
         ? { key: 'resume', label: 'Reanudar' }
         : { key: 'pause', label: 'Pausar' },
@@ -139,6 +141,8 @@ function SubscriptionsPageComponent() {
       onClick: ({ key }) => {
         if (key === 'renew') setRenewing(sub);
         else if (key === 'share') share(sub);
+        else if (key === 'change') setChanging(sub);
+        else if (key === 'detail') setChangeDetail(sub);
         else if (key === 'cancel') confirmCancel(sub);
         else runAction({ id: sub.id, action: key as 'pause' | 'resume' });
       },
@@ -158,6 +162,11 @@ function SubscriptionsPageComponent() {
               <span className="block truncate font-semibold text-content">
                 {customerName(sub.customerId)}
               </span>
+              {customerContact(sub.customerId) && (
+                <span className="block truncate text-xs text-content-muted">
+                  {customerContact(sub.customerId)}
+                </span>
+              )}
               <span className="block truncate text-xs text-content-subtle">
                 {svc?.name ?? 'Servicio'} ·{' '}
                 {sub.fullAccount ? 'Cuenta completa' : `${sub.seats} cupo${sub.seats === 1 ? '' : 's'}`}
@@ -179,7 +188,7 @@ function SubscriptionsPageComponent() {
       render: (endDate: string, sub) => (
         <span>
           <span className="block text-content">{dayjs(endDate).format('DD/MM/YYYY')}</span>
-          {sub.status !== 'cancelled' && sub.status !== 'paused' && (
+          {!isClosed(sub.status) && sub.status !== 'paused' && (
             <span className={cn('block text-xs font-semibold', DUE_TEXT[sub.status])}>
               {dueLabel(daysUntil(endDate))}
             </span>
@@ -198,7 +207,14 @@ function SubscriptionsPageComponent() {
       key: 'actions',
       align: 'right',
       render: (_, sub) => {
-        if (sub.status === 'cancelled') {
+        if (sub.status === 'migrated') {
+          return (
+            <Button icon={<SwapOutlined />} onClick={() => setChangeDetail(sub)}>
+              Ver cambio
+            </Button>
+          );
+        }
+        if (isClosed(sub.status)) {
           return <span className="text-content-subtle">—</span>;
         }
         return (
@@ -288,10 +304,12 @@ function SubscriptionsPageComponent() {
                     key={sub.id}
                     subscription={sub}
                     customerName={customerName(sub.customerId)}
+                    customerContact={customerContact(sub.customerId)}
                     service={service(sub.serviceId)}
                     menu={menuFor(sub, !['expired', 'expiring_soon'].includes(sub.status))}
                     onRenew={() => setRenewing(sub)}
                     onShare={() => share(sub)}
+                    onShowChange={() => setChangeDetail(sub)}
                   />
                 ))
               : emptyFilter}
@@ -326,7 +344,7 @@ function SubscriptionsPageComponent() {
       />
 
       {hasAny && !isError && (
-        <div className="mb-4 flex flex-col gap-3 md:flex-row-reverse md:items-center md:justify-between">
+        <div className="mb-4 flex items-center gap-2">
           <Input
             allowClear
             size="large"
@@ -334,9 +352,9 @@ function SubscriptionsPageComponent() {
             placeholder="Buscar cliente o servicio"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="md:!w-72"
+            className="min-w-0 flex-1 md:!w-72 md:flex-none"
           />
-          <FilterChips chips={chips} value={filter} onChange={setFilter} />
+          <StatusFilter value={statuses} onChange={setStatuses} counts={counts} />
         </div>
       )}
 
@@ -349,6 +367,17 @@ function SubscriptionsPageComponent() {
         subscription={renewing}
         open={Boolean(renewing)}
         onClose={() => setRenewing(null)}
+      />
+      <ChangeServiceModal
+        subscription={changing}
+        open={Boolean(changing)}
+        onClose={() => setChanging(null)}
+      />
+      <ChangeDetailModal
+        subscription={changeDetail}
+        subscriptions={subscriptions ?? []}
+        open={Boolean(changeDetail)}
+        onClose={() => setChangeDetail(null)}
       />
     </>
   );

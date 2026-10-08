@@ -176,8 +176,31 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
           <Select
             placeholder="Selecciona un cliente"
             showSearch
-            optionFilterProp="label"
             options={customers?.map(c => ({ value: c.id, label: c.name }))}
+            // Busca también por correo y teléfono (solo dígitos).
+            filterOption={(input, option) => {
+              const c = customers?.find(x => x.id === option?.value);
+              if (!c) return false;
+              const q = input.trim().toLowerCase();
+              const digits = q.replace(/\D/g, '');
+              return (
+                c.name.toLowerCase().includes(q) ||
+                (c.email ?? '').toLowerCase().includes(q) ||
+                (digits.length > 2 && (c.phone ?? '').replace(/\D/g, '').includes(digits))
+              );
+            }}
+            optionRender={option => {
+              const c = customers?.find(x => x.id === option.value);
+              const contact = [c?.phone, c?.email].filter(Boolean).join(' · ');
+              return (
+                <div className="flex flex-col leading-tight">
+                  <span>{option.label}</span>
+                  {contact && (
+                    <span className="truncate text-xs text-content-muted">{contact}</span>
+                  )}
+                </div>
+              );
+            }}
           />
         </Form.Item>
 
@@ -278,6 +301,17 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
                 ? `${a.label || 'Cuenta'} · capacidad ${a.capacity}`
                 : `${a.label || 'Cuenta'} · ${a.availableSlots} cupo(s)`,
             }))}
+            optionRender={option => {
+              const account = availableAccounts.find(a => a.id === option.value);
+              return (
+                <div className="flex flex-col leading-tight">
+                  <span>{option.label}</span>
+                  {account?.username && (
+                    <span className="truncate text-xs text-content-muted">{account.username}</span>
+                  )}
+                </div>
+              );
+            }}
           />
         </Form.Item>
 

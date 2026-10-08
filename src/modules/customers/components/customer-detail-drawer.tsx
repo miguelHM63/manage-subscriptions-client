@@ -11,6 +11,7 @@ import { whatsappUrl } from '@/helpers/whatsapp';
 import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useLookups } from '@/modules/subscriptions/hooks/use-lookups';
 import { StatusPill } from '@/modules/subscriptions/components/status-pill';
+import { isClosed } from '@/modules/subscriptions/subscription-meta';
 import { useCustomerSubscriptions } from '../hooks/use-customer-subscriptions';
 import type { ICustomer } from '../hooks/use-customers';
 import { summarizeByCustomer } from '../customer-summary';
@@ -36,7 +37,7 @@ export function CustomerDetailDrawer({ customer, open, onClose, onEdit, onNewSal
     () =>
       [...(subscriptions ?? [])].sort(
         (a, b) =>
-          Number(a.status === 'cancelled') - Number(b.status === 'cancelled') ||
+          Number(isClosed(a.status)) - Number(isClosed(b.status)) ||
           dayjs(a.endDate).valueOf() - dayjs(b.endDate).valueOf(),
       ),
     [subscriptions],
@@ -122,7 +123,7 @@ export function CustomerDetailDrawer({ customer, open, onClose, onEdit, onNewSal
                   const detail = [
                     sub.fullAccount ? 'Cuenta completa' : `${sub.seats} cupo${sub.seats === 1 ? '' : 's'}`,
                     formatMoney(sub.price),
-                    sub.status === 'cancelled' ? null : `vence ${shortDate(sub.endDate)}`,
+                    isClosed(sub.status) ? null : `vence ${shortDate(sub.endDate)}`,
                   ]
                     .filter(Boolean)
                     .join(' · ');

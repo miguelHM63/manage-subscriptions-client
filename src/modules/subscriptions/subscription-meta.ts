@@ -6,7 +6,15 @@ export const STATUS_META: Record<SubscriptionStatus, { label: string; color: str
   expired: { label: 'Vencida', color: 'red' },
   cancelled: { label: 'Cancelada', color: 'default' },
   paused: { label: 'Pausada', color: 'blue' },
+  migrated: { label: 'Cambiada', color: 'purple' },
 };
+
+/** Estados vigentes: los que se muestran por defecto en el listado. */
+export const OPEN_STATUSES: SubscriptionStatus[] = ['expiring_soon', 'expired', 'active', 'paused'];
+
+/** Estados finales: no se renuevan, pausan ni cancelan. */
+export const isClosed = (status: SubscriptionStatus) =>
+  status === 'cancelled' || status === 'migrated';
 
 export const PAYMENT_METHOD_OPTIONS: { value: PaymentMethod; label: string }[] = [
   { value: 'cash', label: 'Efectivo' },

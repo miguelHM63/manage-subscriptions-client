@@ -16,6 +16,11 @@ export const useLookups = () => {
       service: (id: string) => serviceMap.get(id),
       customerName: (id: string) => customerMap.get(id)?.name ?? 'Cliente',
       serviceName: (id: string) => serviceMap.get(id)?.name ?? 'Servicio',
+      /** Teléfono y correo del cliente ("" si no tiene ninguno). */
+      customerContact: (id: string) => {
+        const c = customerMap.get(id);
+        return [c?.phone, c?.email].filter(Boolean).join(' · ');
+      },
     };
   }, [customers, services]);
 };

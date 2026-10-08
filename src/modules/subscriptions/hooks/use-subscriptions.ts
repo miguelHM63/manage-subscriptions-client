@@ -6,15 +6,10 @@ export type SubscriptionStatus =
   | 'expiring_soon'
   | 'expired'
   | 'cancelled'
-  | 'paused';
+  | 'paused'
+  | 'migrated';
 
-export type PaymentMethod =
-  | 'cash'
-  | 'transfer'
-  | 'card'
-  | 'yape'
-  | 'plin'
-  | 'other';
+export type PaymentMethod = 'cash' | 'transfer' | 'card' | 'yape' | 'plin' | 'other';
 
 export interface ISubscription {
   id: string;
@@ -28,6 +23,8 @@ export interface ISubscription {
   seats: number;
   fullAccount: boolean;
   status: SubscriptionStatus;
+  /** Suscripción a la que reemplaza (cambio de servicio). */
+  replacesId?: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -42,6 +39,13 @@ export interface CreateSubscriptionBody {
   startDate?: string;
 }
 
+export interface ChangeServiceBody {
+  serviceId: string;
+  providerAccountId: string;
+  fullAccount?: boolean;
+  price?: number;
+}
+
 export interface RenewBody {
   amount: number;
   method?: PaymentMethod;
@@ -53,10 +57,7 @@ const KEY = ['subscriptions'];
 export const useSubscriptions = () =>
   useQuery<ISubscription[], HttpError>({
     queryKey: KEY,
-    queryFn: () =>
-      apiAxiosInstance
-        .get<ISubscription[]>('/subscriptions')
-        .then(({ data }) => data),
+    queryFn: () => apiAxiosInstance.get<ISubscription[]>('/subscriptions').then(({ data }) => data),
   });
 
 const useInvalidateSubscriptions = () => {
@@ -72,9 +73,7 @@ export const useCreateSubscription = (onSuccess?: () => void) => {
   const invalidate = useInvalidateSubscriptions();
   return useMutation<ISubscription, HttpError, CreateSubscriptionBody>({
     mutationFn: body =>
-      apiAxiosInstance
-        .post<ISubscription>('/subscriptions', body)
-        .then(({ data }) => data),
+      apiAxiosInstance.post<ISubscription>('/subscriptions', body).then(({ data }) => data),
     onSuccess: () => {
       invalidate();
       onSuccess?.();
@@ -85,8 +84,21 @@ export const useCreateSubscription = (onSuccess?: () => void) => {
 export const useRenewSubscription = (onSuccess?: () => void) => {
   const invalidate = useInvalidateSubscriptions();
   return useMutation<unknown, HttpError, { id: string; body: RenewBody }>({
+    mutationFn: ({ id, body }) => apiAxiosInstance.post(`/subscriptions/${id}/renew`, body),
+    onSuccess: () => {
+      invalidate();
+      onSuccess?.();
+    },
+  });
+};
+
+export const useChangeService = (onSuccess?: () => void) => {
+  const invalidate = useInvalidateSubscriptions();
+  return useMutation<ISubscription, HttpError, { id: string; body: ChangeServiceBody }>({
     mutationFn: ({ id, body }) =>
-      apiAxiosInstance.post(`/subscriptions/${id}/renew`, body),
+      apiAxiosInstance
+        .post<ISubscription>(`/subscriptions/${id}/change-service`, body)
+        .then(({ data }) => data),
     onSuccess: () => {
       invalidate();
       onSuccess?.();
@@ -99,8 +111,7 @@ type SubscriptionAction = 'cancel' | 'pause' | 'resume';
 export const useSubscriptionAction = () => {
   const invalidate = useInvalidateSubscriptions();
   return useMutation<unknown, HttpError, { id: string; action: SubscriptionAction }>({
-    mutationFn: ({ id, action }) =>
-      apiAxiosInstance.post(`/subscriptions/${id}/${action}`),
+    mutationFn: ({ id, action }) => apiAxiosInstance.post(`/subscriptions/${id}/${action}`),
     onSuccess: () => invalidate(),
   });
 };

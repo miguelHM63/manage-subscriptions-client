@@ -8,6 +8,7 @@ const TONES: Record<SubscriptionStatus, string> = {
   expired: 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300',
   paused: 'bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300',
   cancelled: 'bg-slate-100 text-slate-600 dark:bg-slate-500/20 dark:text-slate-300',
+  migrated: 'bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300',
 };
 
 /** Estado de la suscripción con su color (el calculado por el backend). */
@@ -38,6 +39,7 @@ export const DUE_TEXT: Record<SubscriptionStatus, string> = {
   expired: 'text-danger',
   paused: 'text-content-subtle',
   cancelled: 'text-content-subtle',
+  migrated: 'text-content-subtle',
 };
 
 export const DUE_BAR: Record<SubscriptionStatus, string> = {
@@ -46,4 +48,5 @@ export const DUE_BAR: Record<SubscriptionStatus, string> = {
   expired: 'bg-danger',
   paused: 'bg-content-subtle',
   cancelled: 'bg-content-subtle',
+  migrated: 'bg-content-subtle',
 };
