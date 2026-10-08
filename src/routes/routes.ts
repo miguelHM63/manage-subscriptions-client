@@ -9,6 +9,11 @@ export const SUBSCRIPTIONS_ROUTE = '/subscriptions';
 export const PROVIDER_ACCOUNTS_ROUTE = '/provider-accounts';
 export const SERVICES_ROUTE = '/services';
 export const PROFILE_ROUTE = '/perfil';
+export const PROMOTIONS_ROUTE = '/promociones';
+export const NEW_PROMOTION_ROUTE = '/promociones/nueva';
+export const promotionRoute = (id: string) => `/promociones/${id}`;
+// Link público de una promoción (sin sesión).
+export const PUBLIC_PROMOTION_ROUTE = '/p/:slug';
 export const RECOVER_PASSWORD_ROUTE = '/recuperar';
 // Ruta fija: la usa el correo de recuperación (api: recover-password.handler).
 export const RESET_PASSWORD_ROUTE = '/reset-password';

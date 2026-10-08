@@ -5,6 +5,7 @@ import {
   EyeOutlined,
   MoreOutlined,
   PlusOutlined,
+  ReloadOutlined,
 } from '@ant-design/icons';
 import { App, Button, Dropdown, Skeleton, Space, Table, Tooltip, type MenuProps } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
@@ -32,6 +33,7 @@ import {
 } from '../hooks/use-provider-accounts';
 import { ProviderAccountFormModal } from '../components/provider-account-form-modal';
 import { CredentialsModal } from '../components/credentials-modal';
+import { RenewProviderAccountModal } from '../components/renew-provider-account-modal';
 
 // Cuentas que vencen dentro de esta ventana se destacan arriba.
 const EXPIRY_WINDOW = 30;
@@ -50,6 +52,7 @@ function ProviderAccountsPageComponent() {
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<IProviderAccount | null>(null);
   const [credentialsId, setCredentialsId] = useState<string | null>(null);
+  const [renewing, setRenewing] = useState<IProviderAccount | null>(null);
   const [sellFrom, setSellFrom] = useState<{ serviceId: string; providerAccountId: string } | null>(null);
 
   const serviceById = useMemo(() => {
@@ -84,10 +87,15 @@ function ProviderAccountsPageComponent() {
 
   const menuFor = (account: IProviderAccount): MenuProps => ({
     items: [
+      { key: 'renew', label: 'Renovar', icon: <ReloadOutlined /> },
       { key: 'edit', label: 'Editar', icon: <EditOutlined /> },
       { key: 'delete', label: 'Eliminar', icon: <DeleteOutlined />, danger: true },
     ],
-    onClick: ({ key }) => (key === 'edit' ? openEdit(account) : confirmDelete(account)),
+    onClick: ({ key }) => {
+      if (key === 'renew') setRenewing(account);
+      else if (key === 'edit') openEdit(account);
+      else confirmDelete(account);
+    },
   });
 
   const list = accounts ?? [];
@@ -369,6 +377,11 @@ function ProviderAccountsPageComponent() {
       {hasAny && <Fab label="Nueva cuenta" onClick={openCreate} />}
 
       <ProviderAccountFormModal open={formOpen} onClose={() => setFormOpen(false)} account={editing} />
+      <RenewProviderAccountModal
+        account={renewing}
+        open={Boolean(renewing)}
+        onClose={() => setRenewing(null)}
+      />
       <CredentialsModal
         accountId={credentialsId}
         open={Boolean(credentialsId)}

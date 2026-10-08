@@ -1,4 +1,4 @@
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, TagOutlined } from '@ant-design/icons';
 import {
   Alert,
   Button,
@@ -20,6 +20,13 @@ import { useFormErrorHandler } from '@/hooks/use-form-error-handler';
 import { useCreateCustomer, useCustomers } from '@/modules/customers/hooks/use-customers';
 import { useServices } from '@/modules/services/hooks/use-services';
 import { useProviderAccounts } from '@/modules/provider-accounts/hooks/use-provider-accounts';
+import { PromoSaleSummary } from '@/modules/promotions/components/promo-sale-summary';
+import {
+  usePromotionSale,
+  usePromotions,
+  useSellPromotion,
+} from '@/modules/promotions/hooks/use-promotions';
+import { promoImpacts } from '@/modules/promotions/promotion-meta';
 import {
   useCreateSubscription,
   type CreateSubscriptionBody,
@@ -33,6 +40,8 @@ interface FormValues {
   durationMonths: number;
   price: number;
   startDate?: Dayjs;
+  /** Venta con código: cuenta de proveedor por servicio del ítem. */
+  promoAccounts?: Record<string, string>;
 }
 
 interface Props {
@@ -54,6 +63,9 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
   const [fullAccount, setFullAccount] = useState(false);
   // "Otro" en duración: muestra el campo libre de meses.
   const [customDuration, setCustomDuration] = useState(false);
+  // Código de promo: lo que se escribe y el que se aplicó (consulta la api).
+  const [promoInput, setPromoInput] = useState('');
+  const [promoCode, setPromoCode] = useState('');
 
   // El estado local se limpia al cerrar (en el handler, no en un efecto), así
   // la próxima apertura empieza de cero.
@@ -63,11 +75,31 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
     setNewCustomerPhone('');
     setFullAccount(false);
     setCustomDuration(false);
+    setPromoInput('');
+    setPromoCode('');
     onClose();
   };
 
   const { mutate: create, isPending } = useCreateSubscription(handleClose);
   const { mutate: createCustomer, isPending: creatingCustomer } = useCreateCustomer();
+  const { mutate: sellPromotion, isPending: selling } = useSellPromotion(handleClose);
+  const { data: promotions } = usePromotions();
+  const { data: promoSale, isFetching: loadingPromo } = usePromotionSale(promoCode);
+
+  // Con código aplicado, cada servicio arranca con la cuenta sugerida.
+  useEffect(() => {
+    if (!promoSale) return;
+    form.setFieldsValue({
+      promoAccounts: Object.fromEntries(
+        promoSale.services.map(s => [s.serviceId, s.suggestedAccountId]),
+      ),
+    });
+  }, [promoSale, form]);
+
+  const removePromo = () => {
+    setPromoInput('');
+    setPromoCode('');
+  };
 
   const selectedServiceId = Form.useWatch('serviceId', form);
 
@@ -142,7 +174,28 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
             ? `vence en ${daysToExpiry} ${daysToExpiry === 1 ? 'día' : 'días'} (${expiryFmt})`
             : `vence el ${expiryFmt}`;
 
+  // Venta normal que deja a una promo sin cupo para lo que ofrece.
+  const impacts =
+    !promoSale && selectedAccountId
+      ? promoImpacts(promotions ?? [], accounts ?? [], selectedAccountId, fullAccount)
+      : [];
+
   const onFinish = (values: FormValues) => {
+    if (promoSale) {
+      sellPromotion(
+        {
+          code: promoSale.item.code,
+          customerId: values.customerId,
+          accounts: promoSale.services.map(s => ({
+            serviceId: s.serviceId,
+            providerAccountId: values.promoAccounts?.[s.serviceId] ?? '',
+          })),
+          startDate: values.startDate?.toISOString(),
+        },
+        { onError: invalidateForm },
+      );
+      return;
+    }
     const body: CreateSubscriptionBody = {
       customerId: values.customerId,
       serviceId: values.serviceId,
@@ -163,15 +216,37 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
       onOk={() => form.submit()}
       okText="Registrar venta"
       cancelText="Cancelar"
-      confirmLoading={isPending}
+      confirmLoading={isPending || selling}
     >
       <Form
         layout="vertical"
         form={form}
         onFinish={onFinish}
-        disabled={isPending}
+        disabled={isPending || selling}
         initialValues={{ durationMonths: 1, startDate: dayjs() }}
       >
+        {!promoSale && (
+          <div className="mb-4 flex gap-2">
+            <Input
+              prefix={<TagOutlined className="text-content-subtle" />}
+              placeholder="Código de promo (opcional)"
+              value={promoInput}
+              onChange={e => setPromoInput(e.target.value.toUpperCase())}
+              onPressEnter={e => {
+                e.preventDefault();
+                setPromoCode(promoInput.trim());
+              }}
+              className="font-mono"
+            />
+            <Button
+              loading={loadingPromo}
+              disabled={!promoInput.trim()}
+              onClick={() => setPromoCode(promoInput.trim())}
+            >
+              Aplicar
+            </Button>
+          </div>
+        )}
         <Form.Item label="Cliente" name="customerId" rules={REQUIRED} className="!mb-1">
           <Select
             placeholder="Selecciona un cliente"
@@ -252,6 +327,42 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
             </div>
           </div>
         )}
+        {promoSale ? (
+          <>
+            <PromoSaleSummary sale={promoSale} onRemove={removePromo} />
+            {promoSale.services.map(service => (
+              <Form.Item
+                key={service.serviceId}
+                label={`Cuenta de ${service.name}`}
+                name={['promoAccounts', service.serviceId]}
+                rules={REQUIRED}
+              >
+                <Select
+                  placeholder="Selecciona una cuenta"
+                  notFoundContent="Sin cuentas con cupo disponible"
+                  options={accounts
+                    ?.filter(
+                      a =>
+                        a.serviceId === service.serviceId &&
+                        (promoSale.item.fullAccount
+                          ? a.availableSlots === a.capacity
+                          : a.availableSlots > 0),
+                    )
+                    .map(a => ({
+                      value: a.id,
+                      label: `${a.label || 'Cuenta'} · ${a.availableSlots} cupo(s)${
+                        a.expiresAt ? ` · vence ${dayjs(a.expiresAt).format('DD/MM')}` : ''
+                      }`,
+                    }))}
+                />
+              </Form.Item>
+            ))}
+            <Form.Item label="Inicio" name="startDate">
+              <DatePicker className="w-full" format="DD/MM/YYYY" />
+            </Form.Item>
+          </>
+        ) : (
+          <>
         <Form.Item label="Servicio" name="serviceId" rules={REQUIRED}>
           <Select
             placeholder="Selecciona un servicio"
@@ -341,6 +452,20 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
             </p>
           ))}
 
+        {impacts.map(impact => (
+          <Alert
+            key={impact.code}
+            className="!mb-4 !-mt-1"
+            type="warning"
+            showIcon
+            title={
+              impact.after === 0
+                ? `Esta venta agota la promo «${impact.title}» (${impact.code}).`
+                : `Esta venta deja la promo «${impact.title}» (${impact.code}) con ${impact.after} de ${impact.promised} disponibles.`
+            }
+          />
+        ))}
+
         <Form.Item
           label="Duración (meses)"
           required
@@ -396,6 +521,8 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
             <DatePicker className="w-full" format="DD/MM/YYYY" />
           </Form.Item>
         </div>
+          </>
+        )}
       </Form>
     </ResponsiveModal>
   );

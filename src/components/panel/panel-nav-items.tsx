@@ -3,6 +3,7 @@ import {
   CloudServerOutlined,
   CreditCardOutlined,
   HomeOutlined,
+  NotificationOutlined,
   TeamOutlined,
 } from '@ant-design/icons';
 import type { ReactNode } from 'react';
@@ -10,6 +11,7 @@ import type { ReactNode } from 'react';
 import {
   CUSTOMERS_ROUTE,
   DASHBOARD_ROUTE,
+  PROMOTIONS_ROUTE,
   PROVIDER_ACCOUNTS_ROUTE,
   SERVICES_ROUTE,
   SUBSCRIPTIONS_ROUTE,
@@ -19,6 +21,8 @@ export interface PanelNavItem {
   to: string;
   label: string;
   icon: ReactNode;
+  /** `false`: solo en la barra lateral (la barra inferior móvil ya va llena). */
+  mobile?: boolean;
 }
 
 export const PANEL_NAV_ITEMS: PanelNavItem[] = [
@@ -35,4 +39,5 @@ export const PANEL_NAV_ITEMS: PanelNavItem[] = [
     icon: <CloudServerOutlined />,
   },
   { to: SERVICES_ROUTE, label: 'Servicios', icon: <AppstoreOutlined /> },
+  { to: PROMOTIONS_ROUTE, label: 'Promociones', icon: <NotificationOutlined />, mobile: false },
 ];

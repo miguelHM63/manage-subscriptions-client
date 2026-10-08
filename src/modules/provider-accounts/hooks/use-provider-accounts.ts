@@ -18,6 +18,8 @@ export interface IProviderAccount {
   availableSlots: number;
   cost: number;
   expiresAt?: string;
+  /** Inicio del periodo que paga `cost` (se reinicia al renovar). */
+  periodStart?: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -63,6 +65,26 @@ export const useUpdateProviderAccount = (onSuccess?: () => void) => {
     mutationFn: ({ id, body }) =>
       apiAxiosInstance
         .patch<IProviderAccount>(`/provider-accounts/${id}`, body)
+        .then(({ data }) => data),
+    onSuccess: () => {
+      invalidate();
+      onSuccess?.();
+    },
+  });
+};
+
+export interface RenewProviderAccountBody {
+  expiresAt: string;
+  periodStart?: string;
+  cost?: number;
+}
+
+export const useRenewProviderAccount = (onSuccess?: () => void) => {
+  const invalidate = useInvalidate();
+  return useMutation<IProviderAccount, HttpError, { id: string; body: RenewProviderAccountBody }>({
+    mutationFn: ({ id, body }) =>
+      apiAxiosInstance
+        .post<IProviderAccount>(`/provider-accounts/${id}/renew`, body)
         .then(({ data }) => data),
     onSuccess: () => {
       invalidate();

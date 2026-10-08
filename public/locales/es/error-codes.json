@@ -15,7 +15,22 @@
     "SUBSCRIPTION_ALREADY_CANCELLED": "La suscripción ya está cancelada.",
     "SUBSCRIPTION_CANCELLED": "Una suscripción cancelada no se puede renovar.",
     "SUBSCRIPTION_NOT_PAUSABLE": "Esta suscripción no se puede pausar en su estado actual.",
-    "SUBSCRIPTION_NOT_PAUSED": "Solo se puede reanudar una suscripción pausada."
+    "SUBSCRIPTION_NOT_PAUSED": "Solo se puede reanudar una suscripción pausada.",
+    "INVALID_PROMOTION_DATES": "La promoción debe terminar después de empezar.",
+    "INVALID_PROMOTION_ITEM": "Revisa los ítems: un paquete necesita al menos dos servicios.",
+    "WHATSAPP_REQUIRED": "Agrega tu WhatsApp en Mi cuenta para publicar la promoción.",
+    "PROMOTION_WITHOUT_ITEMS": "Agrega al menos un ítem a la promoción.",
+    "PROMOTION_ENDED": "La promoción ya terminó: cambia la fecha de fin para publicarla.",
+    "INVALID_RENEWAL_PERIOD": "El nuevo vencimiento debe ser posterior al inicio del periodo.",
+    "PROMOTION_CODE_TAKEN": "Otra promoción ya usa ese código.",
+    "INVALID_PROMOTION_CODE": "El código debe tener de 3 a 12 letras o números.",
+    "PROMOTION_CODE_NOT_FOUND": "No hay ninguna promo con ese código.",
+    "PROMOTION_NOT_AVAILABLE": "Esa promoción no está publicada.",
+    "PROMOTION_SOLD_OUT": "Esta oferta ya llegó a su límite de ventas.",
+    "PROMOTION_SALE_ACCOUNTS": "Elige una cuenta de proveedor para cada servicio.",
+    "ACCOUNT_SERVICE_MISMATCH": "La cuenta de proveedor es de otro servicio.",
+    "PROMOTION_ITEM_NO_STOCK": "Un ítem incluye un servicio sin cupos libres: agrega una cuenta con cupo o quita el servicio.",
+    "PROMOTION_LIMIT_OVER_STOCK": "Un ítem ofrece más ventas que los cupos libres: baja su límite."
   },
   "byHttpCode": {
     "400": "Verifique los campos",

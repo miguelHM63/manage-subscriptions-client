@@ -8,6 +8,7 @@ import {
   HOME_ROUTE,
   LOGIN_ROUTE,
   PRIVACY_ROUTE,
+  PUBLIC_PROMOTION_ROUTE,
   RECOVER_PASSWORD_ROUTE,
   RESET_PASSWORD_ROUTE,
   SIGNUP_ROUTE,
@@ -15,11 +16,14 @@ import {
 } from '@/routes/routes';
 import { RecoverPasswordPage } from '@/modules/auth/recover/pages/recover-password.page';
 import { ResetPasswordPage } from '@/modules/auth/recover/pages/reset-password.page';
+import { PublicPromotionPage } from '@/modules/promotions';
 
 export const AppPublicRoutes = [
   // Páginas legales: públicas y sin PublicRoute, para verse también con sesión iniciada.
   { path: PRIVACY_ROUTE, element: <PrivacyPage /> },
   { path: TERMS_ROUTE, element: <TermsPage /> },
+  // Link público de una promoción: se ve con o sin sesión.
+  { path: PUBLIC_PROMOTION_ROUTE, element: <PublicPromotionPage /> },
   {
     path: HOME_ROUTE,
     element: <RootRedirect />,

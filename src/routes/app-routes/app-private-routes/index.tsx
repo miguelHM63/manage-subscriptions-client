@@ -5,6 +5,8 @@ import {
   ADMIN_ONLY_TEST_ROUTE,
   CUSTOMERS_ROUTE,
   DASHBOARD_ROUTE,
+  NEW_PROMOTION_ROUTE,
+  PROMOTIONS_ROUTE,
   PROFILE_ROUTE,
   PROVIDER_ACCOUNTS_ROUTE,
   SERVICES_ROUTE,
@@ -17,6 +19,7 @@ import { SubscriptionsPage } from '@/modules/subscriptions';
 import { ProviderAccountsPage } from '@/modules/provider-accounts';
 import { ServicesPage } from '@/modules/services';
 import { ProfilePage } from '@/modules/profile';
+import { PromotionEditorPage, PromotionsPage } from '@/modules/promotions';
 import { SubjectsEnum } from '@/types/subjects.enum';
 import { UserRoutes } from './user-routes';
 
@@ -41,6 +44,9 @@ export const AppPrivateRoutes = [
       { path: PROVIDER_ACCOUNTS_ROUTE, element: <ProviderAccountsPage /> },
       { path: SERVICES_ROUTE, element: <ServicesPage /> },
       { path: PROFILE_ROUTE, element: <ProfilePage /> },
+      { path: PROMOTIONS_ROUTE, element: <PromotionsPage /> },
+      { path: NEW_PROMOTION_ROUTE, element: <PromotionEditorPage /> },
+      { path: `${PROMOTIONS_ROUTE}/:id`, element: <PromotionEditorPage /> },
       ...UserRoutes,
       {
         path: ADMIN_ONLY_TEST_ROUTE,

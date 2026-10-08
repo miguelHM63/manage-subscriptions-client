@@ -1,0 +1,293 @@
+/* Animaciones de los diseños del link público (Vitrina, Cupón, Historias). */
+.promo-display {
+  font-family: 'Bricolage Grotesque', var(--font-inter), sans-serif;
+}
+
+@keyframes promo-drift-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(60px, 40px) scale(1.2);
+  }
+}
+@keyframes promo-drift-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1.1);
+  }
+  50% {
+    transform: translate(-70px, 30px) scale(0.9);
+  }
+}
+@keyframes promo-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--promo-tilt, 0deg));
+  }
+  50% {
+    transform: translateY(-10px) rotate(var(--promo-tilt, 0deg));
+  }
+}
+@keyframes promo-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes promo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes promo-shine {
+  0%,
+  60% {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  100% {
+    transform: translateX(260%) skewX(-20deg);
+  }
+}
+@keyframes promo-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+@keyframes promo-wobble {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(-2deg) scale(1.06);
+  }
+}
+@keyframes promo-tick {
+  0% {
+    transform: translateY(-6px);
+    opacity: 0.3;
+  }
+  30% {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes promo-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes promo-deal {
+  from {
+    opacity: 0;
+    transform: translateY(46px) rotate(-4deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes promo-stamp {
+  0% {
+    opacity: 0;
+    transform: scale(2.2) rotate(-24deg);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(0.94) rotate(-9deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-10deg);
+  }
+}
+@keyframes promo-nudge {
+  0%,
+  82%,
+  100% {
+    transform: translateY(0);
+  }
+  88% {
+    transform: translateY(-6px);
+  }
+  94% {
+    transform: translateY(0);
+  }
+  97% {
+    transform: translateY(-3px);
+  }
+}
+@keyframes promo-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+@keyframes promo-fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes promo-up {
+  from {
+    opacity: 0;
+    transform: translateY(34px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes promo-zoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-8deg);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.08) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes promo-hint {
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateX(6px);
+    opacity: 1;
+  }
+}
+@keyframes promo-pan {
+  0%,
+  100% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+}
+
+.promo-drift-a {
+  animation: promo-drift-a 9s ease-in-out infinite;
+}
+.promo-drift-b {
+  animation: promo-drift-b 11s ease-in-out infinite;
+}
+.promo-bob {
+  animation: promo-bob 4s ease-in-out infinite;
+}
+.promo-rise {
+  opacity: 0;
+  animation: promo-rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+.promo-spin {
+  animation: promo-spin 4s linear infinite;
+}
+.promo-shine {
+  animation: promo-shine 3.2s ease-in-out infinite;
+}
+.promo-ping {
+  animation: promo-ping 1.4s ease-out infinite;
+}
+.promo-wobble {
+  animation: promo-wobble 2.4s ease-in-out infinite;
+}
+.promo-tick {
+  animation: promo-tick 1s ease-out infinite;
+}
+.promo-marquee {
+  animation: promo-marquee 14s linear infinite;
+}
+.promo-deal {
+  opacity: 0;
+  animation: promo-deal 0.65s cubic-bezier(0.2, 0.9, 0.25, 1.15) forwards;
+}
+.promo-stamp {
+  opacity: 0;
+  animation: promo-stamp 0.5s cubic-bezier(0.3, 1.4, 0.5, 1) forwards;
+}
+.promo-nudge {
+  animation: promo-nudge 4s ease-in-out infinite;
+}
+.promo-glow {
+  animation: promo-glow 3s ease-in-out infinite;
+}
+.promo-fill {
+  animation: promo-fill 5s linear forwards;
+}
+.promo-up {
+  opacity: 0;
+  animation: promo-up 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+.promo-zoom {
+  opacity: 0;
+  animation: promo-zoom 0.7s cubic-bezier(0.3, 1.3, 0.5, 1) forwards;
+}
+.promo-hint {
+  animation: promo-hint 1.6s ease-in-out infinite;
+}
+.promo-pan {
+  background-size: 220% 220%;
+  animation: promo-pan 10s ease-in-out infinite;
+}
+
+/* Sin animaciones si el sistema pide reducir movimiento. */
+@media (prefers-reduced-motion: reduce) {
+  .promo-drift-a,
+  .promo-drift-b,
+  .promo-bob,
+  .promo-spin,
+  .promo-shine,
+  .promo-ping,
+  .promo-wobble,
+  .promo-tick,
+  .promo-marquee,
+  .promo-nudge,
+  .promo-glow,
+  .promo-hint,
+  .promo-pan {
+    animation: none;
+  }
+  .promo-rise,
+  .promo-deal,
+  .promo-up,
+  .promo-zoom {
+    animation: none;
+    opacity: 1;
+  }
+  .promo-stamp {
+    animation: none;
+    opacity: 1;
+    transform: rotate(-10deg);
+  }
+  .promo-fill {
+    animation: none;
+    width: 100%;
+  }
+}

@@ -15,7 +15,22 @@
     "SUBSCRIPTION_ALREADY_CANCELLED": "The subscription is already cancelled.",
     "SUBSCRIPTION_CANCELLED": "A cancelled subscription cannot be renewed.",
     "SUBSCRIPTION_NOT_PAUSABLE": "This subscription cannot be paused in its current status.",
-    "SUBSCRIPTION_NOT_PAUSED": "Only a paused subscription can be resumed."
+    "SUBSCRIPTION_NOT_PAUSED": "Only a paused subscription can be resumed.",
+    "INVALID_PROMOTION_DATES": "The promotion must end after it starts.",
+    "INVALID_PROMOTION_ITEM": "Check the items: a bundle needs at least two services.",
+    "WHATSAPP_REQUIRED": "Add your WhatsApp in My account to publish the promotion.",
+    "PROMOTION_WITHOUT_ITEMS": "Add at least one item to the promotion.",
+    "PROMOTION_ENDED": "The promotion already ended: change its end date to publish it.",
+    "INVALID_RENEWAL_PERIOD": "The new expiration date must be after the period start.",
+    "PROMOTION_CODE_TAKEN": "Another promotion already uses that code.",
+    "INVALID_PROMOTION_CODE": "The code must have 3 to 12 letters or numbers.",
+    "PROMOTION_CODE_NOT_FOUND": "No promotion matches that code.",
+    "PROMOTION_NOT_AVAILABLE": "That promotion is not published.",
+    "PROMOTION_SOLD_OUT": "This offer reached its sales limit.",
+    "PROMOTION_SALE_ACCOUNTS": "Choose a provider account for each service.",
+    "ACCOUNT_SERVICE_MISMATCH": "The provider account belongs to another service.",
+    "PROMOTION_ITEM_NO_STOCK": "An item includes a service without free slots: add an account with slots or remove the service.",
+    "PROMOTION_LIMIT_OVER_STOCK": "An item offers more sales than free slots: lower its limit."
   },
   "byHttpCode": {
     "400": "Check the fields",

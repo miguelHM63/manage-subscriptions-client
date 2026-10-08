@@ -10,7 +10,7 @@ export function PanelBottomNav() {
       className="fixed inset-x-0 bottom-0 z-20 flex border-t border-border bg-surface md:hidden"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      {PANEL_NAV_ITEMS.map(item => (
+      {PANEL_NAV_ITEMS.filter(item => item.mobile !== false).map(item => (
         <NavLink
           key={item.to}
           to={item.to}
