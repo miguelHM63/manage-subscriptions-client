@@ -1,4 +1,4 @@
-import { DatePicker, Form, Input, InputNumber, Select } from 'antd';
+import { DatePicker, Form, Input, InputNumber, Select, type FormInstance, type SelectProps } from 'antd';
 import dayjs, { type Dayjs } from 'dayjs';
 import { useEffect } from 'react';
 
@@ -7,7 +7,7 @@ import { REQUIRED, REQUIRED_TEXT } from '@/constants';
 import { ServiceAvatar } from '@/components/panel/service-avatar';
 import { centsToSoles, formatMoney, solesToCents } from '@/helpers/money';
 import { useFormErrorHandler } from '@/hooks/use-form-error-handler';
-import { useServices } from '@/modules/services/hooks/use-services';
+import { useServices, type IService } from '@/modules/services/hooks/use-services';
 import {
   useCreateProviderAccount,
   useUpdateProviderAccount,
@@ -15,7 +15,7 @@ import {
   type ProviderAccountBody,
 } from '../hooks/use-provider-accounts';
 
-interface FormValues {
+export interface ProviderAccountFormValues {
   serviceId: string;
   label?: string;
   username?: string;
@@ -41,14 +41,6 @@ export function ProviderAccountFormModal({ open, onClose, account }: Props) {
   const { mutate: update, isPending: isUpdating } = useUpdateProviderAccount(onClose);
   const isLoading = isCreating || isUpdating;
 
-  // Costo por perfil derivado (costo total ÷ cupos) como ayuda visual.
-  const watchedCost = Form.useWatch('cost', form);
-  const watchedCapacity = Form.useWatch('capacity', form);
-  const perProfile =
-    watchedCost && watchedCapacity
-      ? formatMoney(solesToCents(watchedCost) / watchedCapacity)
-      : null;
-
   useEffect(() => {
     if (open) {
       form.setFieldsValue({
@@ -65,7 +57,7 @@ export function ProviderAccountFormModal({ open, onClose, account }: Props) {
     }
   }, [open, account, form]);
 
-  const onFinish = (values: FormValues) => {
+  const onFinish = (values: ProviderAccountFormValues) => {
     const credentials = {
       username: values.username || undefined,
       password: values.password || undefined,
@@ -98,7 +90,7 @@ export function ProviderAccountFormModal({ open, onClose, account }: Props) {
 
   return (
     <ResponsiveModal
-      title={isEdit ? 'Editar cuenta de proveedor' : 'Nueva cuenta de proveedor'}
+      title={isEdit ? 'Editar cuenta' : 'Nueva cuenta'}
       open={open}
       onCancel={onClose}
       onOk={() => form.submit()}
@@ -106,74 +98,113 @@ export function ProviderAccountFormModal({ open, onClose, account }: Props) {
       cancelText="Cancelar"
       confirmLoading={isLoading}
     >
-      <Form layout="vertical" form={form} onFinish={onFinish} disabled={isLoading}>
-        <Form.Item label="Servicio" name="serviceId" rules={REQUIRED}>
-          <Select
-            placeholder="Selecciona un servicio"
-            disabled={isEdit}
-            options={services?.map(s => ({ value: s.id, label: s.name }))}
-            optionRender={option => {
-              const svc = services?.find(s => s.id === option.value);
-              return (
-                <span className="flex items-center gap-2">
-                  <ServiceAvatar name={svc?.name ?? ''} iconUrl={svc?.iconUrl} size={20} />
-                  {option.label}
-                </span>
-              );
-            }}
-          />
-        </Form.Item>
-        <Form.Item label="Etiqueta (opcional)" name="label">
-          <Input placeholder="Cuenta Netflix #1" />
-        </Form.Item>
-
-        <div className="grid grid-cols-2 gap-3">
-          <Form.Item label="Cupos" name="capacity" rules={REQUIRED}>
-            <InputNumber min={1} className="w-full" placeholder="5" />
-          </Form.Item>
-          <Form.Item
-            label="Costo de la cuenta (total, S/.)"
-            name="cost"
-            tooltip="Lo que pagas por toda la cuenta. El costo por perfil se calcula solo."
-          >
-            <InputNumber min={0} step={0.5} precision={2} prefix="S/" className="!w-full" placeholder="0.00" />
-          </Form.Item>
-        </div>
-        {perProfile && (
-          <p className="-mt-1 mb-4 text-xs text-content-muted">
-            ≈ {perProfile} por perfil ({watchedCapacity} cupos)
-          </p>
-        )}
-
-        <Form.Item
-          label="Vence (opcional)"
-          name="expiresAt"
-          tooltip="Vigencia de esta cuenta. Sirve de referencia al vender."
-        >
-          <DatePicker className="w-full" format="DD/MM/YYYY" />
-        </Form.Item>
-
-        <p className="mb-2 text-xs font-medium text-content-muted">
-          Credenciales {isEdit && '(deja en blanco para no cambiarlas)'}
-        </p>
-        <Form.Item
-          label="Usuario / Email"
-          name="username"
-          rules={isEdit ? undefined : REQUIRED_TEXT}
-        >
-          <Input placeholder="correo de la cuenta" autoComplete="off" />
-        </Form.Item>
-        <Form.Item
-          label="Contraseña"
-          name="password"
-          rules={isEdit ? undefined : REQUIRED_TEXT}
-        >
-          <Input.Password placeholder="contraseña" autoComplete="new-password" />
-        </Form.Item>
-        <Form.Item label="Notas (opcional)" name="notes">
-          <Input.TextArea rows={2} placeholder="PIN, perfil asignado, etc." />
-        </Form.Item>
-      </Form>
+      <ProviderAccountFormFields
+        form={form}
+        onFinish={onFinish}
+        disabled={isLoading}
+        isEdit={isEdit}
+        services={services}
+      />
     </ResponsiveModal>
+  );
+}
+
+interface ProviderAccountFormFieldsProps {
+  form: FormInstance;
+  onFinish?: (values: ProviderAccountFormValues) => void;
+  disabled?: boolean;
+  isEdit?: boolean;
+  services?: IService[];
+  /** Ajustes extra del selector de servicio (p. ej. abrirlo desde un tutorial). */
+  serviceSelectProps?: Partial<SelectProps>;
+}
+
+/** Campos del alta/edición de cuenta de proveedor, sin modal ni llamadas a la API. */
+export function ProviderAccountFormFields({
+  form,
+  onFinish,
+  disabled,
+  isEdit,
+  services,
+  serviceSelectProps,
+}: ProviderAccountFormFieldsProps) {
+  // Costo por perfil derivado (costo total ÷ cupos) como ayuda visual.
+  const watchedCost = Form.useWatch('cost', form);
+  const watchedCapacity = Form.useWatch('capacity', form);
+  const perProfile =
+    watchedCost && watchedCapacity
+      ? formatMoney(solesToCents(watchedCost) / watchedCapacity)
+      : null;
+
+  return (
+    <Form layout="vertical" form={form} onFinish={onFinish} disabled={disabled}>
+      <Form.Item label="Servicio" name="serviceId" rules={REQUIRED}>
+        <Select
+          placeholder="Selecciona un servicio"
+          disabled={isEdit}
+          {...serviceSelectProps}
+          options={services?.map(s => ({ value: s.id, label: s.name }))}
+          optionRender={option => {
+            const svc = services?.find(s => s.id === option.value);
+            return (
+              <span className="flex items-center gap-2">
+                <ServiceAvatar name={svc?.name ?? ''} iconUrl={svc?.iconUrl} size={20} />
+                {option.label}
+              </span>
+            );
+          }}
+        />
+      </Form.Item>
+      <Form.Item label="Etiqueta (opcional)" name="label">
+        <Input placeholder="Cuenta Netflix #1" />
+      </Form.Item>
+
+      <div className="grid grid-cols-2 gap-3">
+        <Form.Item label="Cupos" name="capacity" rules={REQUIRED}>
+          <InputNumber min={1} className="w-full" placeholder="5" />
+        </Form.Item>
+        <Form.Item
+          label="Costo de la cuenta (total, S/.)"
+          name="cost"
+          tooltip="Lo que pagas por toda la cuenta. El costo por perfil se calcula solo."
+        >
+          <InputNumber min={0} step={0.5} precision={2} prefix="S/" className="!w-full" placeholder="0.00" />
+        </Form.Item>
+      </div>
+      {perProfile && (
+        <p className="-mt-1 mb-4 text-xs text-content-muted">
+          ≈ {perProfile} por perfil ({watchedCapacity} cupos)
+        </p>
+      )}
+
+      <Form.Item
+        label="Vence (opcional)"
+        name="expiresAt"
+        tooltip="Vigencia de esta cuenta. Sirve de referencia al vender."
+      >
+        <DatePicker className="w-full" format="DD/MM/YYYY" />
+      </Form.Item>
+
+      <p className="mb-2 text-xs font-medium text-content-muted">
+        Credenciales {isEdit && '(deja en blanco para no cambiarlas)'}
+      </p>
+      <Form.Item
+        label="Usuario / Email"
+        name="username"
+        rules={isEdit ? undefined : REQUIRED_TEXT}
+      >
+        <Input placeholder="correo de la cuenta" autoComplete="off" />
+      </Form.Item>
+      <Form.Item
+        label="Contraseña"
+        name="password"
+        rules={isEdit ? undefined : REQUIRED_TEXT}
+      >
+        <Input.Password placeholder="contraseña" autoComplete="new-password" />
+      </Form.Item>
+      <Form.Item label="Notas (opcional)" name="notes">
+        <Input.TextArea rows={2} placeholder="PIN, perfil asignado, etc." />
+      </Form.Item>
+    </Form>
   );
 }

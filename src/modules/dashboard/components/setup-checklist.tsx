@@ -2,6 +2,7 @@ import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
+import { APP_NAME } from '@/config';
 import cn from '@/helpers/cn';
 import { NEW_PARAM } from '@/hooks/use-open-from-query';
 import {
@@ -130,5 +131,22 @@ export function SetupChecklist({ hasServices, hasAccounts, hasCustomers }: Setup
         })}
       </ol>
     </section>
+  );
+}
+
+/** Inicio de primer uso: bienvenida + checklist de configuración. */
+export function SetupWelcome(props: SetupChecklistProps) {
+  return (
+    <>
+      <div className="mb-4">
+        <h1 className="text-[22px] font-bold tracking-tight text-content md:text-2xl">
+          Bienvenido a {APP_NAME}
+        </h1>
+        <p className="mt-1 text-sm text-content-muted">
+          Configura tu negocio en 4 pasos. Solo lo haces una vez.
+        </p>
+      </div>
+      <SetupChecklist {...props} />
+    </>
   );
 }

@@ -3,6 +3,7 @@ import { Button, Input, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { ServiceAvatar } from '@/components/panel/service-avatar';
+import cn from '@/helpers/cn';
 import {
   brandLogoUrl,
   isBrandSearchEnabled,
@@ -16,9 +17,11 @@ interface LogoPickerProps {
   onChange?: (value?: string) => void;
   disabled?: boolean;
   name?: string;
+  id?: string;
 }
 
-export function LogoPicker({ value, onChange, disabled, name }: LogoPickerProps) {
+export function LogoPicker(props: LogoPickerProps) {
+  const { onChange } = props;
   const [query, setQuery] = useState('');
   const [debounced, setDebounced] = useState('');
   const [manual, setManual] = useState(false);
@@ -37,6 +40,52 @@ export function LogoPicker({ value, onChange, disabled, name }: LogoPickerProps)
     setDebounced('');
   };
 
+  return (
+    <LogoPickerView
+      {...props}
+      query={query}
+      onQueryChange={setQuery}
+      showResults={debounced.trim().length >= 2}
+      results={results}
+      isFetching={isFetching}
+      manual={manual}
+      onManualChange={setManual}
+      onSelect={select}
+    />
+  );
+}
+
+interface LogoPickerViewProps extends LogoPickerProps {
+  query: string;
+  onQueryChange: (query: string) => void;
+  /** Si se despliega la lista (la búsqueda ya tiene texto suficiente). */
+  showResults: boolean;
+  results?: BrandResult[];
+  isFetching?: boolean;
+  manual: boolean;
+  onManualChange: (manual: boolean) => void;
+  onSelect: (brand: BrandResult) => void;
+  /** Resalta un resultado como si tuviera el puntero encima. */
+  highlightedBrandId?: string;
+}
+
+/** Vista del buscador de logos, sin estado ni red: todo llega por props. */
+export function LogoPickerView({
+  value,
+  onChange,
+  disabled,
+  name,
+  id,
+  query,
+  onQueryChange,
+  showResults,
+  results,
+  isFetching,
+  manual,
+  onManualChange,
+  onSelect,
+  highlightedBrandId,
+}: LogoPickerViewProps) {
   // Logo ya seleccionado: muestra preview + opción de quitar.
   if (value) {
     return (
@@ -58,13 +107,14 @@ export function LogoPicker({ value, onChange, disabled, name }: LogoPickerProps)
   if (!isBrandSearchEnabled || manual) {
     return (
       <Input
+        id={id}
         placeholder="https://... (URL del logo)"
         disabled={disabled}
         value={value}
         onChange={e => onChange?.(e.target.value || undefined)}
         suffix={
           isBrandSearchEnabled ? (
-            <Button type="link" size="small" className="!px-0" onClick={() => setManual(false)}>
+            <Button type="link" size="small" className="!px-0" onClick={() => onManualChange(false)}>
               Buscar
             </Button>
           ) : null
@@ -76,24 +126,28 @@ export function LogoPicker({ value, onChange, disabled, name }: LogoPickerProps)
   return (
     <div>
       <Input
+        id={id}
         prefix={<SearchOutlined className="text-content-subtle" />}
         placeholder={`Busca la marca${name ? ` (ej. ${name})` : ' (ej. Netflix)'}`}
         disabled={disabled}
         value={query}
-        onChange={e => setQuery(e.target.value)}
+        onChange={e => onQueryChange(e.target.value)}
         allowClear
         suffix={isFetching ? <Spin size="small" /> : undefined}
       />
 
-      {debounced.trim().length >= 2 && (
+      {showResults && (
         <div className="mt-1 max-h-56 overflow-y-auto rounded-lg border border-border">
           {results?.length ? (
             results.map(brand => (
               <button
                 type="button"
                 key={brand.brandId}
-                onClick={() => select(brand)}
-                className="flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-surface-hover"
+                onClick={() => onSelect(brand)}
+                className={cn(
+                  'flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-surface-hover',
+                  brand.brandId === highlightedBrandId && 'bg-surface-hover',
+                )}
               >
                 <ServiceAvatar name={brand.name} iconUrl={brand.icon} size={28} />
                 <span className="min-w-0">
@@ -117,7 +171,7 @@ export function LogoPicker({ value, onChange, disabled, name }: LogoPickerProps)
         size="small"
         icon={<LinkOutlined />}
         className="!mt-1 !px-0"
-        onClick={() => setManual(true)}
+        onClick={() => onManualChange(true)}
       >
         O pegar una URL
       </Button>

@@ -1,6 +1,7 @@
-import { LogoutOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import { LogoutOutlined, PlayCircleOutlined, RightOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import { App, Button, Form, Input, Segmented, Skeleton } from 'antd';
 import { useEffect, type ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
 import { PageHeader } from '@/components/panel/page-header';
 import { UserAvatar } from '@/components/panel/user-avatar';
@@ -8,6 +9,7 @@ import { SALES_WHATSAPP } from '@/config';
 import type { ThemeMode } from '@/context/theme/theme-context.interfaces';
 import cn from '@/helpers/cn';
 import { whatsappUrl } from '@/helpers/whatsapp';
+import { HOW_TO_ROUTE } from '@/routes/routes';
 import { withErrorBoundary } from '@/hoc/with-error-boundary';
 import { useAuth } from '@/hooks/use-auth';
 import { useFormErrorHandler } from '@/hooks/use-form-error-handler';
@@ -186,6 +188,18 @@ function ProfilePageComponent() {
             ]}
           />
         </div>,
+      )}
+
+      {section(
+        'Ayuda',
+        <Link to={HOW_TO_ROUTE} className="-m-4 flex items-center gap-3 p-4">
+          <PlayCircleOutlined className="text-xl !text-brand-ink" />
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-semibold text-content">Cómo usarlo</span>
+            <span className="block text-xs text-content-muted">Tutoriales cortos para dar tus primeros pasos</span>
+          </span>
+          <RightOutlined className="text-xs !text-content-subtle" />
+        </Link>,
       )}
 
       <Button danger size="large" icon={<LogoutOutlined />} onClick={() => logout?.()} block>

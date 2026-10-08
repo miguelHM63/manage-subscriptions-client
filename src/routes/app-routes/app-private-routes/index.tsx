@@ -1,10 +1,12 @@
 import { CanRoute } from '@/context/ability/can-route';
 import { PanelLayout } from '@/components/layouts/panel-layout';
+import { LoadingScreen } from '@/components/loading-screen';
 import { PrivateRoute } from '@/routes/components/private-route';
 import {
   ADMIN_ONLY_TEST_ROUTE,
   CUSTOMERS_ROUTE,
   DASHBOARD_ROUTE,
+  HOW_TO_ROUTE,
   NEW_PROMOTION_ROUTE,
   PROMOTIONS_ROUTE,
   PROFILE_ROUTE,
@@ -47,6 +49,12 @@ export const AppPrivateRoutes = [
       { path: PROMOTIONS_ROUTE, element: <PromotionsPage /> },
       { path: NEW_PROMOTION_ROUTE, element: <PromotionEditorPage /> },
       { path: `${PROMOTIONS_ROUTE}/:id`, element: <PromotionEditorPage /> },
+      // Carga diferida: Remotion solo se descarga al abrir los tutoriales.
+      {
+        path: HOW_TO_ROUTE,
+        lazy: async () => ({ Component: (await import('@/modules/tutorials')).HowToPage }),
+        HydrateFallback: LoadingScreen,
+      },
       ...UserRoutes,
       {
         path: ADMIN_ONLY_TEST_ROUTE,

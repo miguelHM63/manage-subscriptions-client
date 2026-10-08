@@ -19,6 +19,7 @@
     "@casl/ability": "^6.8.0",
     "@casl/react": "^5.0.1",
     "@react-oauth/google": "^0.13.5",
+    "@remotion/player": "4.0.526",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-query": "^5.90.20",
     "antd": "^6.2.3",
@@ -27,11 +28,14 @@
     "clsx": "^2.1.1",
     "i18next": "^25.8.4",
     "i18next-http-backend": "^3.0.2",
+    "libphonenumber-js": "1.13.14",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-error-boundary": "^6.1.0",
     "react-i18next": "^16.5.4",
+    "react-phone-number-input": "3.4.18",
     "react-router-dom": "^7.13.0",
+    "remotion": "4.0.526",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
@@ -73,5 +77,8 @@
       "eslint --fix"
     ],
     "*.{js,ts,md,json,html}": "prettier --write"
+  },
+  "resolutions": {
+    "libphonenumber-js": "1.13.14"
   }
 }

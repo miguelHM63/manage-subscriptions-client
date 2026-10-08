@@ -1,5 +1,5 @@
-import { Form, Input } from 'antd';
-import { useEffect } from 'react';
+import { Form, Input, type FormInstance } from 'antd';
+import { useEffect, type ReactNode } from 'react';
 
 import { ResponsiveModal } from '@/components/panel/responsive-modal';
 import { REQUIRED_TEXT } from '@/constants';
@@ -54,14 +54,29 @@ export function ServiceFormModal({ open, onClose, service }: ServiceFormModalPro
       cancelText="Cancelar"
       confirmLoading={isLoading}
     >
-      <Form layout="vertical" form={form} onFinish={onFinish} disabled={isLoading}>
-        <Form.Item label="Nombre" name="name" rules={REQUIRED_TEXT}>
-          <Input placeholder="Netflix, Spotify, HBO Max..." />
-        </Form.Item>
-        <Form.Item label="Logo (opcional)" name="iconUrl">
-          <LogoPicker />
-        </Form.Item>
-      </Form>
+      <ServiceFormFields form={form} onFinish={onFinish} disabled={isLoading} />
     </ResponsiveModal>
+  );
+}
+
+interface ServiceFormFieldsProps {
+  form: FormInstance;
+  onFinish?: (values: ServiceBody) => void;
+  disabled?: boolean;
+  /** Reemplaza el buscador de logos (p. ej. una vista guiada en los tutoriales). */
+  logoPicker?: ReactNode;
+}
+
+/** Campos del alta/edición de servicio, sin modal ni llamadas a la API. */
+export function ServiceFormFields({ form, onFinish, disabled, logoPicker }: ServiceFormFieldsProps) {
+  return (
+    <Form layout="vertical" form={form} onFinish={onFinish} disabled={disabled}>
+      <Form.Item label="Nombre" name="name" rules={REQUIRED_TEXT}>
+        <Input placeholder="Netflix, Spotify, HBO Max..." />
+      </Form.Item>
+      <Form.Item label="Logo (opcional)" name="iconUrl">
+        {logoPicker ?? <LogoPicker />}
+      </Form.Item>
+    </Form>
   );
 }

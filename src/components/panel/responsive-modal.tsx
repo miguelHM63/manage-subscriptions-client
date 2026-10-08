@@ -14,6 +14,8 @@ interface ResponsiveModalProps {
   /** `null` oculta el pie (como en Modal). */
   footer?: ReactNode | null;
   children: ReactNode;
+  /** Dónde se monta (por defecto `body`); `false` lo deja en su sitio. */
+  getContainer?: HTMLElement | (() => HTMLElement) | false;
 }
 
 /**
@@ -31,6 +33,7 @@ export function ResponsiveModal({
   confirmLoading,
   footer,
   children,
+  getContainer,
 }: ResponsiveModalProps) {
   const isMobile = useIsMobile();
 
@@ -45,6 +48,7 @@ export function ResponsiveModal({
         cancelText={cancelText}
         confirmLoading={confirmLoading}
         footer={footer}
+        getContainer={getContainer}
       >
         {children}
       </Modal>
@@ -69,6 +73,7 @@ export function ResponsiveModal({
       size="auto"
       footer={sheetFooter}
       classNames={{ wrapper: 'panel-sheet' }}
+      getContainer={getContainer}
     >
       {children}
     </Drawer>

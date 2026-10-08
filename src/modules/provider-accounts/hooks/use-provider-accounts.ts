@@ -24,6 +24,12 @@ export interface IProviderAccount {
   updatedAt?: string;
 }
 
+/** Cupos libres y costo total de un conjunto de cuentas. */
+export const accountTotals = (accounts: IProviderAccount[]) => ({
+  free: accounts.reduce((sum, a) => sum + a.availableSlots, 0),
+  cost: accounts.reduce((sum, a) => sum + a.cost, 0),
+});
+
 export interface ProviderAccountBody {
   serviceId?: string;
   label?: string;

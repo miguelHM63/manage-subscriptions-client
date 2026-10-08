@@ -1,0 +1,12 @@
+/* Foco simulado (ver useSimulatedFocus): mismo aspecto que el foco de AntD. */
+.tutorial-stage [data-tutorial-focus] {
+  border-color: var(--color-brand-500) !important;
+  box-shadow: 0 0 0 2px rgb(99 102 241 / 0.18) !important;
+}
+
+/* El desenfoque de la máscara (AntD 6) se calcula mal dentro del contenedor
+   escalado del Player y repite los bordes como un espejo: solo oscurecemos. */
+.tutorial-stage .ant-modal-mask,
+.tutorial-stage .ant-drawer-mask {
+  backdrop-filter: none !important;
+}

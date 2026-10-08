@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import { useMemo, useState, type ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { APP_NAME } from '@/config';
 import { ServiceAvatar } from '@/components/panel/service-avatar';
 import { SlotBar } from '@/components/panel/slot-bar';
 import cn from '@/helpers/cn';
@@ -25,7 +24,7 @@ import { useLookups } from '@/modules/subscriptions/hooks/use-lookups';
 import { useShareSubscription } from '@/modules/subscriptions/hooks/use-share-subscription';
 import { SubscriptionCard } from '@/modules/subscriptions/components/subscription-card';
 import { RenewModal } from '@/modules/subscriptions/components/renew-modal';
-import { SetupChecklist } from '../components/setup-checklist';
+import { SetupWelcome } from '../components/setup-checklist';
 
 // Cuántas tarjetas de "Requiere atención" se muestran antes de "Ver todas".
 const ATTENTION_LIMIT = 5;
@@ -169,15 +168,7 @@ function DashboardPageComponent() {
   if (!subscriptions?.length) {
     return (
       <>
-        <div className="mb-4">
-          <h1 className="text-[22px] font-bold tracking-tight text-content md:text-2xl">
-            Bienvenido a {APP_NAME}
-          </h1>
-          <p className="mt-1 text-sm text-content-muted">
-            Configura tu negocio en 4 pasos. Solo lo haces una vez.
-          </p>
-        </div>
-        <SetupChecklist
+        <SetupWelcome
           hasServices={Boolean(services?.length)}
           hasAccounts={Boolean(accounts?.length)}
           hasCustomers={Boolean(customers?.length)}

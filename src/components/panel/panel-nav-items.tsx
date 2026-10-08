@@ -41,3 +41,6 @@ export const PANEL_NAV_ITEMS: PanelNavItem[] = [
   { to: SERVICES_ROUTE, label: 'Servicios', icon: <AppstoreOutlined /> },
   { to: PROMOTIONS_ROUTE, label: 'Promociones', icon: <NotificationOutlined />, mobile: false },
 ];
+
+/** Nombre con el que aparece una ruta en la navegación (para textos que la mencionan). */
+export const navLabel = (route: string) => PANEL_NAV_ITEMS.find(item => item.to === route)?.label ?? '';
