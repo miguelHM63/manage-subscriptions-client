@@ -1,8 +1,10 @@
 import { WhatsAppOutlined } from '@ant-design/icons';
-import { Form, Input } from 'antd';
+import { Form } from 'antd';
 
 import { ResponsiveModal } from '@/components/panel/responsive-modal';
+import { PhoneInput } from '@/components/phone-input';
 import { REQUIRED_TEXT } from '@/constants';
+import { PHONE_RULES } from '@/helpers/phone';
 
 interface Props {
   open: boolean;
@@ -35,15 +37,15 @@ export function WhatsappStepModal({ open, saving, onCancel, onSubmit }: Props) {
             podemos publicarla.
           </p>
         </div>
-        <Form form={form} layout="vertical" onFinish={values => onSubmit(values.phone.trim())}>
+        <Form form={form} layout="vertical" onFinish={values => onSubmit(values.phone)}>
           <Form.Item
             label="Tu WhatsApp"
             name="phone"
-            rules={REQUIRED_TEXT}
+            rules={[...REQUIRED_TEXT, ...PHONE_RULES]}
             extra="Se guarda en Mi cuenta; puedes cambiarlo cuando quieras."
             className="!mb-0"
           >
-            <Input size="large" inputMode="tel" placeholder="+51 999 999 999" autoFocus />
+            <PhoneInput size="large" placeholder="987 654 321" autoFocus />
           </Form.Item>
         </Form>
       </div>

@@ -23,6 +23,7 @@ import { useOpenFromQuery } from '@/hooks/use-open-from-query';
 import { useSubscriptions } from '@/modules/subscriptions/hooks/use-subscriptions';
 import { StatusPill } from '@/modules/subscriptions/components/status-pill';
 import { SubscriptionFormModal } from '@/modules/subscriptions/components/subscription-form-modal';
+import { formatPhone } from '@/helpers/phone';
 import { useCustomers, useDeleteCustomer, type ICustomer } from '../hooks/use-customers';
 import { summarizeByCustomer, type CustomerSummary } from '../customer-summary';
 import { CustomerFormModal } from '../components/customer-form-modal';
@@ -103,7 +104,7 @@ function CustomersPageComponent() {
           <span className="min-w-0">
             <span className="block truncate font-semibold text-content">{name}</span>
             <span className="block truncate text-xs text-content-subtle">
-              {[c.phone, c.email].filter(Boolean).join(' · ') || '—'}
+              {[formatPhone(c.phone), c.email].filter(Boolean).join(' · ') || '—'}
             </span>
           </span>
         </span>

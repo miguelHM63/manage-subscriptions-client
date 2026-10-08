@@ -2,7 +2,9 @@ import { Form, Input } from 'antd';
 import { useEffect } from 'react';
 
 import { ResponsiveModal } from '@/components/panel/responsive-modal';
+import { PhoneInput } from '@/components/phone-input';
 import { REQUIRED_TEXT } from '@/constants';
+import { PHONE_RULES } from '@/helpers/phone';
 import { useFormErrorHandler } from '@/hooks/use-form-error-handler';
 import {
   useCreateCustomer,
@@ -67,8 +69,8 @@ export function CustomerFormModal({ open, onClose, customer }: CustomerFormModal
         <Form.Item label="Email (opcional)" name="email" rules={[{ type: 'email' }]}>
           <Input placeholder="cliente@email.com" />
         </Form.Item>
-        <Form.Item label="Teléfono / WhatsApp (opcional)" name="phone">
-          <Input placeholder="+51 999 999 999" />
+        <Form.Item label="Teléfono / WhatsApp (opcional)" name="phone" rules={PHONE_RULES}>
+          <PhoneInput placeholder="987 654 321" />
         </Form.Item>
         <Form.Item label="Notas (opcional)" name="notes">
           <Input.TextArea rows={2} placeholder="Notas internas" />

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 import { useCustomers, type ICustomer } from '@/modules/customers/hooks/use-customers';
 import { useServices, type IService } from '@/modules/services/hooks/use-services';
+import { formatPhone } from '@/helpers/phone';
 
 /** Búsqueda por id de clientes y servicios (para pintar suscripciones). */
 export const useLookups = () => {
@@ -19,7 +20,7 @@ export const useLookups = () => {
       /** Teléfono y correo del cliente ("" si no tiene ninguno). */
       customerContact: (id: string) => {
         const c = customerMap.get(id);
-        return [c?.phone, c?.email].filter(Boolean).join(' · ');
+        return [formatPhone(c?.phone), c?.email].filter(Boolean).join(' · ');
       },
     };
   }, [customers, services]);

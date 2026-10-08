@@ -12,6 +12,7 @@ import { useIsMobile } from '@/hooks/use-is-mobile';
 import { useLookups } from '@/modules/subscriptions/hooks/use-lookups';
 import { StatusPill } from '@/modules/subscriptions/components/status-pill';
 import { isClosed } from '@/modules/subscriptions/subscription-meta';
+import { formatPhone } from '@/helpers/phone';
 import { useCustomerSubscriptions } from '../hooks/use-customer-subscriptions';
 import type { ICustomer } from '../hooks/use-customers';
 import { summarizeByCustomer } from '../customer-summary';
@@ -74,7 +75,7 @@ export function CustomerDetailDrawer({ customer, open, onClose, onEdit, onNewSal
             <div>
               <h2 className="text-xl font-bold tracking-tight text-content">{customer.name}</h2>
               <p className="mt-0.5 text-sm text-content-muted">
-                {[customer.phone, customer.email].filter(Boolean).join(' · ') || 'Sin datos de contacto'}
+                {[formatPhone(customer.phone), customer.email].filter(Boolean).join(' · ') || 'Sin datos de contacto'}
               </p>
             </div>
           </div>

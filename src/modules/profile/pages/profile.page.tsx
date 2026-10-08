@@ -4,11 +4,13 @@ import { useEffect, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import { PageHeader } from '@/components/panel/page-header';
+import { PhoneInput } from '@/components/phone-input';
 import { UserAvatar } from '@/components/panel/user-avatar';
 import { SALES_WHATSAPP } from '@/config';
 import type { ThemeMode } from '@/context/theme/theme-context.interfaces';
 import cn from '@/helpers/cn';
 import { whatsappUrl } from '@/helpers/whatsapp';
+import { PHONE_RULES } from '@/helpers/phone';
 import { HOW_TO_ROUTE } from '@/routes/routes';
 import { withErrorBoundary } from '@/hoc/with-error-boundary';
 import { useAuth } from '@/hooks/use-auth';
@@ -161,8 +163,8 @@ function ProfilePageComponent() {
               <Input size="large" placeholder="Tu apellido" />
             </Form.Item>
           </div>
-          <Form.Item label="WhatsApp" name="phone">
-            <Input size="large" inputMode="tel" placeholder="+51 999 999 999" />
+          <Form.Item label="WhatsApp" name="phone" rules={PHONE_RULES}>
+            <PhoneInput size="large" placeholder="987 654 321" />
           </Form.Item>
           <Form.Item label="Correo" className="!mb-5">
             <Input size="large" value={me?.email} disabled />
