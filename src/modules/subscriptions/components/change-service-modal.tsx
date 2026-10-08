@@ -137,7 +137,7 @@ export function ChangeServiceModal({ subscription, open, onClose }: Props) {
             ]}
           />
         </Form.Item>
-        <Form.Item label="Cuenta de proveedor" name="providerAccountId" rules={REQUIRED}>
+        <Form.Item label="Mis cuentas" name="providerAccountId" rules={REQUIRED}>
           <Select
             placeholder={selectedServiceId ? 'Selecciona una cuenta' : 'Primero elige un servicio'}
             disabled={!selectedServiceId}
