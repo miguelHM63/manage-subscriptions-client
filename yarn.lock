@@ -266,6 +266,11 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-1.0.2.tgz#bbe12dca5b4ef983a0d0af4b07b9bc90ea0ababa"
   integrity sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==
 
+"@blobatar/react@2.7.0":
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/@blobatar/react/-/react-2.7.0.tgz#c05dd31c3b7df1087817e91322d6a3978de31ce2"
+  integrity sha512-rysDM1+2qoeIwIezVw/em+ZxOMyqqjqJOGNEvtOOU1nFp0jmzyEjlXtJTDM6xPKamq59pq6wcG9+mHIUZV572A==
+
 "@casl/ability@^6.8.0":
   version "6.8.0"
   resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-6.8.0.tgz#db878b28339e275b6cb019a887b882b76a8abe3e"
@@ -2007,6 +2012,11 @@ bidi-js@^1.0.3:
   integrity sha512-RKshQI1R3YQ+n9YJz2QQ147P66ELpa1FQEg20Dk8oW9t2KgLbpDLLp9aGZ7y8WHSshDknG0bknqGw5/tyCs5tw==
   dependencies:
     require-from-string "^2.0.2"
+
+blobatar@2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/blobatar/-/blobatar-2.7.0.tgz#ac0215e48741011f1fea0fa405252550bb8ee4c3"
+  integrity sha512-tL1p2J3dXE/Z9U/ITwHqU7HBHmTH+Am+hif1J1hWAhvFT1VYC2HG+eXtN7081yuY+L2lrp9bs/VaF7dVH3S2jw==
 
 brace-expansion@^1.1.7:
   version "1.1.12"

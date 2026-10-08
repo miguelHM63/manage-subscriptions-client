@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^6.1.0",
+    "@blobatar/react": "2.7.0",
     "@casl/ability": "^6.8.0",
     "@casl/react": "^5.0.1",
     "@react-oauth/google": "^0.13.5",
@@ -22,6 +23,7 @@
     "@tanstack/react-query": "^5.90.20",
     "antd": "^6.2.3",
     "axios": "^1.13.4",
+    "blobatar": "2.7.0",
     "clsx": "^2.1.1",
     "i18next": "^25.8.4",
     "i18next-http-backend": "^3.0.2",

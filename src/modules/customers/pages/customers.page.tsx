@@ -15,7 +15,7 @@ import { EmptyState } from '@/components/panel/empty-state';
 import { Fab } from '@/components/panel/fab';
 import { LoadError } from '@/components/panel/load-error';
 import { PageHeader } from '@/components/panel/page-header';
-import { nameInitials } from '@/components/panel/user-avatar';
+import { CustomerAvatar } from '@/components/panel/customer-avatar';
 import { formatMoney } from '@/helpers/money';
 import { whatsappUrl } from '@/helpers/whatsapp';
 import { withErrorBoundary } from '@/hoc/with-error-boundary';
@@ -30,21 +30,6 @@ import { CustomerDetailDrawer } from '../components/customer-detail-drawer';
 
 const normalize = (text: string) =>
   text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
-
-function Initials({ name, tone = 'brand' }: { name: string; tone?: 'brand' | 'danger' }) {
-  return (
-    <span
-      aria-hidden
-      className={
-        tone === 'danger'
-          ? 'flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100 text-sm font-bold text-red-700 dark:bg-red-500/15 dark:text-red-300'
-          : 'flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-50 text-sm font-bold text-brand-ink dark:bg-brand-400/15'
-      }
-    >
-      {nameInitials(name)}
-    </span>
-  );
-}
 
 const countLabel = (n: number) => `${n} suscripci${n === 1 ? 'ón' : 'ones'}`;
 
@@ -114,7 +99,7 @@ function CustomersPageComponent() {
       sorter: (a, b) => a.name.localeCompare(b.name),
       render: (name: string, c) => (
         <span className="flex items-center gap-3">
-          <Initials name={name} />
+          <CustomerAvatar seed={c.id} />
           <span className="min-w-0">
             <span className="block truncate font-semibold text-content">{name}</span>
             <span className="block truncate text-xs text-content-subtle">
@@ -180,7 +165,7 @@ function CustomersPageComponent() {
           onClick={() => setDetail(c)}
           className="flex min-w-0 flex-1 items-center gap-3 text-left"
         >
-          <Initials name={c.name} tone={variant === 'pending' ? 'danger' : 'brand'} />
+          <CustomerAvatar seed={c.id} tone={variant === 'pending' ? 'danger' : 'brand'} />
           <span className="min-w-0 flex-1">
             <span className="block truncate text-[15px] font-semibold text-content">{c.name}</span>
             <span className="mt-0.5 flex min-w-0 items-center gap-1.5">

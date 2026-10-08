@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
 import { ServiceAvatar } from '@/components/panel/service-avatar';
-import { nameInitials } from '@/components/panel/user-avatar';
+import { CustomerAvatar } from '@/components/panel/customer-avatar';
 import { formatDate, shortDate } from '@/helpers/dates';
 import { formatMoney } from '@/helpers/money';
 import { whatsappUrl } from '@/helpers/whatsapp';
@@ -69,9 +69,7 @@ export function CustomerDetailDrawer({ customer, open, onClose, onEdit, onNewSal
       {customer && (
         <div className="flex flex-col gap-5">
           <div className="flex flex-col items-center gap-2.5 text-center">
-            <span className="flex h-17 w-17 items-center justify-center rounded-full bg-brand-50 text-2xl font-bold text-brand-ink dark:bg-brand-400/15">
-              {nameInitials(customer.name)}
-            </span>
+            <CustomerAvatar seed={customer.id} size={68} />
             <div>
               <h2 className="text-xl font-bold tracking-tight text-content">{customer.name}</h2>
               <p className="mt-0.5 text-sm text-content-muted">
