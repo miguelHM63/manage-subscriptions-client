@@ -79,7 +79,7 @@ function PromotionsPageComponent() {
     return (
       <article
         key={promotion.id}
-        className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-3.5 shadow-sm"
+        className="flex min-w-0 flex-col gap-3 rounded-xl border border-border bg-surface p-3.5 shadow-sm"
       >
         <div className="flex items-start gap-3">
           <button
@@ -218,7 +218,7 @@ function PromotionsPageComponent() {
         />
       );
     }
-    return <div className="grid gap-3 md:grid-cols-2">{list.map(card)}</div>;
+    return <div className="grid grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-[repeat(2,minmax(0,1fr))]">{list.map(card)}</div>;
   };
 
   return (
