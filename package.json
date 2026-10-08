@@ -26,6 +26,7 @@
     "axios": "^1.13.4",
     "blobatar": "2.7.0",
     "clsx": "^2.1.1",
+    "country-flag-icons": "1.6.20",
     "i18next": "^25.8.4",
     "i18next-http-backend": "^3.0.2",
     "libphonenumber-js": "1.13.14",

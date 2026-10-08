@@ -24,6 +24,12 @@ export function formatPhone(phone?: string | null): string {
   return parsePhoneNumberFromString(phone, DEFAULT_PHONE_COUNTRY)?.formatInternational() ?? phone;
 }
 
+/** País del número (`PE`), según su código internacional; `undefined` si no se sabe. */
+export function phoneCountry(phone?: string | null): CountryCode | undefined {
+  if (!phone?.trim()) return undefined;
+  return parsePhoneNumberFromString(phone, DEFAULT_PHONE_COUNTRY)?.country;
+}
+
 /** `true` si está vacío o es un número válido para su país. */
 export const isPhoneOk = (phone?: string) => !phone || isValidPhoneNumber(phone);
 

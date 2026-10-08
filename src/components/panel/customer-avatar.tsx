@@ -1,5 +1,6 @@
 import { Blobatar } from '@blobatar/react';
 
+import { CountryFlag } from '@/components/country-flag';
 import cn from '@/helpers/cn';
 
 interface CustomerAvatarProps {
@@ -8,12 +9,20 @@ interface CustomerAvatarProps {
   size?: number;
   /** `danger` marca al cliente con deuda pendiente. */
   tone?: 'brand' | 'danger';
+  /** País del cliente (`PE`): su bandera va en la esquina del avatar. */
+  country?: string;
   className?: string;
 }
 
 /** Avatar generado (blobatar), determinista por cliente. Estático, sin animación. */
-export function CustomerAvatar({ seed, size = 40, tone = 'brand', className }: CustomerAvatarProps) {
-  return (
+export function CustomerAvatar({
+  seed,
+  size = 40,
+  tone = 'brand',
+  country,
+  className,
+}: CustomerAvatarProps) {
+  const avatar = (
     <Blobatar
       name={seed}
       size={size}
@@ -26,5 +35,19 @@ export function CustomerAvatar({ seed, size = 40, tone = 'brand', className }: C
         className,
       )}
     />
+  );
+  if (!country) return avatar;
+
+  // Siempre en la misma esquina, para que se lea igual en toda la lista.
+  const flagWidth = Math.max(14, Math.round(size * 0.42));
+  return (
+    <span className="relative inline-flex shrink-0">
+      {avatar}
+      <CountryFlag
+        code={country}
+        width={flagWidth}
+        className="absolute -right-1 -bottom-0.5 shadow-sm ring-2 ring-surface"
+      />
+    </span>
   );
 }
