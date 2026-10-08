@@ -35,7 +35,7 @@ export const PANEL_NAV_ITEMS: PanelNavItem[] = [
   },
   {
     to: PROVIDER_ACCOUNTS_ROUTE,
-    label: 'Cuentas',
+    label: 'Mis Cuentas',
     icon: <CloudServerOutlined />,
   },
   { to: SERVICES_ROUTE, label: 'Servicios', icon: <AppstoreOutlined /> },
