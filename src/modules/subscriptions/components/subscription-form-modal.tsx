@@ -52,6 +52,8 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
   const [newCustomerName, setNewCustomerName] = useState('');
   const [newCustomerPhone, setNewCustomerPhone] = useState('');
   const [fullAccount, setFullAccount] = useState(false);
+  // "Otro" en duración: muestra el campo libre de meses.
+  const [customDuration, setCustomDuration] = useState(false);
 
   // El estado local se limpia al cerrar (en el handler, no en un efecto), así
   // la próxima apertura empieza de cero.
@@ -60,6 +62,7 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
     setNewCustomerName('');
     setNewCustomerPhone('');
     setFullAccount(false);
+    setCustomDuration(false);
     onClose();
   };
 
@@ -304,18 +307,61 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
             </p>
           ))}
 
+        <Form.Item
+          label="Duración (meses)"
+          required
+          className={customDuration ? '!mb-2' : undefined}
+          extra={
+            projectedEnd && !customDuration
+              ? `Vence el ${projectedEnd.format('DD/MM/YYYY')}`
+              : undefined
+          }
+        >
+          <Segmented
+            block
+            value={customDuration ? 'custom' : durationMonths}
+            onChange={value => {
+              if (value === 'custom') {
+                setCustomDuration(true);
+                return;
+              }
+              setCustomDuration(false);
+              form.setFieldValue('durationMonths', value);
+            }}
+            // Solo el número: con "meses" las etiquetas se truncan en móvil.
+            options={[
+              ...DURATION_OPTIONS.map(o => ({ value: o.value, label: String(o.value) })),
+              { value: 'custom', label: 'Otro' },
+            ]}
+          />
+        </Form.Item>
+        {/* Siempre registrado; solo visible con "Otro". */}
+        <Form.Item
+          name="durationMonths"
+          rules={REQUIRED}
+          hidden={!customDuration}
+          extra={
+            projectedEnd ? `Vence el ${projectedEnd.format('DD/MM/YYYY')}` : undefined
+          }
+        >
+          <InputNumber
+            min={1}
+            max={36}
+            precision={0}
+            suffix={durationMonths === 1 ? 'mes' : 'meses'}
+            className="!w-full"
+            placeholder="Cantidad de meses"
+          />
+        </Form.Item>
+
         <div className="grid grid-cols-2 gap-3">
-          <Form.Item label="Duración" name="durationMonths" rules={REQUIRED}>
-            <Select options={DURATION_OPTIONS} />
-          </Form.Item>
           <Form.Item label="Precio" name="price" rules={REQUIRED}>
             <InputNumber min={0} step={0.5} precision={2} prefix="S/" className="!w-full" placeholder="0.00" />
           </Form.Item>
+          <Form.Item label="Inicio" name="startDate">
+            <DatePicker className="w-full" format="DD/MM/YYYY" />
+          </Form.Item>
         </div>
-
-        <Form.Item label="Inicio" name="startDate">
-          <DatePicker className="w-full" format="DD/MM/YYYY" />
-        </Form.Item>
       </Form>
     </ResponsiveModal>
   );
