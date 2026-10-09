@@ -108,7 +108,7 @@ export function SubscriptionCard({
           <UserOutlined />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-[14px] font-semibold text-content">{customerName}</p>
+          <p className="truncate text-[14px] font-semibold uppercase text-content">{customerName}</p>
           {customerContact && (
             <p className="mt-0.5 truncate text-[12.5px] text-content-muted">{customerContact}</p>
           )}

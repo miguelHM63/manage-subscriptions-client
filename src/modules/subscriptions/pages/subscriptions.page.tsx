@@ -179,7 +179,7 @@ function SubscriptionsPageComponent() {
         const c = customer(sub.customerId);
         return (
           <span className="block min-w-0">
-            <span className="block truncate font-semibold text-content">
+            <span className="block truncate font-semibold uppercase text-content">
               {customerName(sub.customerId)}
             </span>
             {c?.phone && (

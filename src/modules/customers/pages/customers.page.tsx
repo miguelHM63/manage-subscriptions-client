@@ -102,7 +102,7 @@ function CustomersPageComponent() {
         <span className="flex items-center gap-3">
           <CustomerAvatar seed={c.id} country={phoneCountry(c.phone)} />
           <span className="min-w-0">
-            <span className="block truncate font-semibold text-content">{name}</span>
+            <span className="block truncate font-semibold uppercase text-content">{name}</span>
             <span className="block truncate text-xs text-content-subtle">
               {[formatPhone(c.phone), c.email].filter(Boolean).join(' · ') || '—'}
             </span>
@@ -172,7 +172,7 @@ function CustomersPageComponent() {
             tone={variant === 'pending' ? 'danger' : 'brand'}
           />
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-[15px] font-semibold text-content">{c.name}</span>
+            <span className="block truncate text-[15px] font-semibold uppercase text-content">{c.name}</span>
             <span className="mt-0.5 flex min-w-0 items-center gap-1.5">
               {variant === 'all' && summary?.status && <StatusPill status={summary.status} />}
               <span className="truncate text-xs text-content-muted">

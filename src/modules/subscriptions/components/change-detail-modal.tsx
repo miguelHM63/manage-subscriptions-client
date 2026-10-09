@@ -87,7 +87,7 @@ export function ChangeDetailModal({ subscription, subscriptions, open, onClose }
       {before && (
         <div className="flex flex-col gap-4">
           <p className="text-sm text-content-muted">
-            <span className="font-semibold text-content">{customerName(before.customerId)}</span>
+            <span className="font-semibold uppercase text-content">{customerName(before.customerId)}</span>
             {after?.createdAt && (
               <> cambió de servicio el {formatDate(after.createdAt, 'D MMM YYYY, HH:mm')}.</>
             )}

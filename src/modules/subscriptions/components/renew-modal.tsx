@@ -122,7 +122,7 @@ export function RenewModal({ subscription, open, onClose }: Props) {
           <div className="flex items-center gap-3 rounded-xl border border-border bg-surface-muted p-3">
             <ServiceAvatar name={svc?.name ?? ''} iconUrl={svc?.iconUrl} size={40} />
             <div className="min-w-0">
-              <p className="truncate font-semibold text-content">
+              <p className="truncate font-semibold uppercase text-content">
                 {customerName(subscription.customerId)}
               </p>
               <p className="truncate text-xs text-content-muted">

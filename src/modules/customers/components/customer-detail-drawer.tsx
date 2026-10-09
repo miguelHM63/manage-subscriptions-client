@@ -73,7 +73,7 @@ export function CustomerDetailDrawer({ customer, open, onClose, onEdit, onNewSal
           <div className="flex flex-col items-center gap-2.5 text-center">
             <CustomerAvatar seed={customer.id} size={68} country={phoneCountry(customer.phone)} />
             <div>
-              <h2 className="text-xl font-bold tracking-tight text-content">{customer.name}</h2>
+              <h2 className="text-xl font-bold uppercase tracking-tight text-content">{customer.name}</h2>
               <p className="mt-0.5 text-sm text-content-muted">
                 {[formatPhone(customer.phone), customer.email].filter(Boolean).join(' · ') || 'Sin datos de contacto'}
               </p>
