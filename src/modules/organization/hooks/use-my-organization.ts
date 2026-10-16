@@ -23,8 +23,9 @@ export interface IMyOrganization {
   billingCycle: BillingCycle;
   planValidUntil?: string;
   /** -1 = ilimitado. */
-  limits: { maxCustomers: number; maxSeats: number };
-  usage: { customers: number };
+  limits: { maxCustomers: number; maxSeats: number; maxReceiptsPerMonth: number };
+  /** `receipts`: comprobantes de cobro subidos este mes. */
+  usage: { customers: number; receipts?: number };
 }
 
 export const PLAN_LABEL: Record<Plan, string> = {
@@ -58,7 +59,8 @@ export interface IPlanPayment {
   createdAt: string;
 }
 
-const KEY = ['organizations', 'me'];
+export const MY_ORGANIZATION_KEY = ['organizations', 'me'];
+const KEY = MY_ORGANIZATION_KEY;
 
 export const useMyOrganization = () =>
   useQuery<IMyOrganization, HttpError>({

@@ -16,9 +16,10 @@ export function receiptFileError(file: File): string | undefined {
 
 /**
  * Subir y ver el comprobante de un pago. `paymentsPath` es la ruta de la
- * colección de pagos: la del propio negocio o la del platform-admin.
+ * colección de pagos: los del plan (del negocio o del platform-admin) o los
+ * cobros de una suscripción. `invalidateKeys`: qué refrescar tras subir.
  */
-export function usePlanPaymentReceipt(paymentsPath: string, invalidateKey: QueryKey) {
+export function usePlanPaymentReceipt(paymentsPath: string, invalidateKeys: QueryKey[]) {
   const queryClient = useQueryClient();
 
   const upload = useMutation<unknown, HttpError, { paymentId: string; file: File }>({
@@ -31,7 +32,8 @@ export function usePlanPaymentReceipt(paymentsPath: string, invalidateKey: Query
         headers: { 'Content-Type': 'multipart/form-data' },
       });
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: invalidateKey }),
+    onSuccess: () =>
+      invalidateKeys.forEach(queryKey => queryClient.invalidateQueries({ queryKey })),
   });
 
   /**

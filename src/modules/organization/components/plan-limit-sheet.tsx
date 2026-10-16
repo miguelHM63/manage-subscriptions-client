@@ -1,4 +1,4 @@
-import { CheckOutlined, TeamOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import { CheckOutlined, FileTextOutlined, TeamOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { useEffect, useState } from 'react';
 
@@ -11,18 +11,25 @@ import { PLAN_LABEL, useMyOrganization } from '../hooks/use-my-organization';
 import { useSalesWhatsapp } from '../hooks/use-sales-whatsapp';
 import { PLAN_OFFERS } from '../plans';
 
+type LimitKind = 'customers' | 'receipts';
+
 /**
- * Se abre cuando la API responde PLAN_LIMIT_REACHED (en cualquier alta de
- * cliente) y compara el plan actual con el siguiente. Los planes de pago se
- * activan a mano, así que la acción es escribir a ventas.
+ * Se abre cuando la API responde PLAN_LIMIT_REACHED (alta de cliente) o
+ * RECEIPT_LIMIT_REACHED (comprobantes del mes) y compara el plan actual con
+ * el siguiente. Los planes de pago se activan a mano, así que la acción es
+ * escribir a ventas.
  */
 export function PlanLimitSheet() {
   const [open, setOpen] = useState(false);
+  const [kind, setKind] = useState<LimitKind>('customers');
   const salesWhatsapp = useSalesWhatsapp();
   const { data: org, refetch } = useMyOrganization();
 
   useEffect(() => {
-    const onLimit = () => {
+    // El bus entrega el CustomEvent del DOM; el dato viaja en `detail`.
+    const onLimit = (event?: unknown) => {
+      const detail = (event as CustomEvent<{ limit?: LimitKind } | undefined>)?.detail;
+      setKind(detail?.limit ?? 'customers');
       refetch();
       setOpen(true);
     };
@@ -40,7 +47,9 @@ export function PlanLimitSheet() {
   const next = expired
     ? PLAN_OFFERS.find(o => o.plan === org?.plan)
     : PLAN_OFFERS[currentIndex + 1];
-  const max = org?.limits.maxCustomers ?? 20;
+  const receipts = kind === 'receipts';
+  const max = receipts ? (org?.limits.maxReceiptsPerMonth ?? 5) : (org?.limits.maxCustomers ?? 20);
+  const goal = receipts ? 'subir más comprobantes este mes' : 'agregar más clientes';
 
   const contactUrl = next ? salesWhatsapp(expired ? 'renew' : 'activate', next.plan) : undefined;
 
@@ -117,18 +126,21 @@ export function PlanLimitSheet() {
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-1.5">
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 text-2xl text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">
-            <TeamOutlined />
+            {receipts ? <FileTextOutlined /> : <TeamOutlined />}
           </span>
           <h2 className="mt-2 text-xl font-bold tracking-tight text-content">
-            Llegaste a {max} clientes
+            {receipts ? `Usaste tus ${max} comprobantes del mes` : `Llegaste a ${max} clientes`}
           </h2>
           <p className="text-sm text-content-muted">
             {expired && org?.planValidUntil ? (
-              `Tu plan ${PLAN_LABEL[org.plan]} venció el ${formatDate(org.planValidUntil, 'D MMM')} y volviste a los límites de Free. Tus datos siguen intactos; renuévalo para seguir agregando clientes.`
+              `Tu plan ${PLAN_LABEL[org.plan]} venció el ${formatDate(org.planValidUntil, 'D MMM')} y volviste a los límites de Free. Tus datos siguen intactos; renuévalo para ${goal}.`
             ) : (
               <>
-                Es el límite del plan {PLAN_LABEL[current.plan]}. Tus datos siguen intactos
-                {next ? `; para agregar más clientes, pásate a ${PLAN_LABEL[next.plan]}.` : '.'}
+                Es el límite {receipts ? 'mensual ' : ''}del plan {PLAN_LABEL[current.plan]}.{' '}
+                {receipts
+                  ? 'Los comprobantes que ya subiste se siguen viendo y el cupo se renueva el día 1'
+                  : 'Tus datos siguen intactos'}
+                {next ? `; para ${goal}, pásate a ${PLAN_LABEL[next.plan]}.` : '.'}
               </>
             )}
             {next && !SALES_WHATSAPP && ' Escríbenos para activarlo.'}

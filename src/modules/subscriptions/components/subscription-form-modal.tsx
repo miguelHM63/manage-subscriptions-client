@@ -20,7 +20,12 @@ import {
   useSellPromotion,
 } from '@/modules/promotions/hooks/use-promotions';
 import { promoImpacts } from '@/modules/promotions/promotion-meta';
-import { useCreateSubscription, type CreateSubscriptionBody } from '../hooks/use-subscriptions';
+import {
+  useCreateSubscription,
+  type CreateSubscriptionBody,
+  type PaymentMethod,
+} from '../hooks/use-subscriptions';
+import { MethodChips } from './method-chips';
 import { DURATION_OPTIONS } from '../subscription-meta';
 
 interface FormValues {
@@ -30,6 +35,7 @@ interface FormValues {
   durationMonths: number;
   price: number;
   startDate?: Dayjs;
+  paymentMethod?: PaymentMethod;
   /** Venta con código: cuenta de proveedor por servicio del ítem. */
   promoAccounts?: Record<string, string>;
 }
@@ -188,6 +194,7 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
       price: solesToCents(values.price),
       fullAccount,
       startDate: values.startDate?.toISOString(),
+      paymentMethod: values.paymentMethod,
     };
     create(body, { onError: invalidateForm });
   };
@@ -507,6 +514,15 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
                 <DatePicker className="w-full" format="DD/MM/YYYY" />
               </Form.Item>
             </div>
+            {/* Queda en el cobro de la venta; su comprobante se adjunta en "Cobros". */}
+            <Form.Item
+              label="Método de pago"
+              name="paymentMethod"
+              initialValue="cash"
+              className="!mb-0"
+            >
+              <MethodChips />
+            </Form.Item>
           </>
         )}
       </Form>

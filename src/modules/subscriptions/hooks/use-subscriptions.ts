@@ -37,6 +37,21 @@ export interface CreateSubscriptionBody {
   price: number;
   fullAccount?: boolean;
   startDate?: string;
+  /** Cómo pagó el cliente (queda en el cobro inicial). */
+  paymentMethod?: PaymentMethod;
+}
+
+/** Cobro registrado de una suscripción (venta inicial o renovación). */
+export interface ISubscriptionPayment {
+  id: string;
+  subscriptionId: string;
+  /** Céntimos. */
+  amount: number;
+  date: string;
+  method: PaymentMethod;
+  kind: 'sale' | 'renewal';
+  hasReceipt: boolean;
+  receiptUploadedAt?: string;
 }
 
 export interface ChangeServiceBody {
@@ -81,15 +96,37 @@ export const useCreateSubscription = (onSuccess?: () => void) => {
   });
 };
 
+export const subscriptionPaymentsKey = (subscriptionId: string) => [
+  ...KEY,
+  subscriptionId,
+  'payments',
+];
+
+/** Cobros de una suscripción, del más reciente al más antiguo. */
+export const useSubscriptionPayments = (subscriptionId?: string) =>
+  useQuery<ISubscriptionPayment[], HttpError>({
+    queryKey: subscriptionPaymentsKey(subscriptionId ?? ''),
+    enabled: Boolean(subscriptionId),
+    queryFn: () =>
+      apiAxiosInstance
+        .get<ISubscriptionPayment[]>(`/subscriptions/${subscriptionId}/payments`)
+        .then(({ data }) => data),
+  });
+
 export const useRenewSubscription = (onSuccess?: () => void) => {
   const invalidate = useInvalidateSubscriptions();
-  return useMutation<unknown, HttpError, { id: string; body: RenewBody }>({
-    mutationFn: ({ id, body }) => apiAxiosInstance.post(`/subscriptions/${id}/renew`, body),
-    onSuccess: () => {
-      invalidate();
-      onSuccess?.();
+  return useMutation<{ payment: ISubscriptionPayment }, HttpError, { id: string; body: RenewBody }>(
+    {
+      mutationFn: ({ id, body }) =>
+        apiAxiosInstance
+          .post<{ payment: ISubscriptionPayment }>(`/subscriptions/${id}/renew`, body)
+          .then(({ data }) => data),
+      onSuccess: () => {
+        invalidate();
+        onSuccess?.();
+      },
     },
-  });
+  );
 };
 
 export const useChangeService = (onSuccess?: () => void) => {

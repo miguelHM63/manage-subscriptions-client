@@ -1,6 +1,7 @@
 import {
   CheckCircleFilled,
   CreditCardOutlined,
+  FileTextOutlined,
   HistoryOutlined,
   MoreOutlined,
   PlusOutlined,
@@ -37,6 +38,7 @@ import {
 import { useLookups } from '../hooks/use-lookups';
 import { useShareSubscription } from '../hooks/use-share-subscription';
 import { SubscriptionFormModal } from '../components/subscription-form-modal';
+import { PaymentsModal } from '../components/payments-modal';
 import { RenewModal } from '../components/renew-modal';
 import { ChangeServiceModal } from '../components/change-service-modal';
 import { ChangeDetailModal } from '../components/change-detail-modal';
@@ -71,6 +73,7 @@ function SubscriptionsPageComponent() {
 
   const [formOpen, setFormOpen] = useState(false);
   const [renewing, setRenewing] = useState<ISubscription | null>(null);
+  const [paymentsOf, setPaymentsOf] = useState<ISubscription | null>(null);
   const [changing, setChanging] = useState<ISubscription | null>(null);
   const [changeDetail, setChangeDetail] = useState<ISubscription | null>(null);
   // El filtro puede venir en la URL (p. ej. "Cobrar" en el inicio → ?estado=expired).
@@ -129,6 +132,7 @@ function SubscriptionsPageComponent() {
             { type: 'divider' as const },
           ]
         : []),
+      { key: 'payments', label: 'Cobros y comprobantes', icon: <FileTextOutlined /> },
       { key: 'change', label: 'Cambiar de servicio', icon: <SwapOutlined /> },
       ...(sub.replacesId
         ? [{ key: 'detail', label: 'Ver cambio anterior', icon: <HistoryOutlined /> }]
@@ -143,6 +147,7 @@ function SubscriptionsPageComponent() {
       onClick: ({ key }) => {
         if (key === 'renew') setRenewing(sub);
         else if (key === 'share') share(sub);
+        else if (key === 'payments') setPaymentsOf(sub);
         else if (key === 'change') setChanging(sub);
         else if (key === 'detail') setChangeDetail(sub);
         else if (key === 'cancel') confirmCancel(sub);
@@ -378,6 +383,11 @@ function SubscriptionsPageComponent() {
       {hasAny && <Fab label="Nueva venta" onClick={() => setFormOpen(true)} />}
 
       <SubscriptionFormModal open={formOpen} onClose={() => setFormOpen(false)} />
+      <PaymentsModal
+        subscription={paymentsOf}
+        open={Boolean(paymentsOf)}
+        onClose={() => setPaymentsOf(null)}
+      />
       <RenewModal
         subscription={renewing}
         open={Boolean(renewing)}

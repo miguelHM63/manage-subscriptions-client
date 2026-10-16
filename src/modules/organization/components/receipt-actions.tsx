@@ -1,7 +1,6 @@
 import { EyeOutlined, PaperClipOutlined } from '@ant-design/icons';
 import { App, Button, Upload } from 'antd';
 
-import type { IPlanPayment } from '../hooks/use-my-organization';
 import {
   RECEIPT_ACCEPT,
   receiptFileError,
@@ -9,7 +8,7 @@ import {
 } from '../hooks/use-plan-payment-receipt';
 
 interface Props {
-  payment: IPlanPayment;
+  payment: { id: string; hasReceipt: boolean };
   receipt: ReturnType<typeof usePlanPaymentReceipt>;
   /** El equipo siempre puede (reemplaza); el dueño solo si aún no hay. */
   canUpload: boolean;

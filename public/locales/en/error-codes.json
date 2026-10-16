@@ -38,7 +38,8 @@
     "RECEIPT_NOT_FOUND": "This payment has no receipt.",
     "PAYMENT_NOT_FOUND": "Payment not found.",
     "PLAN_CHANGED_CONCURRENTLY": "The plan changed while registering the payment. Reload and try again.",
-    "PLAN_NOT_PAYABLE": "The Free plan has no payments."
+    "PLAN_NOT_PAYABLE": "The Free plan has no payments.",
+    "RECEIPT_LIMIT_REACHED": "You reached this month's receipt limit."
   },
   "byHttpCode": {
     "400": "Check the fields",

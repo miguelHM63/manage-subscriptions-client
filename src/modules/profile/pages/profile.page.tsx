@@ -198,6 +198,10 @@ function ProfilePageComponent() {
           ) : (
             <span className="text-sm font-semibold text-content">{used} clientes · sin límite</span>
           )}
+          <p className="text-xs text-content-muted">
+            Comprobantes de cobro este mes: {org.usage.receipts ?? 0} de{' '}
+            {org.limits.maxReceiptsPerMonth}
+          </p>
         </div>
       )}
 

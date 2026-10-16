@@ -19,9 +19,7 @@ export function PaymentsTab() {
   const { data: org } = useMyOrganization();
   const { data: payments, isLoading } = useMyPlanPayments();
   const receipt = usePlanPaymentReceipt('/organizations/me/plan-payments', [
-    'organizations',
-    'me',
-    'plan-payments',
+    ['organizations', 'me', 'plan-payments'],
   ]);
 
   const total = (payments ?? []).reduce((sum, p) => sum + p.amount, 0);

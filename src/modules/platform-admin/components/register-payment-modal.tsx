@@ -44,8 +44,7 @@ export function RegisterPaymentModal({ org, open, onClose }: Props) {
   const { message } = App.useApp();
   const { mutateAsync, isPending } = useRegisterPlanPayment(org.id);
   const receipt = usePlanPaymentReceipt(`/admin/organizations/${org.id}/plan-payments`, [
-    'admin',
-    'organizations',
+    ['admin', 'organizations'],
   ]);
   const [file, setFile] = useState<File | null>(null);
   const saving = isPending || receipt.upload.isPending;

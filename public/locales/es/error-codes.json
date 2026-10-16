@@ -38,7 +38,8 @@
     "RECEIPT_NOT_FOUND": "Este pago no tiene comprobante.",
     "PAYMENT_NOT_FOUND": "No encontramos ese pago.",
     "PLAN_CHANGED_CONCURRENTLY": "El plan cambió mientras registrabas el pago. Recarga e inténtalo de nuevo.",
-    "PLAN_NOT_PAYABLE": "El plan Free no tiene pagos."
+    "PLAN_NOT_PAYABLE": "El plan Free no tiene pagos.",
+    "RECEIPT_LIMIT_REACHED": "Llegaste al límite de comprobantes de este mes."
   },
   "byHttpCode": {
     "400": "Verifique los campos",

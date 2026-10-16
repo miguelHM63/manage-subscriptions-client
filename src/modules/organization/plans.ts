@@ -18,7 +18,11 @@ export const PLAN_OFFERS: PlanOffer[] = [
     plan: 'free',
     price: 'S/ 0',
     customers: '20 clientes',
-    features: [{ label: '20 clientes' }, { label: 'Recordatorios manuales' }],
+    features: [
+      { label: '20 clientes' },
+      { label: 'Recordatorios manuales' },
+      { label: '5 comprobantes de cobro al mes' },
+    ],
   },
   {
     plan: 'pro',
@@ -27,6 +31,7 @@ export const PLAN_OFFERS: PlanOffer[] = [
     customers: '200 clientes',
     features: [
       { label: '200 clientes' },
+      { label: 'Comprobantes de cobro (300 al mes)' },
       { label: 'Avisos por Telegram', soon: true },
       { label: 'Recordatorios automáticos', soon: true },
     ],
@@ -38,6 +43,7 @@ export const PLAN_OFFERS: PlanOffer[] = [
     customers: 'Clientes ilimitados',
     features: [
       { label: 'Clientes ilimitados' },
+      { label: 'Comprobantes de cobro (1000 al mes)' },
       { label: 'Sub-vendedores', soon: true },
       { label: 'WhatsApp automático', soon: true },
     ],

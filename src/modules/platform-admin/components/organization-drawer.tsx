@@ -33,8 +33,7 @@ export function OrganizationDrawer({ org, open, onClose }: Props) {
   const [changing, setChanging] = useState(false);
   const { data: payments, isLoading } = usePlanPayments(open ? org?.id : undefined);
   const receipt = usePlanPaymentReceipt(`/admin/organizations/${org?.id}/plan-payments`, [
-    'admin',
-    'organizations',
+    ['admin', 'organizations'],
   ]);
 
   if (!org) return <Drawer open={false} />;

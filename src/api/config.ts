@@ -54,9 +54,11 @@ apiAxiosInstance.interceptors.response.use(
 
     if (!status) return Promise.reject(error);
 
-    if (data?.code === 'PLAN_LIMIT_REACHED') {
+    if (data?.code === 'PLAN_LIMIT_REACHED' || data?.code === 'RECEIPT_LIMIT_REACHED') {
       // Se muestra como hoja con los planes (PlanLimitSheet), no como toast.
-      eventBus.emit(EventBusTypes.PLAN_LIMIT_REACHED);
+      eventBus.emit(EventBusTypes.PLAN_LIMIT_REACHED, {
+        limit: data.code === 'RECEIPT_LIMIT_REACHED' ? 'receipts' : 'customers',
+      });
     } else if (typeof data?.code === 'string') {
       eventBus.emit(EventBusTypes.SHOW_ERROR, {
         type: 'error',
