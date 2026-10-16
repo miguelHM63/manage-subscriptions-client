@@ -16,6 +16,7 @@ import { formatPhone, phoneCountry } from '@/helpers/phone';
 import { useCustomerSubscriptions } from '../hooks/use-customer-subscriptions';
 import type { ICustomer } from '../hooks/use-customers';
 import { summarizeByCustomer } from '../customer-summary';
+import { CustomerPortalSection } from './customer-portal-section';
 
 interface Props {
   customer: ICustomer | null;
@@ -142,6 +143,8 @@ export function CustomerDetailDrawer({ customer, open, onClose, onEdit, onNewSal
               </div>
             )}
           </section>
+
+          <CustomerPortalSection customer={customer} />
 
           {customer.notes && (
             <section>

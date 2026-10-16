@@ -16,6 +16,8 @@ export const NEW_PROMOTION_ROUTE = '/promociones/nueva';
 export const promotionRoute = (id: string) => `/promociones/${id}`;
 // Link público de una promoción (sin sesión).
 export const PUBLIC_PROMOTION_ROUTE = '/p/:slug';
+// Link de accesos del cliente final (sin sesión; protegido con PIN).
+export const CUSTOMER_PORTAL_ROUTE = '/c/:token';
 export const RECOVER_PASSWORD_ROUTE = '/recuperar';
 // Ruta fija: la usa el correo de recuperación (api: recover-password.handler).
 export const RESET_PASSWORD_ROUTE = '/reset-password';

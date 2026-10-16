@@ -5,6 +5,7 @@ import { SignUpPage } from '@/modules/auth/signup/pages/signup.page';
 import { PublicRoute } from '@/routes/components/public-route';
 import { RootRedirect } from '@/routes/components/root-route';
 import {
+  CUSTOMER_PORTAL_ROUTE,
   HOME_ROUTE,
   LOGIN_ROUTE,
   PRIVACY_ROUTE,
@@ -17,6 +18,7 @@ import {
 import { RecoverPasswordPage } from '@/modules/auth/recover/pages/recover-password.page';
 import { ResetPasswordPage } from '@/modules/auth/recover/pages/reset-password.page';
 import { PublicPromotionPage } from '@/modules/promotions';
+import { CustomerPortalPage } from '@/modules/customer-portal';
 
 export const AppPublicRoutes = [
   // Páginas legales: públicas y sin PublicRoute, para verse también con sesión iniciada.
@@ -24,6 +26,8 @@ export const AppPublicRoutes = [
   { path: TERMS_ROUTE, element: <TermsPage /> },
   // Link público de una promoción: se ve con o sin sesión.
   { path: PUBLIC_PROMOTION_ROUTE, element: <PublicPromotionPage /> },
+  // Link de accesos del cliente final: se ve con o sin sesión del panel.
+  { path: CUSTOMER_PORTAL_ROUTE, element: <CustomerPortalPage /> },
   {
     path: HOME_ROUTE,
     element: <RootRedirect />,
