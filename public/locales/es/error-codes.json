@@ -30,12 +30,22 @@
     "PROMOTION_SALE_ACCOUNTS": "Elige una cuenta de proveedor para cada servicio.",
     "ACCOUNT_SERVICE_MISMATCH": "La cuenta de proveedor es de otro servicio.",
     "PROMOTION_ITEM_NO_STOCK": "Un ítem incluye un servicio sin cupos libres: agrega una cuenta con cupo o quita el servicio.",
-    "PROMOTION_LIMIT_OVER_STOCK": "Un ítem ofrece más ventas que los cupos libres: baja su límite."
+    "PROMOTION_LIMIT_OVER_STOCK": "Un ítem ofrece más ventas que los cupos libres: baja su límite.",
+    "STORAGE_UNAVAILABLE": "La subida de archivos no está disponible por ahora.",
+    "RECEIPT_REQUIRED": "Elige un archivo para subir.",
+    "RECEIPT_INVALID_TYPE": "El comprobante debe ser una imagen (JPG, PNG o WebP) o un PDF.",
+    "RECEIPT_ALREADY_UPLOADED": "Este pago ya tiene un comprobante.",
+    "RECEIPT_NOT_FOUND": "Este pago no tiene comprobante.",
+    "PAYMENT_NOT_FOUND": "No encontramos ese pago.",
+    "PLAN_CHANGED_CONCURRENTLY": "El plan cambió mientras registrabas el pago. Recarga e inténtalo de nuevo.",
+    "PLAN_NOT_PAYABLE": "El plan Free no tiene pagos."
   },
   "byHttpCode": {
     "400": "Verifique los campos",
     "401": "No autorizado",
-    "403": "No tiene permisos para realizar esta acción"
+    "403": "No tiene permisos para realizar esta acción",
+    "413": "El archivo es demasiado grande (máximo 2 MB).",
+    "429": "Demasiados intentos seguidos. Espera un momento e inténtalo de nuevo."
   },
   "upload": {
     "required": "Archivo requerido",

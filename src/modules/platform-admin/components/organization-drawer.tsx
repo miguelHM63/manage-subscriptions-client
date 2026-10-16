@@ -1,5 +1,5 @@
 import { DollarOutlined, EditOutlined, MailOutlined, WhatsAppOutlined } from '@ant-design/icons';
-import { Button, Drawer } from 'antd';
+import { Button, Drawer, Typography } from 'antd';
 import { useState } from 'react';
 
 import { dueLabel, formatDate } from '@/helpers/dates';
@@ -8,6 +8,8 @@ import { whatsappUrl } from '@/helpers/whatsapp';
 import { useIsMobile } from '@/hooks/use-is-mobile';
 import { BILLING_CYCLE_LABEL, PLAN_LABEL } from '@/modules/organization/hooks/use-my-organization';
 import { PlanPaymentsList } from '@/modules/organization/components/plan-payments-list';
+import { ReceiptActions } from '@/modules/organization/components/receipt-actions';
+import { usePlanPaymentReceipt } from '@/modules/organization/hooks/use-plan-payment-receipt';
 import { planHealth } from '@/modules/organization/plan-status';
 import {
   ownerName,
@@ -30,6 +32,10 @@ export function OrganizationDrawer({ org, open, onClose }: Props) {
   const [paying, setPaying] = useState(false);
   const [changing, setChanging] = useState(false);
   const { data: payments, isLoading } = usePlanPayments(open ? org?.id : undefined);
+  const receipt = usePlanPaymentReceipt(`/admin/organizations/${org?.id}/plan-payments`, [
+    'admin',
+    'organizations',
+  ]);
 
   if (!org) return <Drawer open={false} />;
 
@@ -64,6 +70,24 @@ export function OrganizationDrawer({ org, open, onClose }: Props) {
             {ownerName(org) || 'Sin nombre'}
             {org.createdAt && ` · desde ${formatDate(org.createdAt, 'D MMM YYYY')}`}
           </p>
+          {/* Para buscar sus archivos en el dashboard de R2 (prefijo por negocio). */}
+          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-content-subtle">
+            <Typography.Text
+              className="!text-xs !text-content-subtle"
+              copyable={{ text: org.id, tooltips: ['Copiar ID', 'ID copiado'] }}
+            >
+              ID <span className="font-mono">{org.id}</span>
+            </Typography.Text>
+            <Typography.Text
+              className="!text-xs !text-content-subtle"
+              copyable={{
+                text: `receipts/${org.id}/`,
+                tooltips: ['Copiar ruta de comprobantes en R2', 'Ruta copiada'],
+              }}
+            >
+              Ruta en R2
+            </Typography.Text>
+          </div>
         </div>
 
         <div className="flex flex-col gap-2 rounded-xl border border-border bg-surface p-3.5 text-sm">
@@ -126,7 +150,20 @@ export function OrganizationDrawer({ org, open, onClose }: Props) {
           <h3 className="text-[11px] font-semibold tracking-wider text-content-subtle uppercase">
             Pagos{payments?.length ? ` · ${payments.length}` : ''}
           </h3>
-          <PlanPaymentsList payments={payments} isLoading={isLoading} />
+          <PlanPaymentsList
+            payments={payments}
+            isLoading={isLoading}
+            renderActions={p => (
+              <>
+                <ReceiptActions payment={p} receipt={receipt} canUpload />
+                {p.receiptSource === 'owner' && (
+                  <span className="block text-[11px] text-content-subtle">
+                    Comprobante enviado por el cliente
+                  </span>
+                )}
+              </>
+            )}
+          />
         </section>
       </div>
 

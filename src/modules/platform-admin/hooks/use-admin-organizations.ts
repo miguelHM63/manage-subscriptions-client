@@ -62,9 +62,11 @@ export const usePlanPayments = (organizationId?: string) =>
 
 export const useRegisterPlanPayment = (organizationId: string, onSuccess?: () => void) => {
   const queryClient = useQueryClient();
-  return useMutation<unknown, HttpError, PlanPaymentBody>({
+  return useMutation<{ paymentId: string }, HttpError, PlanPaymentBody>({
     mutationFn: body =>
-      apiAxiosInstance.post(`/admin/organizations/${organizationId}/plan-payments`, body),
+      apiAxiosInstance
+        .post<{ paymentId: string }>(`/admin/organizations/${organizationId}/plan-payments`, body)
+        .then(({ data }) => data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: KEY });
       onSuccess?.();

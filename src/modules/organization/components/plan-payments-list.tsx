@@ -10,10 +10,12 @@ interface Props {
   isLoading?: boolean;
   /** Qué mostrar cuando no hay pagos. */
   empty?: ReactNode;
+  /** Acciones bajo cada pago (p. ej. el comprobante). */
+  renderActions?: (payment: IPlanPayment) => ReactNode;
 }
 
 /** Pagos de un plan, del más reciente al más antiguo: periodo cubierto, nota y monto. */
-export function PlanPaymentsList({ payments, isLoading, empty }: Props) {
+export function PlanPaymentsList({ payments, isLoading, empty, renderActions }: Props) {
   if (isLoading) return <Skeleton active paragraph={{ rows: 2 }} />;
   if (!payments?.length) {
     return (
@@ -34,6 +36,7 @@ export function PlanPaymentsList({ payments, isLoading, empty }: Props) {
               {p.creditDays > 0 && ` · +${p.creditDays} días del plan anterior`}
               {p.note && ` · ${p.note}`}
             </p>
+            {renderActions?.(p)}
           </div>
           <div className="shrink-0 text-right">
             <p className="text-sm font-semibold text-content">{formatMoney(p.amount)}</p>

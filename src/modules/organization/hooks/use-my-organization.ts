@@ -51,6 +51,10 @@ export interface IPlanPayment {
   validUntil: string;
   /** Días del plan anterior convertidos al nuevo al cambiar de plan. */
   creditDays: number;
+  hasReceipt: boolean;
+  /** Quién subió el comprobante: el equipo o el propio dueño. */
+  receiptSource?: 'admin' | 'owner';
+  receiptUploadedAt?: string;
   createdAt: string;
 }
 

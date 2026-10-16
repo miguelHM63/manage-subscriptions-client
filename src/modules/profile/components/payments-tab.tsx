@@ -4,6 +4,8 @@ import { Button } from 'antd';
 import { formatDate } from '@/helpers/dates';
 import { formatMoney } from '@/helpers/money';
 import { PlanPaymentsList } from '@/modules/organization/components/plan-payments-list';
+import { ReceiptActions } from '@/modules/organization/components/receipt-actions';
+import { usePlanPaymentReceipt } from '@/modules/organization/hooks/use-plan-payment-receipt';
 import { useSalesWhatsapp } from '@/modules/organization/hooks/use-sales-whatsapp';
 import {
   PLAN_LABEL,
@@ -16,6 +18,11 @@ export function PaymentsTab() {
   const salesWhatsapp = useSalesWhatsapp();
   const { data: org } = useMyOrganization();
   const { data: payments, isLoading } = useMyPlanPayments();
+  const receipt = usePlanPaymentReceipt('/organizations/me/plan-payments', [
+    'organizations',
+    'me',
+    'plan-payments',
+  ]);
 
   const total = (payments ?? []).reduce((sum, p) => sum + p.amount, 0);
   const helpUrl = salesWhatsapp('payments');
@@ -48,6 +55,10 @@ export function PaymentsTab() {
       <PlanPaymentsList
         payments={payments}
         isLoading={isLoading}
+        renderActions={p => (
+          // El dueño sube el comprobante una sola vez; reemplazarlo lo hace el equipo.
+          <ReceiptActions payment={p} receipt={receipt} canUpload={!p.hasReceipt} />
+        )}
         empty={
           <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border px-4 py-10 text-center">
             <p className="text-sm font-semibold text-content">Aún no tienes pagos</p>
