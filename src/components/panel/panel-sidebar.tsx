@@ -1,11 +1,24 @@
-import { LogoutOutlined, QuestionCircleOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  CrownOutlined,
+  LogoutOutlined,
+  QuestionCircleOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import type { ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { BrandLogo } from '@/components/brand-logo';
 import cn from '@/helpers/cn';
+import { useAbility } from '@/hooks/use-ability';
 import { useAuth } from '@/hooks/use-auth';
-import { HOW_TO_ROUTE, PROFILE_ROUTE, SUBSCRIPTIONS_ROUTE } from '@/routes/routes';
+import {
+  HOW_TO_ROUTE,
+  PLATFORM_ADMIN_ROUTE,
+  PROFILE_ROUTE,
+  SUBSCRIPTIONS_ROUTE,
+} from '@/routes/routes';
+import { ActionsEnum } from '@/types/actions.enum';
+import { SubjectsEnum } from '@/types/subjects.enum';
 import { PANEL_NAV_ITEMS } from './panel-nav-items';
 import { ThemeToggle } from './theme-toggle';
 import { useAttentionCount } from './use-attention-count';
@@ -32,7 +45,9 @@ export function SidebarItem({ icon, label, badge, active }: SidebarItemProps) {
         <span
           className={cn(
             'min-w-5 rounded-full px-1.5 text-center text-[11px] leading-5 font-bold',
-            active ? 'bg-white/25 text-white' : 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300',
+            active
+              ? 'bg-white/25 text-white'
+              : 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300',
           )}
         >
           {badge}
@@ -56,6 +71,7 @@ function SidebarLink({ to, ...item }: Omit<SidebarItemProps, 'active'> & { to: s
 export function PanelSidebar() {
   const { logout } = useAuth();
   const attention = useAttentionCount();
+  const ability = useAbility();
 
   return (
     <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-surface md:flex">
@@ -75,6 +91,9 @@ export function PanelSidebar() {
         ))}
         <SidebarLink to={PROFILE_ROUTE} icon={<UserOutlined />} label="Mi cuenta" />
         <SidebarLink to={HOW_TO_ROUTE} icon={<QuestionCircleOutlined />} label="Cómo usarlo" />
+        {ability.can(ActionsEnum.manage, SubjectsEnum.Platform) && (
+          <SidebarLink to={PLATFORM_ADMIN_ROUTE} icon={<CrownOutlined />} label="Administración" />
+        )}
       </nav>
 
       <div className="space-y-1 border-t border-border p-3">

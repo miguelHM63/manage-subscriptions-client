@@ -6,8 +6,9 @@ import { ResponsiveModal } from '@/components/panel/responsive-modal';
 import { SALES_WHATSAPP } from '@/config';
 import eventBus, { EventBusTypes } from '@/event-bus';
 import cn from '@/helpers/cn';
-import { whatsappUrl } from '@/helpers/whatsapp';
+import { formatDate } from '@/helpers/dates';
 import { PLAN_LABEL, useMyOrganization } from '../hooks/use-my-organization';
+import { useSalesWhatsapp } from '../hooks/use-sales-whatsapp';
 import { PLAN_OFFERS } from '../plans';
 
 /**
@@ -17,6 +18,7 @@ import { PLAN_OFFERS } from '../plans';
  */
 export function PlanLimitSheet() {
   const [open, setOpen] = useState(false);
+  const salesWhatsapp = useSalesWhatsapp();
   const { data: org, refetch } = useMyOrganization();
 
   useEffect(() => {
@@ -28,38 +30,51 @@ export function PlanLimitSheet() {
     return () => eventBus.off(EventBusTypes.PLAN_LIMIT_REACHED, onLimit);
   }, [refetch]);
 
-  const currentIndex = Math.max(0, PLAN_OFFERS.findIndex(o => o.plan === (org?.plan ?? 'free')));
+  // Si el plan de pago venció, aplica Free: lo natural es renovar ese plan.
+  const expired = Boolean(org && org.plan !== org.effectivePlan);
+  const currentIndex = Math.max(
+    0,
+    PLAN_OFFERS.findIndex(o => o.plan === (org?.effectivePlan ?? 'free')),
+  );
   const current = PLAN_OFFERS[currentIndex];
-  const next = PLAN_OFFERS[currentIndex + 1];
+  const next = expired
+    ? PLAN_OFFERS.find(o => o.plan === org?.plan)
+    : PLAN_OFFERS[currentIndex + 1];
   const max = org?.limits.maxCustomers ?? 20;
 
-  const contactUrl = next
-    ? whatsappUrl(
-        SALES_WHATSAPP,
-        `Hola, quiero activar el plan ${PLAN_LABEL[next.plan]} para ${org?.name ?? 'mi negocio'}.`,
-      )
-    : undefined;
+  const contactUrl = next ? salesWhatsapp(expired ? 'renew' : 'activate', next.plan) : undefined;
 
   const offer = (o: (typeof PLAN_OFFERS)[number], highlight: boolean) => (
     <div
       className={cn(
         'flex flex-col gap-2.5 rounded-xl p-3.5',
-        highlight ? 'border-[1.5px] border-brand-500 bg-brand-50 dark:bg-brand-400/10' : 'border border-border',
+        highlight
+          ? 'border-[1.5px] border-brand-500 bg-brand-50 dark:bg-brand-400/10'
+          : 'border border-border',
       )}
     >
       <div>
-        <p className={cn('text-sm font-semibold', highlight ? 'text-brand-ink' : 'text-content-muted')}>
+        <p
+          className={cn(
+            'text-sm font-semibold',
+            highlight ? 'text-brand-ink' : 'text-content-muted',
+          )}
+        >
           {PLAN_LABEL[o.plan]}
         </p>
         <p className="text-2xl font-extrabold tracking-tight text-content">
           {o.price}
-          {o.plan !== 'free' && <span className="text-sm font-semibold text-content-muted"> /mes</span>}
+          {o.plan !== 'free' && (
+            <span className="text-sm font-semibold text-content-muted"> /mes</span>
+          )}
         </p>
       </div>
       <ul className="flex flex-col gap-1.5">
         {o.features.map(f => (
           <li key={f.label} className="flex gap-2 text-[13px] text-content">
-            <CheckOutlined className={cn('mt-1', highlight ? 'text-success' : 'text-content-subtle')} />
+            <CheckOutlined
+              className={cn('mt-1', highlight ? 'text-success' : 'text-content-subtle')}
+            />
             <span className={f.soon ? 'text-content-muted' : undefined}>
               {f.label}
               {f.soon && (
@@ -82,8 +97,15 @@ export function PlanLimitSheet() {
       footer={
         <div className="flex flex-col gap-1.5">
           {next && SALES_WHATSAPP ? (
-            <Button type="primary" size="large" block icon={<WhatsAppOutlined />} href={contactUrl} target="_blank">
-              Quiero {PLAN_LABEL[next.plan]}
+            <Button
+              type="primary"
+              size="large"
+              block
+              icon={<WhatsAppOutlined />}
+              href={contactUrl}
+              target="_blank"
+            >
+              {expired ? 'Renovar' : 'Quiero'} {PLAN_LABEL[next.plan]}
             </Button>
           ) : null}
           <Button type="text" block onClick={() => setOpen(false)}>
@@ -97,10 +119,18 @@ export function PlanLimitSheet() {
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 text-2xl text-amber-700 dark:bg-amber-500/15 dark:text-amber-300">
             <TeamOutlined />
           </span>
-          <h2 className="mt-2 text-xl font-bold tracking-tight text-content">Llegaste a {max} clientes</h2>
+          <h2 className="mt-2 text-xl font-bold tracking-tight text-content">
+            Llegaste a {max} clientes
+          </h2>
           <p className="text-sm text-content-muted">
-            Es el límite del plan {PLAN_LABEL[current.plan]}. Tus datos siguen intactos
-            {next ? `; para agregar más clientes, pásate a ${PLAN_LABEL[next.plan]}.` : '.'}
+            {expired && org?.planValidUntil ? (
+              `Tu plan ${PLAN_LABEL[org.plan]} venció el ${formatDate(org.planValidUntil, 'D MMM')} y volviste a los límites de Free. Tus datos siguen intactos; renuévalo para seguir agregando clientes.`
+            ) : (
+              <>
+                Es el límite del plan {PLAN_LABEL[current.plan]}. Tus datos siguen intactos
+                {next ? `; para agregar más clientes, pásate a ${PLAN_LABEL[next.plan]}.` : '.'}
+              </>
+            )}
             {next && !SALES_WHATSAPP && ' Escríbenos para activarlo.'}
           </p>
         </div>

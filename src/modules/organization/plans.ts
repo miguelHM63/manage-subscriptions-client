@@ -1,4 +1,4 @@
-import type { Plan } from './hooks/use-my-organization';
+import type { BillingCycle, Plan } from './hooks/use-my-organization';
 
 export interface PlanOffer {
   plan: Plan;
@@ -43,3 +43,12 @@ export const PLAN_OFFERS: PlanOffer[] = [
     ],
   },
 ];
+
+/** Precio por ciclo en soles (docs/discovery.md §5b): sugiere el monto al registrar un pago. */
+export const PLAN_PRICES: Record<Exclude<Plan, 'free'>, Record<BillingCycle, number>> = {
+  pro: { monthly: 10, semiannual: 50, annual: 100 },
+  business: { monthly: 20, semiannual: 100, annual: 200 },
+};
+
+/** Días antes del vencimiento en que se avisa para renovar. */
+export const PLAN_RENEWAL_NOTICE_DAYS = 5;

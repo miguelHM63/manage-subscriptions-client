@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { PanelSidebar } from '@/components/panel/panel-sidebar';
 import { PanelBottomNav } from '@/components/panel/panel-bottom-nav';
 import { PanelTopBar } from '@/components/panel/panel-top-bar';
+import { PlanExpiryBanner } from '@/modules/organization/components/plan-expiry-banner';
 import { PlanLimitSheet } from '@/modules/organization/components/plan-limit-sheet';
 
 /**
@@ -17,6 +18,7 @@ export function PanelLayout() {
       <div className="flex min-w-0 flex-1 flex-col">
         <PanelTopBar />
         <main className="flex-1 px-4 py-4 pb-32 md:px-8 md:py-6 md:pb-8">
+          <PlanExpiryBanner />
           <Outlet />
         </main>
         <PanelBottomNav />

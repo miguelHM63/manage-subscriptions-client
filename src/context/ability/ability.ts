@@ -23,5 +23,10 @@ export function defineAbilityFor(user?: IUser | null) {
     can(ActionsEnum.read, SubjectsEnum.User);
   }
 
+  // Dueño de la plataforma: administra todos los negocios y sus planes.
+  if (user.role === RolesEnum.PLATFORM_ADMIN) {
+    can(ActionsEnum.manage, SubjectsEnum.Platform);
+  }
+
   return build();
 }
