@@ -15,6 +15,8 @@ export type PlanStatus = 'active' | 'grace' | 'expired';
 export interface IMyOrganization {
   id: string;
   name: string;
+  /** Ruta (relativa a la API) de la foto del negocio, si subió una. */
+  logoUrl?: string;
   /** Plan contratado. */
   plan: Plan;
   /** Plan cuyos límites aplican hoy (Free si el de pago venció). */

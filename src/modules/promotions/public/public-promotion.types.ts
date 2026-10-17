@@ -26,7 +26,7 @@ export interface PublicPromotion {
   state: 'scheduled' | 'active' | 'ended';
   startsAt: string;
   endsAt: string;
-  business: { name: string; whatsapp: string | null };
+  business: { name: string; whatsapp: string | null; logoUrl?: string | null };
   items: PublicPromotionItem[];
 }
 

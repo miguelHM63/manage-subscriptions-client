@@ -164,6 +164,7 @@ export const draftToPublic = (
   draft: PromotionDraft,
   context: {
     businessName: string;
+    logoUrl?: string;
     whatsapp?: string;
     services: IService[];
     accounts: IProviderAccount[];
@@ -179,7 +180,11 @@ export const draftToPublic = (
     state: dayjs().isBefore(draft.startsAt) ? 'scheduled' : 'active',
     startsAt: body.startsAt,
     endsAt: body.endsAt,
-    business: { name: context.businessName, whatsapp: context.whatsapp ?? null },
+    business: {
+      name: context.businessName,
+      whatsapp: context.whatsapp ?? null,
+      logoUrl: context.logoUrl,
+    },
     items: body.items
       .filter(item => item.serviceIds.length)
       .map((item, index) => {

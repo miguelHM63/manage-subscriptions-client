@@ -1,13 +1,13 @@
 import { WhatsAppOutlined } from '@ant-design/icons';
 import type { CSSProperties } from 'react';
 
+import { BusinessLogo } from '@/components/business-logo';
 import cn from '@/helpers/cn';
 import { APP_NAME } from '@/config';
 import { ServiceStack } from './service-stack';
 import { useCountdown } from './use-countdown';
 import {
   bestDiscount,
-  businessInitials,
   itemDetail,
   itemTitle,
   monthlyPrice,
@@ -106,9 +106,11 @@ export function ShowcaseDesign({ promo, onContact }: PromotionDesignProps) {
 
           <div className="relative flex flex-col gap-5">
             <div className="flex items-center gap-2.5">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/25 bg-white/15 text-[13px] font-bold">
-                {businessInitials(promo.business.name)}
-              </span>
+              <BusinessLogo
+                name={promo.business.name}
+                logoUrl={promo.business.logoUrl}
+                className="h-10 w-10 border border-white/25 bg-white/15 text-[13px] font-bold"
+              />
               <span className="text-[15px] font-semibold">{promo.business.name}</span>
             </div>
             <div className="max-w-[250px]">

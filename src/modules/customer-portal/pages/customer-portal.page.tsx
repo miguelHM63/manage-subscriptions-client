@@ -12,6 +12,7 @@ import { App, Button, Checkbox, Input, type GetRef } from 'antd';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { BusinessLogo } from '@/components/business-logo';
 import { ServiceAvatar } from '@/components/panel/service-avatar';
 import { APP_NAME } from '@/config';
 import cn from '@/helpers/cn';
@@ -236,11 +237,20 @@ function PortalContent({ view, onExit }: { view: PortalView; onExit: () => void 
 
   return (
     <>
-      <div>
-        <p className="text-sm text-content-muted">{view.business.name}</p>
-        <h1 className="text-2xl font-bold tracking-tight text-content">
-          Hola, {view.customer.name}
-        </h1>
+      <div className="flex items-center gap-3">
+        {view.business.logoUrl && (
+          <BusinessLogo
+            name={view.business.name}
+            logoUrl={view.business.logoUrl}
+            className="h-12 w-12 bg-surface-hover text-base text-content-muted"
+          />
+        )}
+        <div className="min-w-0">
+          <p className="truncate text-sm text-content-muted">{view.business.name}</p>
+          <h1 className="text-2xl font-bold tracking-tight text-content">
+            Hola, {view.customer.name}
+          </h1>
+        </div>
       </div>
 
       {view.items.length ? (

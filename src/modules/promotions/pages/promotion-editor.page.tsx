@@ -96,6 +96,7 @@ function PromotionEditor({ initial }: { initial?: IPromotion }) {
     () =>
       draftToPublic(draft, {
         businessName: organization?.name ?? '',
+        logoUrl: organization?.logoUrl,
         whatsapp: me?.phone,
         services,
         accounts,

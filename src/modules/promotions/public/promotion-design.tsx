@@ -1,11 +1,11 @@
 import { ClockCircleOutlined, WhatsAppOutlined } from '@ant-design/icons';
 
+import { BusinessLogo } from '@/components/business-logo';
 import { APP_NAME } from '@/config';
 import { formatDate } from '@/helpers/dates';
 import { CouponDesign } from './coupon-design';
 import { ShowcaseDesign } from './showcase-design';
 import { StoriesDesign } from './stories-design';
-import { businessInitials } from './promo-format';
 import { useDisplayFont } from './use-display-font';
 import type { PromotionDesignProps } from './public-promotion.types';
 import './promo-designs.css';
@@ -17,9 +17,11 @@ function EndedView({ promo, onContact }: PromotionDesignProps) {
       <header className="bg-indigo-600 px-5 pt-7 pb-14 text-white">
         <div className="mx-auto flex max-w-md flex-col gap-4">
           <div className="flex items-center gap-2.5">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-[13px] font-bold">
-              {businessInitials(promo.business.name)}
-            </span>
+            <BusinessLogo
+              name={promo.business.name}
+              logoUrl={promo.business.logoUrl}
+              className="h-10 w-10 bg-white/20 text-[13px] font-bold"
+            />
             <span className="text-[15px] font-semibold">{promo.business.name}</span>
           </div>
           <h1 className="promo-display text-[32px] leading-tight font-extrabold">{promo.title}</h1>

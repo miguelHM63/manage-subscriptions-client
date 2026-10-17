@@ -55,12 +55,3 @@ export const contactMessage = (promo: PublicPromotion, item?: PublicPromotionIte
   item
     ? `Hola, me interesa ${itemTitle(item)} (${months(item.durationMonths)}) de la promo "${promo.title}". Código: ${item.code}`
     : `Hola, vi tu promo "${promo.title}" y quiero hacer una consulta.`;
-
-export const businessInitials = (name: string) =>
-  name
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map(part => part[0])
-    .join('')
-    .toUpperCase() || '?';

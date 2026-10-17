@@ -28,6 +28,7 @@ import {
   useMyOrganization,
   useUpdateMyOrganization,
 } from '@/modules/organization/hooks/use-my-organization';
+import { BusinessLogoField } from '@/modules/organization/components/business-logo-field';
 import { useSalesWhatsapp } from '@/modules/organization/hooks/use-sales-whatsapp';
 import { planHealth } from '@/modules/organization/plan-status';
 import { ActionsEnum } from '@/types/actions.enum';
@@ -225,6 +226,7 @@ function ProfilePageComponent() {
                     disabled={savingProfile || savingOrg}
                     requiredMark={false}
                   >
+                    {org && <BusinessLogoField name={org.name} logoUrl={org.logoUrl} />}
                     <Form.Item
                       label="Nombre del negocio"
                       name="businessName"

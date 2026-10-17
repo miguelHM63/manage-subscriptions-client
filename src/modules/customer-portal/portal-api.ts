@@ -13,7 +13,7 @@ export interface PortalItem {
 }
 
 export interface PortalView {
-  business: { name: string; whatsapp?: string };
+  business: { name: string; whatsapp?: string; logoUrl?: string };
   customer: { name: string };
   items: PortalItem[];
 }

@@ -2,15 +2,10 @@ import { WhatsAppOutlined } from '@ant-design/icons';
 
 import { ServiceAvatar } from '@/components/panel/service-avatar';
 import { APP_NAME } from '@/config';
+import { BusinessLogo } from '@/components/business-logo';
 import cn from '@/helpers/cn';
 import { formatDate } from '@/helpers/dates';
-import {
-  businessInitials,
-  discountPercent,
-  itemDetail,
-  itemTitle,
-  shortPrice,
-} from './promo-format';
+import { discountPercent, itemDetail, itemTitle, shortPrice } from './promo-format';
 import type { PromotionDesignProps } from './public-promotion.types';
 
 // Color del talón del cupón, rotando entre ítems.
@@ -54,9 +49,11 @@ export function CouponDesign({ promo, onContact }: PromotionDesignProps) {
       <header className="relative mx-auto w-full max-w-md overflow-hidden px-5 pt-7 pb-6">
         <div className="promo-glow absolute -top-16 -right-20 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(250,204,21,0.35),rgba(250,204,21,0)_70%)]" />
         <div className="relative mb-6 flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-[#34304a] bg-[#1f1b2e] text-xs font-bold">
-            {businessInitials(promo.business.name)}
-          </span>
+          <BusinessLogo
+            name={promo.business.name}
+            logoUrl={promo.business.logoUrl}
+            className="h-9 w-9 border border-[#34304a] bg-[#1f1b2e] text-xs font-bold"
+          />
           <span className="text-sm font-semibold">{promo.business.name}</span>
         </div>
         <p className="relative text-[13px] font-bold tracking-[0.1em] text-yellow-400">

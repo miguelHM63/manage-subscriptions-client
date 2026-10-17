@@ -1,10 +1,10 @@
 import { RightOutlined, WhatsAppOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 
+import { BusinessLogo } from '@/components/business-logo';
 import cn from '@/helpers/cn';
 import { ServiceStack } from './service-stack';
 import {
-  businessInitials,
   endDateLabel,
   itemDetail,
   itemTitle,
@@ -217,9 +217,11 @@ export function StoriesDesign({ promo, onContact }: PromotionDesignProps) {
           ))}
         </div>
         <div className="flex items-center gap-2.5">
-          <span className="flex h-[34px] w-[34px] items-center justify-center rounded-full border-[1.5px] border-white/60 bg-white/20 text-xs font-bold">
-            {businessInitials(promo.business.name)}
-          </span>
+          <BusinessLogo
+            name={promo.business.name}
+            logoUrl={promo.business.logoUrl}
+            className="h-[34px] w-[34px] border-[1.5px] border-white/60 bg-white/20 text-xs font-bold"
+          />
           <span className="flex-1">
             <span className="block text-sm font-bold">{promo.business.name}</span>
             <span className="block text-xs opacity-80">Hasta el {endDateLabel(promo)}</span>
