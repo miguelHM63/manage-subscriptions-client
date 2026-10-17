@@ -218,7 +218,11 @@ function PromotionsPageComponent() {
         />
       );
     }
-    return <div className="grid grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-[repeat(2,minmax(0,1fr))]">{list.map(card)}</div>;
+    return (
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-[repeat(2,minmax(0,1fr))]">
+        {list.map(card)}
+      </div>
+    );
   };
 
   return (

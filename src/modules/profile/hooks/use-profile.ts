@@ -17,7 +17,6 @@ export const useMe = () =>
 
 export const useUpdateProfile = (onSuccess?: (user: IUser) => void) =>
   useMutation<IUser, HttpError, ProfileBody>({
-    mutationFn: body =>
-      apiAxiosInstance.patch<IUser>('/users/me', body).then(({ data }) => data),
+    mutationFn: body => apiAxiosInstance.patch<IUser>('/users/me', body).then(({ data }) => data),
     onSuccess,
   });
