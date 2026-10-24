@@ -1,0 +1,549 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-17T05:52:06.011489+00:00",
+  "title": "Design System: Plancito",
+  "extensions": {
+    "colorMeta": {
+      "indigo-plancito": {
+        "role": "primary",
+        "displayName": "Indigo Plancito",
+        "tonalRamp": [
+          "#1e1b4b",
+          "#312e81",
+          "#3730a3",
+          "#4338ca",
+          "#4f46e5",
+          "#6366f1",
+          "#a5b4fc",
+          "#eef2ff"
+        ]
+      },
+      "indigo-plancito-deep": {
+        "role": "primary",
+        "displayName": "Indigo Plancito Profundo",
+        "tonalRamp": [
+          "#1e1b4b",
+          "#312e81",
+          "#3730a3",
+          "#4338ca",
+          "#4f46e5",
+          "#6366f1",
+          "#a5b4fc",
+          "#eef2ff"
+        ]
+      },
+      "indigo-plancito-press": {
+        "role": "primary",
+        "displayName": "Indigo Plancito Presionado",
+        "tonalRamp": [
+          "#1e1b4b",
+          "#312e81",
+          "#3730a3",
+          "#4338ca",
+          "#4f46e5",
+          "#6366f1",
+          "#a5b4fc",
+          "#eef2ff"
+        ]
+      },
+      "indigo-plancito-wash": {
+        "role": "primary",
+        "displayName": "Lavado Indigo",
+        "tonalRamp": [
+          "#1e1b4b",
+          "#312e81",
+          "#3730a3",
+          "#4338ca",
+          "#4f46e5",
+          "#6366f1",
+          "#a5b4fc",
+          "#eef2ff"
+        ]
+      },
+      "indigo-plancito-ink-dark": {
+        "role": "primary",
+        "displayName": "Tinta Indigo Nocturna",
+        "tonalRamp": [
+          "#1e1b4b",
+          "#312e81",
+          "#3730a3",
+          "#4338ca",
+          "#4f46e5",
+          "#6366f1",
+          "#a5b4fc",
+          "#eef2ff"
+        ]
+      },
+      "papel": {
+        "role": "neutral",
+        "displayName": "Papel",
+        "tonalRamp": [
+          "#020617",
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0",
+          "#f8fafc"
+        ]
+      },
+      "papel-blanco": {
+        "role": "neutral",
+        "displayName": "Papel Blanco",
+        "tonalRamp": [
+          "#020617",
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0",
+          "#f8fafc"
+        ]
+      },
+      "papel-hover": {
+        "role": "neutral",
+        "displayName": "Papel Hover",
+        "tonalRamp": [
+          "#020617",
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0",
+          "#f8fafc"
+        ]
+      },
+      "papel-borde": {
+        "role": "neutral",
+        "displayName": "Borde de Papel",
+        "tonalRamp": [
+          "#020617",
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0",
+          "#f8fafc"
+        ]
+      },
+      "carbon": {
+        "role": "neutral",
+        "displayName": "Carbón",
+        "tonalRamp": [
+          "#020617",
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0",
+          "#f8fafc"
+        ]
+      },
+      "carbon-muted": {
+        "role": "neutral",
+        "displayName": "Carbón Medio",
+        "tonalRamp": [
+          "#020617",
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0",
+          "#f8fafc"
+        ]
+      },
+      "carbon-subtle": {
+        "role": "neutral",
+        "displayName": "Carbón Tenue",
+        "tonalRamp": [
+          "#020617",
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0",
+          "#f8fafc"
+        ]
+      },
+      "carbon-superficie": {
+        "role": "neutral",
+        "displayName": "Carbón Superficie",
+        "tonalRamp": [
+          "#020617",
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0",
+          "#f8fafc"
+        ]
+      },
+      "carbon-borde": {
+        "role": "neutral",
+        "displayName": "Borde de Carbón",
+        "tonalRamp": [
+          "#020617",
+          "#0f172a",
+          "#1e293b",
+          "#334155",
+          "#64748b",
+          "#94a3b8",
+          "#e2e8f0",
+          "#f8fafc"
+        ]
+      },
+      "success": {
+        "role": "semantic",
+        "displayName": "Success",
+        "tonalRamp": [
+          "#052e16",
+          "#14532d",
+          "#166534",
+          "#15803d",
+          "#16a34a",
+          "#22c55e",
+          "#bbf7d0",
+          "#f0fdf4"
+        ]
+      },
+      "warning": {
+        "role": "semantic",
+        "displayName": "Warning",
+        "tonalRamp": [
+          "#451a03",
+          "#78350f",
+          "#92400e",
+          "#b45309",
+          "#d97706",
+          "#f59e0b",
+          "#fde68a",
+          "#fffbeb"
+        ]
+      },
+      "danger": {
+        "role": "semantic",
+        "displayName": "Danger",
+        "tonalRamp": [
+          "#450a0a",
+          "#7f1d1d",
+          "#991b1b",
+          "#b91c1c",
+          "#dc2626",
+          "#ef4444",
+          "#fecaca",
+          "#fef2f2"
+        ]
+      },
+      "success-ink": {
+        "role": "semantic",
+        "displayName": "Success Ink",
+        "tonalRamp": [
+          "#052e16",
+          "#14532d",
+          "#166534",
+          "#15803d",
+          "#16a34a",
+          "#4ade80",
+          "#bbf7d0",
+          "#f0fdf4"
+        ]
+      },
+      "warning-ink": {
+        "role": "semantic",
+        "displayName": "Warning Ink",
+        "tonalRamp": [
+          "#451a03",
+          "#78350f",
+          "#92400e",
+          "#b45309",
+          "#d97706",
+          "#fbbf24",
+          "#fde68a",
+          "#fffbeb"
+        ]
+      },
+      "danger-ink": {
+        "role": "semantic",
+        "displayName": "Danger Ink",
+        "tonalRamp": [
+          "#450a0a",
+          "#7f1d1d",
+          "#991b1b",
+          "#dc2626",
+          "#ef4444",
+          "#f87171",
+          "#fecaca",
+          "#fef2f2"
+        ]
+      },
+      "info-ink": {
+        "role": "semantic",
+        "displayName": "Info Ink",
+        "tonalRamp": [
+          "#172554",
+          "#1e3a8a",
+          "#1e40af",
+          "#1d4ed8",
+          "#2563eb",
+          "#93c5fd",
+          "#bfdbfe",
+          "#eff6ff"
+        ]
+      },
+      "info": {
+        "role": "semantic",
+        "displayName": "Info",
+        "tonalRamp": [
+          "#172554",
+          "#1e3a8a",
+          "#1e40af",
+          "#1d4ed8",
+          "#2563eb",
+          "#3b82f6",
+          "#bfdbfe",
+          "#eff6ff"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Landing hero headline only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Landing and public section titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Panel page titles; 24px from md."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Hero money figures."
+      },
+      "section": {
+        "displayName": "Section",
+        "purpose": "Section headings inside panel pages."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default panel text; 15px on landing."
+      },
+      "row-title": {
+        "displayName": "Row title",
+        "purpose": "Card and list-row titles; customer names uppercase."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Secondary row lines and metadata."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase eyebrows and card labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "floating-action",
+        "value": "0 10px 15px -3px rgb(79 70 229 / 0.35)",
+        "purpose": "FAB only."
+      },
+      {
+        "name": "overlay",
+        "value": "AntD default boxShadow",
+        "purpose": "Drawers, bottom sheets, modals, dropdowns, toasts."
+      },
+      {
+        "name": "device-mock",
+        "value": "0 25px 50px -12px rgb(49 46 129 / 0.25)",
+        "purpose": "Landing phone illustration only."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "The one shared curve (--ease-out in index.css)."
+      },
+      {
+        "name": "duration-feedback",
+        "value": "150ms-200ms",
+        "purpose": "Feedback, swaps, fades."
+      },
+      {
+        "name": "duration-entrance",
+        "value": "300ms",
+        "purpose": "List entrances, staggered 50-60ms per item, capped."
+      },
+      {
+        "name": "duration-hero",
+        "value": "500ms",
+        "purpose": "One-time hero entrance on public surfaces."
+      },
+      {
+        "name": "spinner-delay",
+        "value": "300ms",
+        "purpose": "Spinners appear only if the wait exceeds 300ms."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "AntD primary button: the one main action per view.",
+      "html": "<button class=\"ds-btn-primary\">Nueva venta</button>",
+      "css": ".ds-btn-primary{font-family:Inter,sans-serif;background:#4f46e5;color:#fff;border:none;border-radius:8px;height:40px;padding:0 16px;font-size:14px;font-weight:600;cursor:pointer;transition:background 150ms cubic-bezier(0.23,1,0.32,1)}.ds-btn-primary:hover{background:#6366f1}.ds-btn-primary:active{background:#4338ca}.ds-btn-primary:focus-visible{outline:2px solid #a5b4fc;outline-offset:2px}"
+    },
+    {
+      "name": "Filter Chips",
+      "kind": "chip",
+      "refersTo": "chip-filter",
+      "description": "Scrollable pill filters with counts; unselected carry a tone, selected is solid indigo.",
+      "html": "<div class=\"ds-chips\" role=\"tablist\"><button class=\"ds-chip ds-chip-on\" role=\"tab\" aria-selected=\"true\">Todos <span>· 42</span></button><button class=\"ds-chip ds-chip-danger\" role=\"tab\">Vencidas <span>· 3</span></button><button class=\"ds-chip ds-chip-warning\" role=\"tab\">Por vencer <span>· 5</span></button><button class=\"ds-chip\" role=\"tab\">Pausadas</button></div>",
+      "css": ".ds-chips{display:flex;gap:8px;overflow-x:auto}.ds-chip{font-family:Inter,sans-serif;display:flex;align-items:center;gap:6px;height:36px;padding:0 14px;border-radius:9999px;border:1px solid var(--border,#e2e8f0);background:var(--surface,#fff);color:var(--content-muted,#475569);font-size:14px;font-weight:600;white-space:nowrap;cursor:pointer;transition:background-color 150ms,color 150ms}.ds-chip span{opacity:.8}.ds-chip-danger{border-color:transparent;background:#fee2e2;color:#b91c1c}.ds-chip-warning{border-color:transparent;background:#fef3c7;color:#b45309}.ds-chip-on{border-color:transparent;background:#4f46e5;color:#fff}.ds-chip:focus-visible{outline:2px solid #a5b4fc;outline-offset:2px}"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Flat panel container: surface, 1px border, 12px radius, no shadow.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-title\">Cupos por servicio</div><div class=\"ds-card-body\">3 de 5 cupos usados</div></div>",
+      "css": ".ds-card{font-family:Inter,sans-serif;background:var(--surface,#fff);border:1px solid var(--border,#e2e8f0);border-radius:12px;padding:14px;max-width:320px}.ds-card-title{font-size:14px;font-weight:600;color:var(--content,#0f172a)}.ds-card-body{margin-top:4px;font-size:12px;color:var(--content-muted,#475569)}"
+    },
+    {
+      "name": "List Row",
+      "kind": "custom",
+      "refersTo": "list-row",
+      "description": "Avatar + two lines + status pill; rows grouped with dividers inside one container.",
+      "html": "<div class=\"ds-rows\"><a class=\"ds-row\" href=\"#\"><span class=\"ds-avatar\">MR</span><span class=\"ds-row-text\"><span class=\"ds-row-name\">MARÍA RAMOS</span><span class=\"ds-row-meta\">Plan mensual · vence hoy</span></span><span class=\"ds-pill ds-pill-warning\">Por vencer</span></a><a class=\"ds-row\" href=\"#\"><span class=\"ds-avatar\">JL</span><span class=\"ds-row-text\"><span class=\"ds-row-name\">JORGE LUNA</span><span class=\"ds-row-meta\">Plan anual · venció hace 2 días</span></span><span class=\"ds-pill ds-pill-danger\">Vencida</span></a></div>",
+      "css": ".ds-rows{font-family:Inter,sans-serif;display:flex;flex-direction:column;background:var(--surface,#fff);border:1px solid var(--border,#e2e8f0);border-radius:12px;max-width:380px;overflow:hidden}.ds-row{display:flex;align-items:center;gap:10px;padding:12px;color:var(--content,#0f172a);text-decoration:none;transition:background 150ms}.ds-row+.ds-row{border-top:1px solid var(--border,#e2e8f0)}.ds-row:hover{background:var(--surface-hover,#f1f5f9)}.ds-row:focus-visible{outline:2px solid #a5b4fc;outline-offset:-2px}.ds-avatar{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9999px;background:#eef2ff;color:#4f46e5;font-size:12px;font-weight:700;flex-shrink:0}.ds-row-text{flex:1;min-width:0;display:flex;flex-direction:column}.ds-row-name{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ds-row-meta{font-size:12px;color:var(--content-subtle,#64748b)}.ds-pill{border-radius:9999px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap}.ds-pill-warning{background:#fef3c7;color:#b45309}.ds-pill-danger{background:#fee2e2;color:#b91c1c}"
+    },
+    {
+      "name": "Hero Card",
+      "kind": "card",
+      "refersTo": "hero-card",
+      "description": "Signature income card: solid deep indigo, one per screen, no shadow.",
+      "html": "<div class=\"ds-hero\"><p class=\"ds-hero-label\">Ingreso mensual estimado</p><p class=\"ds-hero-figure\">S/ 1,240.00</p><div class=\"ds-hero-foot\"><div><p class=\"ds-hero-small\">Por cobrar</p><p class=\"ds-hero-due\">S/ 180.00</p></div></div></div>",
+      "css": ".ds-hero{font-family:Inter,sans-serif;background:#4f46e5;color:#fff;border-radius:16px;padding:16px;max-width:340px}.ds-hero p{margin:0}.ds-hero-label{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;opacity:.8}.ds-hero .ds-hero-figure{margin-top:4px;font-size:30px;font-weight:800;letter-spacing:-.025em}.ds-hero-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid rgb(255 255 255/.2)}.ds-hero-small{font-size:12px;opacity:.8}.ds-hero-due{font-size:16px;font-weight:700}.ds-hero-btn{font-family:Inter,sans-serif;height:36px;padding:0 14px;border-radius:8px;border:1px solid #fff;background:#fff;color:#4338ca;font-weight:700;cursor:pointer;transition:background 150ms}.ds-hero-btn:hover{background:#eef2ff}.ds-hero-btn:focus-visible{outline:2px solid #fff;outline-offset:2px}"
+    },
+    {
+      "name": "Slot Bar",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Mother-account capacity as inventory: used slots solid indigo, free slots dashed green.",
+      "html": "<div class=\"ds-slots\" aria-label=\"3 de 5 cupos usados\"><i class=\"ds-slot\"></i><i class=\"ds-slot\"></i><i class=\"ds-slot\"></i><i class=\"ds-slot ds-slot-free\"></i><i class=\"ds-slot ds-slot-free\"></i></div>",
+      "css": ".ds-slots{display:flex;gap:4px;width:240px}.ds-slot{flex:1;height:8px;border-radius:3px;background:#6366f1}.ds-slot-free{background:#dcfce7;border:1px dashed #22c55e;box-sizing:border-box}"
+    },
+    {
+      "name": "Bottom Navigation",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Mobile tab bar; the active item gets an indigo pill behind its icon.",
+      "html": "<nav class=\"ds-bnav\"><a class=\"ds-bnav-item ds-bnav-on\" href=\"#\"><span class=\"ds-bnav-icon\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z\"/></svg></span><span class=\"ds-bnav-label\">Inicio</span></a><a class=\"ds-bnav-item\" href=\"#\"><span class=\"ds-bnav-icon\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"9\" cy=\"8\" r=\"4\"/><path d=\"M2 21c0-4 3-6 7-6s7 2 7 6\"/></svg></span><span class=\"ds-bnav-label\">Clientes</span></a><a class=\"ds-bnav-item\" href=\"#\"><span class=\"ds-bnav-icon\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2\"/><path d=\"M3 10h18\"/></svg></span><span class=\"ds-bnav-label\">Ventas</span></a></nav>",
+      "css": ".ds-bnav{font-family:Inter,sans-serif;display:flex;max-width:380px;background:var(--surface,#fff);border-top:1px solid var(--border,#e2e8f0)}.ds-bnav-item{flex:1;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-decoration:none;color:var(--content-muted,#475569)}.ds-bnav-icon{display:flex;align-items:center;justify-content:center;width:56px;height:28px;border-radius:9999px;transition:background-color 150ms}.ds-bnav-label{font-size:11px;font-weight:500;line-height:1}.ds-bnav-on{color:var(--brand-ink,#4f46e5)}.ds-bnav-on .ds-bnav-icon{background:rgb(99 102 241/.15)}.ds-bnav-item:hover .ds-bnav-icon{background:var(--surface-hover,#f1f5f9)}.ds-bnav-item:focus-visible{outline:2px solid #a5b4fc;outline-offset:-2px}"
+    },
+    {
+      "name": "Floating Action Button",
+      "kind": "button",
+      "refersTo": "fab",
+      "description": "Mobile-only main action above the bottom nav; the one panel element that casts a shadow.",
+      "html": "<button class=\"ds-fab\" aria-label=\"Nueva venta\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg></button>",
+      "css": ".ds-fab{display:flex;align-items:center;justify-content:center;width:56px;height:56px;border:none;border-radius:16px;background:#4f46e5;color:#fff;box-shadow:0 10px 15px -3px rgb(79 70 229/.35);cursor:pointer;transition:transform 150ms cubic-bezier(0.23,1,0.32,1)}.ds-fab:active{transform:scale(.95)}.ds-fab:focus-visible{outline:2px solid #a5b4fc;outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Indigo sereno",
+    "overview": "Plancito is calm in a business that is not. A reseller opens it between WhatsApp chats with three renewals due and a customer asking for a password; the interface answers with order: soft paper backgrounds, one confident indigo, and only the urgent things in color. It is a modern, professional SaaS whose restraint balances the friendly diminutive of the name. Warmth comes from Spanish copy, rounded touch targets and generous spacing, not from decoration.\n\nThe system splits its temperament by surface. The **panel** (dashboard, customers, subscriptions, mother accounts, profile) is operational and sober: dense enough to scan, flat, with indigo reserved for action, selection and the one hero figure. **Public and customer-facing surfaces** (landing, customer portal, public promotions) may be more expressive: larger display type, entrance motion, richer brand washes. Both speak the same tokens.\n\nIt must not look like a generic Ant Design admin (grey tables, dark sidebar, default chrome without character) or like a cold fintech dashboard (corporate distance, chart walls). Plancito is close to the person using it.",
+    "keyCharacteristics": [
+      "Mobile-first: bottom navigation, FAB, bottom sheets, safe-area aware; the sidebar appears from `md` up.",
+      "One brand hue (indigo) on Papel/Carbón slate neutrals; semantic colors only for state.",
+      "Flat by default: borders and tonal layers, no shadows except on things that float.",
+      "Inter everywhere; heavy weights (700–800) and tight tracking for figures and titles.",
+      "Full light/dark parity via surface/content tokens that flip on `.dark`."
+    ],
+    "rules": [
+      {
+        "name": "The Tokens-Only Rule",
+        "body": "Components use the surface/content tokens (`bg-surface`, `bg-surface-muted`, `border-border`, `text-content`, `text-content-muted`, `text-content-subtle`, `text-brand-ink`), never raw slate hex, so dark mode and rebranding stay a token edit in `src/index.css` mirrored in `antd-provider.tsx`.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Voice Rule",
+        "body": "Indigo is the only brand hue in the panel. Violet (`#8B5CF6`) exists as an accent token but stays out of panel chrome; it lives in promotion templates and the `migrated` status only.",
+        "section": "colors"
+      },
+      {
+        "name": "The Color Means State Rule",
+        "body": "Red, amber, green and blue appear only when they say something about a subscription, slot, payment or error. Never as decoration.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ink Rule",
+        "body": "Colored text and icons always use an `-ink` token or `text-brand-ink`, never a 500 tone: `text-success` on white is 2.3:1. Every text pair passes AA (4.5:1) in both themes.",
+        "section": "colors"
+      },
+      {
+        "name": "The Weight-Not-Size Rule",
+        "body": "Prefer stepping weight (400 → 600 → 700 → 800) over adding new font sizes. The panel ladder is 11 (label, pill), 12 (caption), 14 (body, form labels), 15 (row title), 16 (section), 22→24 (page title), 30 (figure). No 10, 13 or half-pixel sizes.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tight Numbers Rule",
+        "body": "Money, counts and titles at 20px and above use `tracking-tight`; body text never does. Numerals are tabular everywhere (`font-variant-numeric: tabular-nums` on `body`) so amounts, days and slot counts align and do not jump when they update.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Title Rule",
+        "body": "Every panel page title is the same role: 22px bold tight, 24px from `md` (`PageHeader`, dashboard greeting).",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Cards, rows, stat tiles and the income hero card have no shadow; a border (or, for the hero card, its solid indigo fill) separates them. If it does not float, it does not cast a shadow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** use the surface/content tokens and `text-brand-ink` for every color in panel components, so light and dark both work.",
+      "**Do** keep panel containers flat: 12px radius, 1px `border-border`, no shadow.",
+      "**Do** reserve solid indigo for the primary action, the current selection and one hero figure per screen.",
+      "**Do** design the phone layout first: bottom nav, FAB, bottom sheets, 16px gutter, touch targets of at least 36px (56px for nav items).",
+      "**Do** put state colors only on state: semantic 100/700 tints in light mode, 500/15 + 300 in dark.",
+      "**Do** use `--ease-out` and provide a reduced-motion fallback for any animation.",
+      "**Do** let public surfaces (landing, portal, promotions) be more expressive in type scale, washes and entrance motion, using the same tokens."
+    ],
+    "donts": [
+      "**Don't** make it look like a generic Ant Design admin: no dark sidebar, no grey data tables as the main view, no default AntD chrome left unthemed.",
+      "**Don't** drift into a cold fintech look: no chart walls, no corporate distance; show what needs action today before totals.",
+      "**Don't** add shadows to cards, rows or tiles; only floating elements (FAB, overlays) cast them.",
+      "**Don't** hardcode slate hex values or add a second brand hue to panel chrome.",
+      "**Don't** use red, amber, green or blue decoratively.",
+      "**Don't** introduce new font families or off-scale font sizes in the panel."
+    ]
+  }
+}

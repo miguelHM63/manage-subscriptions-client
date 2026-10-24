@@ -1,0 +1,8 @@
+# Skills, hooks y config de agentes (código de terceros)
+.agents/
+.claude/
+.codex/
+.cursor/
+.github/
+.impeccable/
+skills-lock.json

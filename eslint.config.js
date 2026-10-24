@@ -21,6 +21,17 @@ const browserGlobals = globals.browser;
 const nodeGlobals = globals.node;
 
 export default [
+  // Skills, hooks y config de agentes: código de terceros, no se lintea.
+  {
+    ignores: [
+      '.agents/**',
+      '.claude/**',
+      '.codex/**',
+      '.cursor/**',
+      '.github/**',
+      '.impeccable/**',
+    ],
+  },
   js.configs.recommended,
   {
     files: ['src/**/*.{ts,tsx,js,jsx}'],
