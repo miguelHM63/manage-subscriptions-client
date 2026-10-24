@@ -36,7 +36,7 @@ export function PaymentsTab() {
   return (
     <div className="flex flex-col gap-4">
       {Boolean(payments?.length) && (
-        <div className="grid grid-cols-2 gap-3 rounded-xl border border-border bg-surface p-4 shadow-sm">
+        <div className="grid grid-cols-2 gap-3 rounded-xl border border-border bg-surface p-4">
           {stat(
             formatMoney(total),
             `Total pagado · ${payments!.length} pago${payments!.length === 1 ? '' : 's'}`,

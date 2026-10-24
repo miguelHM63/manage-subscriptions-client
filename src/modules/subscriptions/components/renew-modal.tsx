@@ -144,7 +144,7 @@ export function RenewModal({ subscription, open, onClose }: Props) {
           <div className="flex items-center gap-3">
             <div>
               <p className="text-xs text-content-subtle">{expired ? 'Venció' : 'Vence'}</p>
-              <p className={cn('font-semibold', expired ? 'text-danger' : 'text-content')}>
+              <p className={cn('font-semibold', expired ? 'text-danger-ink' : 'text-content')}>
                 {formatDate(subscription.endDate, 'D MMM YYYY')}
               </p>
             </div>
@@ -154,7 +154,7 @@ export function RenewModal({ subscription, open, onClose }: Props) {
             </div>
             <div className="text-right">
               <p className="text-xs text-content-subtle">Nuevo vencimiento</p>
-              <p className="font-semibold text-success">
+              <p className="font-semibold text-success-ink">
                 {formatDate(nextEndDate(subscription).toDate(), 'D MMM YYYY')}
               </p>
             </div>

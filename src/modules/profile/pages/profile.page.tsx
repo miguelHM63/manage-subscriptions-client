@@ -110,7 +110,7 @@ function ProfilePageComponent() {
       <h2 className="text-[11px] font-semibold tracking-wider text-content-subtle uppercase">
         {title}
       </h2>
-      <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">{children}</div>
+      <div className="rounded-xl border border-border bg-surface p-4">{children}</div>
     </section>
   );
 
@@ -135,7 +135,7 @@ function ProfilePageComponent() {
       </div>
 
       {org && (
-        <div className="flex flex-col gap-2.5 rounded-xl border border-border bg-surface p-4 shadow-sm">
+        <div className="flex flex-col gap-2.5 rounded-xl border border-border bg-surface p-4">
           <div className="flex items-center justify-between gap-2">
             <span className="rounded-md bg-surface-hover px-2 py-0.5 text-[11px] font-bold tracking-wide text-content-muted uppercase">
               Plan {PLAN_LABEL[org.plan]}
@@ -157,9 +157,9 @@ function ProfilePageComponent() {
             <p
               className={cn(
                 'text-xs',
-                plan?.health === 'expiring' && 'font-semibold text-warning',
+                plan?.health === 'expiring' && 'font-semibold text-warning-ink',
                 (plan?.health === 'grace' || plan?.health === 'expired') &&
-                  'font-semibold text-danger',
+                  'font-semibold text-danger-ink',
                 plan?.health === 'active' && 'text-content-muted',
               )}
             >
@@ -183,7 +183,7 @@ function ProfilePageComponent() {
                 <span
                   className={cn(
                     'text-xs font-semibold',
-                    nearLimit ? 'text-warning' : 'text-content-muted',
+                    nearLimit ? 'text-warning-ink' : 'text-content-muted',
                   )}
                 >
                   {used >= max ? 'Límite alcanzado' : `Quedan ${max - used}`}

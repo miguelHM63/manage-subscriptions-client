@@ -37,8 +37,9 @@ export function AntDProvider({ children }: { children: ReactNode }) {
         algorithm: isDark ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
         // Paleta de marca — ver docs/ui-design.md (espeja los tokens de index.css)
         token: {
-          colorPrimary: '#6366F1',
-          colorLink: '#6366F1',
+          // indigo-600: el texto blanco de los botones primarios pasa AA (6.3:1).
+          colorPrimary: '#4F46E5',
+          colorLink: '#4F46E5',
           colorInfo: '#3B82F6',
           colorSuccess: '#22C55E',
           colorWarning: '#F59E0B',

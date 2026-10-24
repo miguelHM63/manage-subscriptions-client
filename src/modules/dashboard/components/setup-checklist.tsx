@@ -114,7 +114,7 @@ export function SetupChecklist({ hasServices, hasAccounts, hasCustomers }: Setup
                 >
                   {step.title}
                 </p>
-                <p className="mt-0.5 text-[13px] text-content-muted">{step.description}</p>
+                <p className="mt-0.5 text-sm text-content-muted">{step.description}</p>
                 {isNext && (
                   <Button
                     type="primary"

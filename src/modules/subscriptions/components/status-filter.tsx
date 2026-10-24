@@ -52,7 +52,7 @@ export function StatusFilter({ value, onChange, counts }: Props) {
           {GROUPS.map((group, i) => (
             <div key={group.title}>
               {i > 0 && <div className="mx-1.5 my-1 h-px bg-border" />}
-              <p className="px-2.5 pt-1.5 pb-0.5 text-[10.5px] font-bold tracking-wider text-content-subtle uppercase">
+              <p className="px-2.5 pt-1.5 pb-0.5 text-[11px] font-bold tracking-wider text-content-subtle uppercase">
                 {group.title}
               </p>
               {group.items.map(item => (

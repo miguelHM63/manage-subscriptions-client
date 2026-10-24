@@ -89,7 +89,7 @@ export function PromotionItemRow({ item, services, accounts, onEdit, onRemove }:
             className={cn(
               'flex items-center gap-1.5 truncate text-xs',
               problem
-                ? 'font-semibold text-danger'
+                ? 'font-semibold text-danger-ink'
                 : soldOut
                   ? 'font-semibold text-amber-700 dark:text-amber-300'
                   : 'text-content-muted',

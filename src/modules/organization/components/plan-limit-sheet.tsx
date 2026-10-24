@@ -80,14 +80,14 @@ export function PlanLimitSheet() {
       </div>
       <ul className="flex flex-col gap-1.5">
         {o.features.map(f => (
-          <li key={f.label} className="flex gap-2 text-[13px] text-content">
+          <li key={f.label} className="flex gap-2 text-sm text-content">
             <CheckOutlined
-              className={cn('mt-1', highlight ? 'text-success' : 'text-content-subtle')}
+              className={cn('mt-1', highlight ? 'text-success-ink' : 'text-content-subtle')}
             />
             <span className={f.soon ? 'text-content-muted' : undefined}>
               {f.label}
               {f.soon && (
-                <span className="ml-1.5 inline-block rounded bg-surface-hover px-1.5 text-[10px] font-bold text-content-muted">
+                <span className="ml-1.5 inline-block rounded bg-surface-hover px-1.5 text-[11px] font-bold text-content-muted">
                   Pronto
                 </span>
               )}

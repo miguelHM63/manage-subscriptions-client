@@ -104,7 +104,7 @@ export function PanelSidebar() {
         <button
           type="button"
           onClick={() => logout?.()}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-content-muted transition-colors hover:text-danger"
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-content-muted transition-colors hover:text-danger-ink"
         >
           <LogoutOutlined />
           <span>Cerrar sesión</span>

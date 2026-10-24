@@ -1,0 +1,39 @@
+/* Animaciones de la landing: entrada de la ilustración y cambio de precio. */
+@keyframes landing-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise-from, 16px));
+  }
+}
+
+/* El teléfono entra una sola vez al cargar. */
+.landing-phone {
+  animation: landing-rise 500ms var(--ease-out) both;
+}
+
+/* Las filas de "Requiere atención" se llenan una tras otra (--i = índice). */
+.landing-row {
+  --rise-from: 8px;
+  animation: landing-rise 300ms var(--ease-out) both;
+  animation-delay: calc(250ms + var(--i, 0) * 60ms);
+}
+
+/* El precio entrante al cambiar Mensual/Anual (se remonta con key). */
+.landing-swap {
+  --rise-from: 4px;
+  animation: landing-rise 200ms var(--ease-out);
+}
+
+/* Movimiento reducido: solo opacidad, sin desplazamiento ni escalonado. */
+@media (prefers-reduced-motion: reduce) {
+  .landing-phone,
+  .landing-row,
+  .landing-swap {
+    --rise-from: 0px;
+    animation-duration: 200ms;
+    animation-delay: 0ms;
+  }
+  .landing-swap {
+    animation-duration: 150ms;
+  }
+}

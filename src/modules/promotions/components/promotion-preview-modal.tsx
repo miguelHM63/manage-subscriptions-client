@@ -57,7 +57,7 @@ export function PromotionPreviewModal({
           options={DESIGN_OPTIONS.map(o => ({ value: o.value, label: o.label }))}
         />
         <div className="mx-auto w-full max-w-[340px] overflow-hidden rounded-[26px] border-[6px] border-slate-800 bg-black shadow-xl">
-          <div className="flex h-6 items-center justify-center bg-slate-800 text-[10.5px] font-semibold text-slate-400">
+          <div className="flex h-6 items-center justify-center bg-slate-800 text-[11px] font-semibold text-slate-400">
             {window.location.host}/p/…
           </div>
           {/* `transform` hace que lo fijo (sticky/absolute) quede dentro del marco. */}

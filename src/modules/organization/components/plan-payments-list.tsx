@@ -24,7 +24,7 @@ export function PlanPaymentsList({ payments, isLoading, empty, renderActions }: 
   }
 
   return (
-    <div className="divide-y divide-border rounded-xl border border-border bg-surface shadow-sm">
+    <div className="divide-y divide-border rounded-xl border border-border bg-surface">
       {payments.map(p => (
         <div key={p.id} className="flex items-start justify-between gap-3 px-3.5 py-2.5">
           <div className="min-w-0">

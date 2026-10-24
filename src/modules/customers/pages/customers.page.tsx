@@ -129,7 +129,7 @@ function CustomersPageComponent() {
       align: 'right',
       render: (_, c) => {
         const due = summaryOf(c.id)?.due ?? 0;
-        return due ? <span className="font-semibold text-danger">{formatMoney(due)}</span> : <span className="text-content-subtle">—</span>;
+        return due ? <span className="font-semibold text-danger-ink">{formatMoney(due)}</span> : <span className="text-content-subtle">—</span>;
       },
     },
     {
@@ -244,9 +244,9 @@ function CustomersPageComponent() {
                     <h2 className="text-[11px] font-semibold tracking-wider text-content-subtle uppercase">
                       Con pago pendiente
                     </h2>
-                    <span className="text-xs font-bold text-danger">{formatMoney(pendingTotal)}</span>
+                    <span className="text-xs font-bold text-danger-ink">{formatMoney(pendingTotal)}</span>
                   </div>
-                  <div className="divide-y divide-border rounded-xl border border-border bg-surface shadow-sm">
+                  <div className="divide-y divide-border rounded-xl border border-border bg-surface">
                     {pending.map(c => row(c, 'pending'))}
                   </div>
                 </section>
@@ -255,7 +255,7 @@ function CustomersPageComponent() {
                 <h2 className="mb-2 text-[11px] font-semibold tracking-wider text-content-subtle uppercase">
                   Todos · {filtered.length}
                 </h2>
-                <div className="divide-y divide-border rounded-xl border border-border bg-surface shadow-sm">
+                <div className="divide-y divide-border rounded-xl border border-border bg-surface">
                   {filtered.map(c => row(c, 'all'))}
                 </div>
               </section>

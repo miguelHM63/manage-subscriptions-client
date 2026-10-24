@@ -14,7 +14,7 @@ export const HttpFieldError: React.FC<IHttpFieldError> = ({ error, onRetry }) =>
   }
 
   return (
-    <div className="text-red-500 relative">
+    <div className="text-danger-ink relative">
       <>{error?.response?.data.message ?? error.message}</>
       {onRetry && (
         <Button type="text" danger size="small" className="autosize" onClick={onRetry}>

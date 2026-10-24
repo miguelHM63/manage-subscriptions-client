@@ -17,7 +17,7 @@ export function PanelLayout() {
       <PanelSidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <PanelTopBar />
-        <main className="flex-1 px-4 py-4 pb-32 md:px-8 md:py-6 md:pb-8">
+        <main className="flex-1 px-4 py-4 pb-40 md:px-8 md:py-6 md:pb-8">
           <PlanExpiryBanner />
           <Outlet />
         </main>

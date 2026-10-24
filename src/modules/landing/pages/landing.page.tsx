@@ -9,7 +9,7 @@ import {
   SafetyCertificateOutlined,
 } from '@ant-design/icons';
 import { Button, Segmented } from 'antd';
-import { useState, type ReactNode } from 'react';
+import { useState, type CSSProperties, type MouseEvent, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import { BrandLogo } from '@/components/brand-logo';
@@ -19,6 +19,8 @@ import cn from '@/helpers/cn';
 import { PLAN_LABEL } from '@/modules/organization/hooks/use-my-organization';
 import { PLAN_OFFERS } from '@/modules/organization/plans';
 import { LOGIN_ROUTE, PRIVACY_ROUTE, SIGNUP_ROUTE, TERMS_ROUTE } from '@/routes/routes';
+
+import './landing.css';
 
 const STEPS = [
   {
@@ -61,6 +63,15 @@ const BENEFITS = [
   },
 ];
 
+// Anclas internas con scroll suave (solo en la landing, no global en <html>).
+function scrollToSection(event: MouseEvent<HTMLAnchorElement>) {
+  const target = document.querySelector(event.currentTarget.hash);
+  if (!target) return;
+  event.preventDefault();
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+}
+
 function Eyebrow({ children }: { children: ReactNode }) {
   return (
     <span className="text-xs font-bold tracking-widest text-brand-ink uppercase">{children}</span>
@@ -77,8 +88,19 @@ function IconTile({ children }: { children: ReactNode }) {
 
 // Ilustración del producto (no es una captura): el inicio con lo que requiere atención.
 function ProductPreview() {
-  const row = (name: string, detail: string, pill: string, tone: string, letter: string, color: string) => (
-    <div className="flex items-center gap-2.5 rounded-xl border border-border bg-surface p-2.5">
+  const row = (
+    index: number,
+    name: string,
+    detail: string,
+    pill: string,
+    tone: string,
+    letter: string,
+    color: string,
+  ) => (
+    <div
+      className="landing-row flex items-center gap-2.5 rounded-xl border border-border bg-surface p-2.5"
+      style={{ '--i': index } as CSSProperties}
+    >
       <span
         className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm font-bold text-white"
         style={{ backgroundColor: color }}
@@ -96,7 +118,7 @@ function ProductPreview() {
   return (
     <div
       aria-hidden
-      className="w-[280px] rounded-[34px] bg-slate-900 p-2.5 shadow-2xl shadow-brand-900/25 dark:bg-slate-700"
+      className="landing-phone w-[280px] rounded-[34px] bg-slate-900 p-2.5 shadow-2xl shadow-brand-900/25 dark:bg-slate-700"
     >
       <div className="overflow-hidden rounded-[26px] bg-surface-muted">
         <div className="border-b border-border bg-surface px-4 pt-5 pb-3 text-[15px] font-black tracking-tight text-brand-ink">
@@ -104,13 +126,39 @@ function ProductPreview() {
         </div>
         <div className="flex flex-col gap-2 p-3 pb-10">
           <div className="rounded-xl bg-brand-600 p-3 text-white">
-            <p className="text-[9px] font-semibold tracking-wider uppercase opacity-80">Ingreso mensual</p>
+            <p className="text-[9px] font-semibold tracking-wider uppercase opacity-80">
+              Ingreso mensual
+            </p>
             <p className="text-xl font-extrabold tracking-tight">S/ 1,248.00</p>
           </div>
           <p className="mt-1 px-0.5 text-xs font-bold text-content">Requiere atención</p>
-          {row('Karla Ríos', 'Netflix · S/ 25.00', 'Venció 3d', 'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300', 'N', '#ef4444')}
-          {row('Diego Paredes', 'Spotify · S/ 12.00', 'Hoy', 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300', 'S', '#10b981')}
-          {row('Ana Quispe', 'Disney+ · S/ 18.00', 'En 4d', 'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300', 'D', '#3b82f6')}
+          {row(
+            0,
+            'Karla Ríos',
+            'Netflix · S/ 25.00',
+            'Venció 3d',
+            'bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-300',
+            'N',
+            '#ef4444',
+          )}
+          {row(
+            1,
+            'Diego Paredes',
+            'Spotify · S/ 12.00',
+            'Hoy',
+            'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300',
+            'S',
+            '#10b981',
+          )}
+          {row(
+            2,
+            'Ana Quispe',
+            'Disney+ · S/ 18.00',
+            'En 4d',
+            'bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300',
+            'D',
+            '#3b82f6',
+          )}
         </div>
       </div>
     </div>
@@ -127,10 +175,18 @@ export function LandingPage() {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-5 md:px-8">
           <BrandLogo size={30} />
           <nav className="flex items-center gap-2 md:gap-6">
-            <a href="#como-funciona" className="!hidden text-sm font-semibold !text-content-muted md:!inline">
+            <a
+              href="#como-funciona"
+              onClick={scrollToSection}
+              className="!hidden text-sm font-semibold !text-content-muted md:!inline"
+            >
               Cómo funciona
             </a>
-            <a href="#precios" className="!hidden text-sm font-semibold !text-content-muted md:!inline">
+            <a
+              href="#precios"
+              onClick={scrollToSection}
+              className="!hidden text-sm font-semibold !text-content-muted md:!inline"
+            >
               Precios
             </a>
             <Link to={LOGIN_ROUTE} className="px-2 text-sm font-semibold !text-content">
@@ -154,11 +210,17 @@ export function LandingPage() {
             Gestiona tus clientes y suscripciones sin que se te venza nada
           </h1>
           <p className="max-w-xl text-base text-pretty text-content-muted md:text-lg">
-            Tus cuentas, cupos, vencimientos y cobros en un solo lugar. Cada mañana sabes a quién renovar.
+            Tus cuentas, cupos, vencimientos y cobros en un solo lugar. Cada mañana sabes a quién
+            renovar.
           </p>
           <div className="mt-1 flex flex-col gap-2.5 sm:flex-row">
             <Link to={SIGNUP_ROUTE}>
-              <Button type="primary" size="large" block className="!h-13 !px-7 !text-base !font-semibold">
+              <Button
+                type="primary"
+                size="large"
+                block
+                className="!h-13 !px-7 !text-base !font-semibold"
+              >
                 Empezar gratis <ArrowRightOutlined />
               </Button>
             </Link>
@@ -210,7 +272,10 @@ export function LandingPage() {
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {BENEFITS.map(b => (
-            <article key={b.title} className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-5 shadow-sm">
+            <article
+              key={b.title}
+              className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-5 shadow-sm"
+            >
               <IconTile>{b.icon}</IconTile>
               <h3 className="text-[17px] font-bold">{b.title}</h3>
               <p className="text-[15px] text-content-muted">{b.text}</p>
@@ -260,7 +325,7 @@ export function LandingPage() {
                       </span>
                     )}
                   </div>
-                  <p className="flex items-baseline gap-1.5">
+                  <p key={billing} className="landing-swap flex items-baseline gap-1.5">
                     <span className="text-4xl font-extrabold tracking-tight">
                       {annual ? offer.annual : offer.price}
                     </span>
@@ -271,7 +336,9 @@ export function LandingPage() {
                   <ul className="flex flex-col gap-2.5">
                     {offer.features.map(f => (
                       <li key={f.label} className="flex gap-2.5 text-[15px]">
-                        <CheckOutlined className={cn('mt-1', f.soon ? 'text-content-subtle' : 'text-success')} />
+                        <CheckOutlined
+                          className={cn('mt-1', f.soon ? 'text-content-subtle' : 'text-success')}
+                        />
                         <span className={f.soon ? 'text-content-muted' : undefined}>
                           {f.label}
                           {f.soon && (
@@ -290,7 +357,9 @@ export function LandingPage() {
                       block
                       className="!h-12 !font-semibold"
                     >
-                      {offer.plan === 'free' ? 'Empezar gratis' : `Empezar y pasar a ${PLAN_LABEL[offer.plan]}`}
+                      {offer.plan === 'free'
+                        ? 'Empezar gratis'
+                        : `Empezar y pasar a ${PLAN_LABEL[offer.plan]}`}
                     </Button>
                   </Link>
                 </article>
@@ -298,8 +367,8 @@ export function LandingPage() {
             })}
           </div>
           <p className="text-sm text-content-muted">
-            Todas las cuentas empiezan en el plan Free. Los planes de pago se activan desde tu panel cuando los
-            necesites.
+            Todas las cuentas empiezan en el plan Free. Los planes de pago se activan desde tu panel
+            cuando los necesites.
           </p>
         </div>
       </section>
@@ -314,7 +383,10 @@ export function LandingPage() {
             <p className="mt-2 text-white/85">Sin tarjeta. Cambias de plan cuando quieras.</p>
           </div>
           <Link to={SIGNUP_ROUTE}>
-            <Button size="large" className="!h-13 !border-white !bg-white !px-7 !text-base !font-bold !text-brand-700">
+            <Button
+              size="large"
+              className="!h-13 !border-white !bg-white !px-7 !text-base !font-bold !text-brand-700"
+            >
               Crear mi cuenta <ArrowRightOutlined />
             </Button>
           </Link>
@@ -323,9 +395,11 @@ export function LandingPage() {
 
       <footer className="border-t border-border">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-5 py-8 text-sm text-content-subtle md:flex-row md:justify-between md:px-8">
-          <span>© {new Date().getFullYear()} {APP_NAME}</span>
+          <span>
+            © {new Date().getFullYear()} {APP_NAME}
+          </span>
           <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2 font-semibold whitespace-nowrap">
-            <a href="#precios" className="!text-content-muted">
+            <a href="#precios" onClick={scrollToSection} className="!text-content-muted">
               Precios
             </a>
             <Link to={PRIVACY_ROUTE} className="!text-content-muted">

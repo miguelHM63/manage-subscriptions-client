@@ -91,7 +91,7 @@ export function ProviderAccountsMobileList({
     return (
       <article
         key={account.id}
-        className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-3 shadow-sm"
+        className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-3"
       >
         <div className="flex items-center gap-2.5">
           <ServiceAvatar name={svc?.name ?? ''} iconUrl={svc?.iconUrl} size={40} />
@@ -99,7 +99,7 @@ export function ProviderAccountsMobileList({
             <p className="truncate text-[15px] font-semibold text-content">
               {account.label || svc?.name || 'Cuenta'}
             </p>
-            <p className="truncate text-[12.5px] text-content-muted">
+            <p className="truncate text-xs text-content-muted">
               {[
                 svc?.name,
                 account.cost ? formatMoney(account.cost) : null,
@@ -131,7 +131,7 @@ export function ProviderAccountsMobileList({
           <span
             className={cn(
               'shrink-0 text-xs font-semibold',
-              account.availableSlots ? 'text-success' : 'text-content-subtle',
+              account.availableSlots ? 'text-success-ink' : 'text-content-subtle',
             )}
           >
             {account.availableSlots
@@ -169,13 +169,13 @@ export function ProviderAccountsMobileList({
 
   return (
     <>
-      <div className="grid grid-cols-3 divide-x divide-border rounded-xl border border-border bg-surface py-3 text-center shadow-sm">
+      <div className="grid grid-cols-3 divide-x divide-border rounded-xl border border-border bg-surface py-3 text-center">
         <div>
           <p className="text-lg font-bold text-content">{accounts.length}</p>
           <p className="text-[11px] text-content-muted">Cuentas</p>
         </div>
         <div>
-          <p className="text-lg font-bold text-success">{totals.free}</p>
+          <p className="text-lg font-bold text-success-ink">{totals.free}</p>
           <p className="text-[11px] text-content-muted">Cupos libres</p>
         </div>
         <div>
@@ -240,7 +240,7 @@ export function ProviderAccountsTable({
           <SlotBar capacity={account.capacity} used={account.usedSlots} />
           <span className="text-xs text-content-muted">
             {account.usedSlots}/{account.capacity} usados ·{' '}
-            <span className={account.availableSlots ? 'font-semibold text-success' : ''}>
+            <span className={account.availableSlots ? 'font-semibold text-success-ink' : ''}>
               {account.availableSlots} libres
             </span>
           </span>
@@ -270,14 +270,14 @@ export function ProviderAccountsTable({
         const days = daysUntil(expiresAt);
         return (
           <div>
-            <div className={days < 0 ? 'text-danger' : undefined}>
+            <div className={days < 0 ? 'text-danger-ink' : undefined}>
               {dayjs(expiresAt).format('DD/MM/YYYY')}
             </div>
             {days <= EXPIRY_WINDOW && (
               <div
                 className={cn(
                   'text-xs font-semibold',
-                  days < 0 ? 'text-danger' : days <= 15 ? 'text-warning' : 'text-content-subtle',
+                  days < 0 ? 'text-danger-ink' : days <= 15 ? 'text-warning-ink' : 'text-content-subtle',
                 )}
               >
                 {dueLabel(days)}

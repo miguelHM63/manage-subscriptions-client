@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { App, Button, Checkbox, Input, type GetRef } from 'antd';
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { BusinessLogo } from '@/components/business-logo';
@@ -27,6 +27,8 @@ import {
   type PortalView,
 } from '../portal-api';
 import { clearSession, readSession, saveSession } from '../portal-session';
+
+import './customer-portal.css';
 
 /**
  * Evita filtrar el link (que lleva el token) a otros sitios por el Referer
@@ -47,6 +49,9 @@ function usePrivatePage() {
     return () => metas.forEach(meta => meta.remove());
   }, []);
 }
+
+/** Orden de entrada (`.portal-enter`) del contenido en la página. */
+const enterOrder = (i: number) => ({ '--i': i }) as CSSProperties;
 
 function Shell({ children }: { children: ReactNode }) {
   return (
@@ -69,6 +74,7 @@ function PinForm({
   const [pin, setPin] = useState('');
   const [remember, setRemember] = useState(false);
   const otpRef = useRef<GetRef<typeof Input.OTP>>(null);
+  const shakeRef = useRef<HTMLDivElement>(null);
   const unlock = useMutation<{ session: string }, PortalError, string>({
     mutationFn: value => unlockPortal(token, value, remember),
     onSuccess: ({ session }) => {
@@ -77,10 +83,18 @@ function PinForm({
     },
     onError: () => setPin(''),
   });
-  // Tras un error (ya con las casillas habilitadas) vuelve el foco para
-  // reintentar sin tener que tocarlas.
+  // Tras un error (ya con las casillas habilitadas) sacude las casillas y
+  // vuelve el foco para reintentar sin tener que tocarlas.
   useEffect(() => {
-    if (unlock.isError) otpRef.current?.focus();
+    if (!unlock.isError) return;
+    otpRef.current?.focus();
+    // Quitar y volver a poner la clase (con un reflow entre medio) reinicia la
+    // animación sin remontar el OTP, que perdería el foco.
+    const el = shakeRef.current;
+    if (!el) return;
+    el.classList.remove('portal-shake');
+    void el.offsetWidth;
+    el.classList.add('portal-shake');
   }, [unlock.isError, unlock.submittedAt]);
 
   const error = unlock.error ? portalErrorMessage(unlock.error.code) : initialError;
@@ -99,21 +113,36 @@ function PinForm({
           Ingresa el PIN de 6 dígitos que te envió tu vendedor.
         </p>
       </div>
-      <Input.OTP
-        ref={otpRef}
-        length={6}
-        size="large"
-        value={pin}
-        disabled={unlock.isPending || finalError}
-        formatter={value => value.replace(/\D/g, '')}
-        onChange={value => {
-          setPin(value);
-          if (value.length === 6) unlock.mutate(value);
-        }}
-        inputMode="numeric"
-        autoFocus
-      />
-      {error && <p className="text-sm font-medium text-danger">{error}</p>}
+      <div className="flex w-full flex-col items-center gap-2">
+        <div ref={shakeRef}>
+          <Input.OTP
+            ref={otpRef}
+            length={6}
+            size="large"
+            value={pin}
+            disabled={unlock.isPending || finalError}
+            formatter={value => value.replace(/\D/g, '')}
+            onChange={value => {
+              setPin(value);
+              if (value.length === 6) unlock.mutate(value);
+            }}
+            inputMode="numeric"
+            autoFocus
+          />
+        </div>
+        {/* Espacio reservado (2 líneas, lo más largo en móvil) para que el error
+            no empuje el checkbox ni el botón al aparecer. */}
+        <div aria-live="polite" className="min-h-10">
+          {error && (
+            <p
+              key={unlock.submittedAt}
+              className="portal-fade text-sm font-medium text-balance text-danger"
+            >
+              {error}
+            </p>
+          )}
+        </div>
+      </div>
       <Checkbox checked={remember} onChange={e => setRemember(e.target.checked)}>
         Recordar en este dispositivo (30 días)
       </Checkbox>
@@ -177,7 +206,17 @@ function CredentialRow({
   );
 }
 
-function ItemCard({ item, renewUrl }: { item: PortalItem; renewUrl?: string }) {
+function ItemCard({
+  item,
+  renewUrl,
+  className,
+  style,
+}: {
+  item: PortalItem;
+  renewUrl?: string;
+  className?: string;
+  style?: CSSProperties;
+}) {
   const expired = item.kind === 'expired';
   const soon = item.status === 'expiring_soon';
   return (
@@ -185,7 +224,9 @@ function ItemCard({ item, renewUrl }: { item: PortalItem; renewUrl?: string }) {
       className={cn(
         'flex flex-col gap-3 rounded-2xl border border-border bg-surface p-4 shadow-sm',
         expired && 'opacity-90',
+        className,
       )}
+      style={style}
     >
       <div className="flex items-center gap-3">
         <ServiceAvatar name={item.service.name} iconUrl={item.service.iconUrl} size={40} />
@@ -235,9 +276,12 @@ function PortalContent({ view, onExit }: { view: PortalView; onExit: () => void 
         )
       : undefined;
 
+  // Saludo, tarjetas (o vacío), aviso y botones entran en ese orden.
+  const after = Math.max(view.items.length, 1) + 1;
+
   return (
     <>
-      <div className="flex items-center gap-3">
+      <div className="portal-enter flex items-center gap-3" style={enterOrder(0)}>
         {view.business.logoUrl && (
           <BusinessLogo
             name={view.business.name}
@@ -254,19 +298,28 @@ function PortalContent({ view, onExit }: { view: PortalView; onExit: () => void 
       </div>
 
       {view.items.length ? (
-        view.items.map(item => (
-          <ItemCard key={item.id} item={item} renewUrl={renewUrl(item.service.name)} />
+        view.items.map((item, i) => (
+          <ItemCard
+            key={item.id}
+            item={item}
+            renewUrl={renewUrl(item.service.name)}
+            className="portal-enter"
+            style={enterOrder(i + 1)}
+          />
         ))
       ) : (
-        <p className="rounded-2xl border border-dashed border-border bg-surface px-4 py-8 text-center text-sm text-content-muted">
+        <p
+          className="portal-enter rounded-2xl border border-dashed border-border bg-surface px-4 py-8 text-center text-sm text-content-muted"
+          style={enterOrder(1)}
+        >
           No tienes accesos vigentes por ahora.
         </p>
       )}
 
-      <p className="text-center text-xs text-content-subtle">
+      <p className="portal-enter text-center text-xs text-content-subtle" style={enterOrder(after)}>
         No compartas este link ni tu PIN: son solo para ti.
       </p>
-      <div className="flex flex-col gap-2">
+      <div className="portal-enter flex flex-col gap-2" style={enterOrder(after + 1)}>
         {renewUrl() && (
           <Button size="large" icon={<WhatsAppOutlined />} href={renewUrl()} target="_blank">
             Escribir a {view.business.name}
@@ -325,7 +378,7 @@ export function CustomerPortalPage() {
       ) : view ? (
         <PortalContent view={view} onExit={exit} />
       ) : (
-        <div className="flex justify-center py-20 text-3xl text-brand-ink">
+        <div className="portal-spinner flex justify-center py-20 text-3xl text-brand-ink">
           <LoadingOutlined />
         </div>
       )}

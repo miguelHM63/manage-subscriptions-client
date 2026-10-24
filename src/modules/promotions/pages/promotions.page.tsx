@@ -79,7 +79,7 @@ function PromotionsPageComponent() {
     return (
       <article
         key={promotion.id}
-        className="flex min-w-0 flex-col gap-3 rounded-xl border border-border bg-surface p-3.5 shadow-sm"
+        className="flex min-w-0 flex-col gap-3 rounded-xl border border-border bg-surface p-3.5"
       >
         <div className="flex items-start gap-3">
           <button
@@ -93,7 +93,7 @@ function PromotionsPageComponent() {
               </span>
               <StatePill state={promotion.state} />
             </span>
-            <span className="mt-0.5 block text-[12.5px] text-content-muted">
+            <span className="mt-0.5 block text-xs text-content-muted">
               <span className="font-mono font-bold text-brand-ink">{promotion.code}</span> ·{' '}
               {formatDate(promotion.startsAt, 'D MMM')} – {formatDate(promotion.endsAt, 'D MMM')} ·{' '}
               {designLabel(promotion.design)}
@@ -113,7 +113,7 @@ function PromotionsPageComponent() {
             const itemServices = item.serviceIds.map(sid => services?.find(s => s.id === sid));
             const stock = item.stock;
             return (
-              <li key={item.id} className="flex items-center gap-2 text-[12.5px]">
+              <li key={item.id} className="flex items-center gap-2 text-xs">
                 <span className="flex shrink-0 -space-x-1.5">
                   {itemServices.map((svc, i) => (
                     <ServiceAvatar
@@ -134,7 +134,7 @@ function PromotionsPageComponent() {
                   <span
                     className={cn(
                       'w-24 shrink-0 text-right text-xs',
-                      stock.available ? 'text-content-muted' : 'font-semibold text-danger',
+                      stock.available ? 'text-content-muted' : 'font-semibold text-danger-ink',
                     )}
                   >
                     {stock.available

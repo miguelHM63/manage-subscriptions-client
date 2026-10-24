@@ -22,7 +22,7 @@ interface ServiceCardProps {
 /** Tarjeta del catálogo: logo, cuentas/vigentes y cupos libres del servicio. */
 export function ServiceCard({ service, stats: s, onEdit, onDelete }: ServiceCardProps) {
   return (
-    <article className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-3.5 shadow-sm">
+    <article className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-3.5">
       <div className="flex items-start justify-between">
         <ServiceAvatar name={service.name} iconUrl={service.iconUrl} size={44} />
         <Dropdown
@@ -50,7 +50,7 @@ export function ServiceCard({ service, stats: s, onEdit, onDelete }: ServiceCard
           {s?.active === 1 ? '' : 's'}
         </p>
       </div>
-      <p className={cn('text-xs font-semibold', s?.free ? 'text-success' : 'text-content-subtle')}>
+      <p className={cn('text-xs font-semibold', s?.free ? 'text-success-ink' : 'text-content-subtle')}>
         {s?.free
           ? `${s.free} cupo${s.free === 1 ? '' : 's'} libre${s.free === 1 ? '' : 's'}`
           : 'Sin cupos libres'}

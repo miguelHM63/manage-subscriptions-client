@@ -35,8 +35,8 @@ export function StatusPill({
 /** Color del texto de días restantes / barra de vigencia según el estado. */
 export const DUE_TEXT: Record<SubscriptionStatus, string> = {
   active: 'text-content-muted',
-  expiring_soon: 'text-amber-600 dark:text-amber-300',
-  expired: 'text-danger',
+  expiring_soon: 'text-warning-ink',
+  expired: 'text-danger-ink',
   paused: 'text-content-subtle',
   cancelled: 'text-content-subtle',
   migrated: 'text-content-subtle',

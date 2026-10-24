@@ -66,7 +66,7 @@ export function PromotionItemEditor({
   }));
 
   return (
-    <article className="flex flex-col gap-3.5 rounded-xl border-2 border-brand-500/60 bg-surface p-3.5 shadow-sm">
+    <article className="flex flex-col gap-3.5 rounded-xl border-2 border-brand-500/60 bg-surface p-3.5">
       <div className="flex items-center gap-2">
         <span className="text-xs font-semibold tracking-wider text-content-subtle uppercase">
           Ítem {index + 1}
@@ -103,7 +103,7 @@ export function PromotionItemEditor({
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <span className="text-[13px] font-semibold text-content">
+        <span className="text-sm font-semibold text-content">
           {isBundle ? 'Servicios del paquete' : 'Servicio'}
         </span>
         <Select
@@ -151,7 +151,7 @@ export function PromotionItemEditor({
       />
 
       <div className="flex flex-col gap-1.5">
-        <span className="text-[13px] font-semibold text-content">Duración (meses)</span>
+        <span className="text-sm font-semibold text-content">Duración (meses)</span>
         <Segmented
           block
           value={customDuration ? 'custom' : item.durationMonths}
@@ -183,7 +183,7 @@ export function PromotionItemEditor({
 
       <div className="grid grid-cols-2 gap-3">
         <label className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-semibold text-content">Precio promo</span>
+          <span className="text-sm font-semibold text-content">Precio promo</span>
           <InputNumber
             min={0}
             step={0.5}
@@ -196,7 +196,7 @@ export function PromotionItemEditor({
           />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-semibold text-content">
+          <span className="text-sm font-semibold text-content">
             Precio normal <span className="font-normal text-content-subtle">(opcional)</span>
           </span>
           <InputNumber
@@ -214,7 +214,7 @@ export function PromotionItemEditor({
 
       {item.serviceIds.length > 0 && (recommended !== null || minimum !== null) && (
         <div className="flex items-center justify-between gap-2 rounded-lg bg-surface-muted px-3 py-2.5">
-          <div className="text-[12.5px] leading-snug text-content-muted">
+          <div className="text-xs leading-snug text-content-muted">
             {recommended !== null && (
               <>
                 Recomendado <b className="text-content">{formatMoney(recommended)}</b>
@@ -222,7 +222,7 @@ export function PromotionItemEditor({
             )}
             {minimum !== null && <> · mínimo {formatMoney(minimum)}</>}
             {margin !== null && margin >= 0 && (
-              <span className="block font-semibold text-success">
+              <span className="block font-semibold text-success-ink">
                 Ganas {formatMoney(margin)} por venta
               </span>
             )}
@@ -240,7 +240,7 @@ export function PromotionItemEditor({
         </p>
       )}
       {margin !== null && margin < 0 && (
-        <p className="flex items-center gap-2 rounded-lg bg-amber-100 px-3 py-2 text-[12.5px] font-semibold text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">
+        <p className="flex items-center gap-2 rounded-lg bg-amber-100 px-3 py-2 text-xs font-semibold text-amber-800 dark:bg-amber-500/15 dark:text-amber-300">
           <WarningOutlined />
           Bajo el mínimo ({formatMoney(minimum!)}): pierdes {formatMoney(-margin)} por venta
         </p>
@@ -248,11 +248,11 @@ export function PromotionItemEditor({
 
       <label className="flex items-center justify-between gap-3">
         <span>
-          <span className="block text-[13px] font-semibold text-content">Límite de ventas</span>
+          <span className="block text-sm font-semibold text-content">Límite de ventas</span>
           <span
             className={cn(
               'block text-xs',
-              noStock ? 'font-semibold text-danger' : 'text-content-muted',
+              noStock ? 'font-semibold text-danger-ink' : 'text-content-muted',
             )}
           >
             {item.serviceIds.length
@@ -270,13 +270,13 @@ export function PromotionItemEditor({
         />
       </label>
       {noStock ? (
-        <p className="-mt-1.5 text-xs font-semibold text-danger">
+        <p className="-mt-1.5 text-xs font-semibold text-danger-ink">
           Sin cupos libres de {emptyServices.join(' ni de ')}: agrega una cuenta con cupo o quita el
           servicio para poder guardar.
         </p>
       ) : (
         overStock && (
-          <p className="-mt-1.5 text-xs font-semibold text-danger">
+          <p className="-mt-1.5 text-xs font-semibold text-danger-ink">
             Solo hay cupos para {maxNow} {maxNow === 1 ? 'venta' : 'ventas'}: baja el límite o
             agrega cupos para poder guardar.
           </p>

@@ -194,7 +194,7 @@ function PromotionEditor({ initial }: { initial?: IPromotion }) {
 
       <section className="flex flex-col gap-3">
         <label className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-semibold text-content">Título</span>
+          <span className="text-sm font-semibold text-content">Título</span>
           <Input
             size="large"
             maxLength={60}
@@ -204,7 +204,7 @@ function PromotionEditor({ initial }: { initial?: IPromotion }) {
           />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-semibold text-content">
+          <span className="text-sm font-semibold text-content">
             Descripción <span className="font-normal text-content-subtle">(opcional)</span>
           </span>
           <Input
@@ -216,7 +216,7 @@ function PromotionEditor({ initial }: { initial?: IPromotion }) {
           />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-semibold text-content">
+          <span className="text-sm font-semibold text-content">
             Código{' '}
             <span className="font-normal text-content-subtle">(para registrar las ventas)</span>
           </span>
@@ -234,7 +234,7 @@ function PromotionEditor({ initial }: { initial?: IPromotion }) {
           </span>
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-semibold text-content">Vigencia</span>
+          <span className="text-sm font-semibold text-content">Vigencia</span>
           <DatePicker.RangePicker
             size="large"
             format="DD/MM/YYYY"
@@ -290,7 +290,7 @@ function PromotionEditor({ initial }: { initial?: IPromotion }) {
           ) : (
             <div
               key={group.rows[0].item.key}
-              className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-surface shadow-sm"
+              className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-surface"
             >
               {group.rows.map(({ item, index }) => (
                 <PromotionItemRow

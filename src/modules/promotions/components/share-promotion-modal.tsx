@@ -60,7 +60,7 @@ export function SharePromotionModal({ promotion, open, onClose, justPublished }:
       <div className="flex flex-col gap-5">
         {justPublished && (
           <div className="flex items-center gap-3">
-            <CheckCircleFilled className="text-3xl text-success" />
+            <CheckCircleFilled className="text-3xl text-success-ink" />
             <div>
               <p className="text-base font-bold text-content">Tu promo está publicada</p>
               <p className="text-sm text-content-muted">
@@ -72,7 +72,7 @@ export function SharePromotionModal({ promotion, open, onClose, justPublished }:
         )}
 
         <div className="flex flex-col gap-2">
-          <span className="text-[13px] font-semibold text-content">¿Dónde la vas a compartir?</span>
+          <span className="text-sm font-semibold text-content">¿Dónde la vas a compartir?</span>
           <div role="radiogroup" className="flex flex-wrap gap-2">
             {SHARE_SOURCES.map(option => {
               const selected = option.value === source;
@@ -84,7 +84,7 @@ export function SharePromotionModal({ promotion, open, onClose, justPublished }:
                   aria-checked={selected}
                   onClick={() => setSource(selected ? undefined : option.value)}
                   className={cn(
-                    'h-9 rounded-full border px-3.5 text-[13px] font-semibold transition-colors',
+                    'h-9 rounded-full border px-3.5 text-sm font-semibold transition-colors',
                     selected
                       ? 'border-brand-500 bg-brand-50 text-brand-ink dark:bg-brand-400/15'
                       : 'border-border bg-surface text-content',

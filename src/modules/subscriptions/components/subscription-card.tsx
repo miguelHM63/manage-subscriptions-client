@@ -62,7 +62,7 @@ export function SubscriptionCard({
   return (
     <article
       className={cn(
-        'flex flex-col gap-2.5 rounded-xl border border-border bg-surface p-3 shadow-sm',
+        'flex flex-col gap-2.5 rounded-xl border border-border bg-surface p-3',
         inactive && 'opacity-75',
       )}
     >
@@ -76,12 +76,12 @@ export function SubscriptionCard({
             <StatusPill status={sub.status} />
           </div>
           {accountLogin && (
-            <p className="mt-0.5 truncate text-[12.5px] text-content-muted">{accountLogin}</p>
+            <p className="mt-0.5 truncate text-xs text-content-muted">{accountLogin}</p>
           )}
-          <p className="mt-0.5 truncate text-[12.5px] text-content-subtle">{detail}</p>
+          <p className="mt-0.5 truncate text-xs text-content-subtle">{detail}</p>
         </div>
         <div className="shrink-0 text-right">
-          <p className={cn('text-[13px] font-bold', DUE_TEXT[sub.status])}>
+          <p className={cn('text-sm font-bold', DUE_TEXT[sub.status])}>
             {closed ? '—' : dueShort(days)}
           </p>
           <p className="mt-0.5 text-[11px] text-content-subtle">{shortDate(sub.endDate)}</p>
@@ -108,9 +108,9 @@ export function SubscriptionCard({
           <UserOutlined />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-[14px] font-semibold uppercase text-content">{customerName}</p>
+          <p className="truncate text-sm font-semibold uppercase text-content">{customerName}</p>
           {customerContact && (
-            <p className="mt-0.5 truncate text-[12.5px] text-content-muted">{customerContact}</p>
+            <p className="mt-0.5 truncate text-xs text-content-muted">{customerContact}</p>
           )}
         </div>
       </div>

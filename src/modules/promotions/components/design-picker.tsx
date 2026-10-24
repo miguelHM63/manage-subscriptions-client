@@ -72,10 +72,10 @@ export function DesignPicker({ value, onChange }: DesignPickerProps) {
             <span className="relative block h-28 overflow-hidden rounded-lg">
               <Thumb design={option.value} />
             </span>
-            <span className="mt-1.5 block text-[13px] font-semibold text-content">
+            <span className="mt-1.5 block text-xs font-semibold text-content">
               {option.label}
             </span>
-            <span className="block text-[11.5px] text-content-muted">{option.hint}</span>
+            <span className="block text-[11px] text-content-muted">{option.hint}</span>
           </button>
         );
       })}

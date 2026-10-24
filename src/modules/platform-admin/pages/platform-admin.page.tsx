@@ -141,7 +141,7 @@ function PlatformAdminPageComponent() {
   ];
 
   const stat = (value: string, label: string) => (
-    <div className="rounded-xl border border-border bg-surface px-3.5 py-3 shadow-sm">
+    <div className="rounded-xl border border-border bg-surface px-3.5 py-3">
       <p className="text-xl font-bold tracking-tight text-content">{value}</p>
       <p className="text-xs text-content-muted">{label}</p>
     </div>
@@ -176,7 +176,7 @@ function PlatformAdminPageComponent() {
           ) : !filtered.length ? (
             noResults
           ) : (
-            <div className="divide-y divide-border rounded-xl border border-border bg-surface shadow-sm">
+            <div className="divide-y divide-border rounded-xl border border-border bg-surface">
               {filtered.map(org => (
                 <button
                   key={org.id}

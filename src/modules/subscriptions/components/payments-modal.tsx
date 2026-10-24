@@ -64,7 +64,7 @@ export function PaymentsModal({ subscription, open, onClose }: Props) {
 
           {org && (
             <p
-              className={cn('text-xs', full ? 'font-semibold text-warning' : 'text-content-muted')}
+              className={cn('text-xs', full ? 'font-semibold text-warning-ink' : 'text-content-muted')}
             >
               <FileTextOutlined /> Comprobantes este mes: {used} de {max}
               {org.effectivePlan === 'free' && ' · Con Pro subes hasta 300 al mes'}

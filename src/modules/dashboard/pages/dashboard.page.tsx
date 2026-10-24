@@ -1,8 +1,8 @@
-import { RightOutlined } from '@ant-design/icons';
-import { Button, Skeleton, type MenuProps } from 'antd';
+import { ReloadOutlined, RightOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import { Button, Skeleton } from 'antd';
 import dayjs from 'dayjs';
 import { useMemo, useState, type ReactNode } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { ServiceAvatar } from '@/components/panel/service-avatar';
 import { SlotBar } from '@/components/panel/slot-bar';
@@ -16,42 +16,36 @@ import { useCustomers } from '@/modules/customers/hooks/use-customers';
 import { useServices } from '@/modules/services/hooks/use-services';
 import { useProviderAccounts } from '@/modules/provider-accounts/hooks/use-provider-accounts';
 import {
-  useSubscriptionAction,
   useSubscriptions,
   type ISubscription,
 } from '@/modules/subscriptions/hooks/use-subscriptions';
 import { useLookups } from '@/modules/subscriptions/hooks/use-lookups';
 import { useShareSubscription } from '@/modules/subscriptions/hooks/use-share-subscription';
-import { SubscriptionCard } from '@/modules/subscriptions/components/subscription-card';
 import { RenewModal } from '@/modules/subscriptions/components/renew-modal';
 import { SetupWelcome } from '../components/setup-checklist';
 
-// Cuántas tarjetas de "Requiere atención" se muestran antes de "Ver todas".
+// Cuántas ventas de "Requiere atención" se muestran antes de "Ver las N".
 const ATTENTION_LIMIT = 5;
 const ACCOUNT_EXPIRY_WINDOW = 30;
 
 function Section({
   title,
-  count,
+  subtitle,
   link,
   children,
 }: {
   title: string;
-  count?: number;
+  subtitle?: ReactNode;
   link?: { to: string; label: string };
   children: ReactNode;
 }) {
   return (
     <section className="flex flex-col gap-2.5">
-      <div className="flex items-center justify-between gap-2">
-        <h2 className="flex items-center gap-2 text-base font-bold text-content">
-          {title}
-          {Boolean(count) && (
-            <span className="min-w-5 rounded-full bg-red-100 px-1.5 text-center text-[11px] leading-5 font-bold text-red-700 dark:bg-red-500/15 dark:text-red-300">
-              {count}
-            </span>
-          )}
-        </h2>
+      <div className="flex items-end justify-between gap-2">
+        <div className="min-w-0">
+          <h2 className="text-base font-bold text-content">{title}</h2>
+          {subtitle && <p className="text-xs text-content-muted">{subtitle}</p>}
+        </div>
         {link && (
           <Link to={link.to} className="!text-sm !font-semibold !text-brand-ink">
             {link.label}
@@ -63,19 +57,64 @@ function Section({
   );
 }
 
-function Metric({ label, value, tone }: { label: string; value: number; tone?: string }) {
+const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+
+/**
+ * Venta que pide acción hoy: a quién, de qué, cuándo venció y las dos acciones
+ * del día (renovar y avisar). El detalle completo vive en Suscripciones.
+ */
+function AttentionRow({
+  sub,
+  customer,
+  service,
+  onRenew,
+  onShare,
+}: {
+  sub: ISubscription;
+  customer: string;
+  service?: { name: string; iconUrl?: string };
+  onRenew: () => void;
+  onShare: () => void;
+}) {
+  const days = daysUntil(sub.endDate);
   return (
-    <div className="flex flex-col items-center gap-0.5 md:items-start md:justify-center md:rounded-xl md:border md:border-border md:bg-surface md:px-4 md:py-3 md:shadow-sm">
-      <span className={cn('text-xl font-bold tracking-tight md:text-2xl', tone ?? 'text-content')}>
-        {value}
-      </span>
-      <span className="text-[11px] text-content-muted md:text-xs">{label}</span>
-    </div>
+    <li className="flex gap-3 p-3 md:items-center">
+      <ServiceAvatar name={service?.name ?? ''} iconUrl={service?.iconUrl} size={40} />
+      <div className="flex min-w-0 flex-1 flex-col gap-2.5 md:flex-row md:items-center md:gap-4">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-[15px] font-semibold uppercase text-content">{customer}</p>
+          <p className="truncate text-xs text-content-subtle">
+            <span
+              className={cn('font-semibold', days < 0 ? 'text-danger-ink' : 'text-warning-ink')}
+            >
+              {dueLabel(days)}
+            </span>
+            {' · '}
+            {service?.name ?? 'Servicio'} · {formatMoney(sub.price)}
+          </p>
+        </div>
+        <div className="flex shrink-0 gap-2">
+          <Button
+            type="primary"
+            icon={<ReloadOutlined />}
+            className="!h-9 flex-1 md:!px-4"
+            onClick={onRenew}
+          >
+            Renovar
+          </Button>
+          <Button
+            aria-label={`Escribir a ${customer} por WhatsApp`}
+            icon={<WhatsAppOutlined />}
+            className="!h-9 !w-11 !border-[#25D366] !text-[#25D366]"
+            onClick={onShare}
+          />
+        </div>
+      </div>
+    </li>
   );
 }
 
 function DashboardPageComponent() {
-  const navigate = useNavigate();
   const { user } = useAuth();
   const { data: subscriptions, isLoading } = useSubscriptions();
   const { data: customers, isLoading: loadingCustomers } = useCustomers();
@@ -83,7 +122,6 @@ function DashboardPageComponent() {
   const { data: accounts } = useProviderAccounts();
   const { customerName, service } = useLookups();
   const share = useShareSubscription();
-  const { mutate: runAction } = useSubscriptionAction();
   const [renewing, setRenewing] = useState<ISubscription | null>(null);
 
   const summary = useMemo(() => {
@@ -132,17 +170,6 @@ function DashboardPageComponent() {
     [accounts],
   );
 
-  const menuFor = (sub: ISubscription): MenuProps => ({
-    items: [
-      { key: 'pause', label: 'Pausar' },
-      { key: 'open', label: 'Ver en suscripciones' },
-    ],
-    onClick: ({ key }) => {
-      if (key === 'pause') runAction({ id: sub.id, action: 'pause' });
-      else navigate(SUBSCRIPTIONS_ROUTE);
-    },
-  });
-
   const firstName = user?.profile?.firstName;
   const greeting = (
     <div className="mb-4">
@@ -181,67 +208,39 @@ function DashboardPageComponent() {
     <>
       {greeting}
 
-      <div className="grid gap-3 md:grid-cols-[minmax(0,1.3fr)_minmax(0,2fr)] md:gap-4">
-        {/* Dinero: lo más importante manda */}
-        <div className="rounded-2xl bg-brand-600 p-4 text-white shadow-lg shadow-brand-600/25">
-          <p className="text-[11px] font-semibold tracking-wider uppercase opacity-80">
-            Ingreso mensual
-          </p>
-          <p className="mt-1 text-3xl font-extrabold tracking-tight">{formatMoney(summary.mrr)}</p>
-          <p className="mt-0.5 text-xs opacity-80">
-            {summary.running} suscripcion{summary.running === 1 ? '' : 'es'} vigente
-            {summary.running === 1 ? '' : 's'}
-          </p>
-          <div className="mt-3.5 flex items-center justify-between gap-3 border-t border-white/20 pt-3">
-            <div>
-              <p className="text-xs opacity-80">Por cobrar</p>
-              <p className="text-base font-bold">
-                {formatMoney(summary.due)}
-                {summary.dueCustomers > 0 &&
-                  ` · ${summary.dueCustomers} cliente${summary.dueCustomers === 1 ? '' : 's'}`}
-              </p>
-            </div>
-            {summary.expired > 0 && (
-              <Button
-                shape="round"
-                className="!h-9 !border-white !bg-white !font-bold !text-brand-700"
-                onClick={() => navigate(`${SUBSCRIPTIONS_ROUTE}?estado=expired`)}
-              >
-                Cobrar
-              </Button>
-            )}
-          </div>
-        </div>
-
-        {/* Conteos compactos */}
-        <div className="grid grid-cols-4 divide-x divide-border rounded-xl border border-border bg-surface py-3 shadow-sm md:grid-cols-2 md:gap-3 md:divide-x-0 md:border-0 md:bg-transparent md:py-0 md:shadow-none">
-          <Metric label="Clientes" value={customers?.length ?? 0} />
-          <Metric label="Vigentes" value={summary.running} />
-          <Metric label="Por vencer" value={summary.expiring} tone="text-warning" />
-          <Metric label="Vencidas" value={summary.expired} tone="text-danger" />
-        </div>
-      </div>
-
-      <div className="mt-6 grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+      {/* Hoy primero: lo que pide acción manda; dinero y cupos acompañan al lado. */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <Section
           title="Requiere atención"
-          count={summary.attention.length}
-          link={summary.attention.length ? { to: SUBSCRIPTIONS_ROUTE, label: 'Ver todas' } : undefined}
+          subtitle={
+            summary.attention.length
+              ? [
+                  summary.expired && plural(summary.expired, 'vencida', 'vencidas'),
+                  summary.expiring && plural(summary.expiring, 'por vencer', 'por vencer'),
+                ]
+                  .filter(Boolean)
+                  .join(' · ')
+              : undefined
+          }
+          link={
+            summary.attention.length > ATTENTION_LIMIT
+              ? { to: SUBSCRIPTIONS_ROUTE, label: `Ver las ${summary.attention.length}` }
+              : undefined
+          }
         >
           {summary.attention.length ? (
-            <div className="grid gap-2.5 lg:grid-cols-2">
+            <ul className="flex flex-col divide-y divide-border rounded-xl border border-border bg-surface">
               {summary.attention.slice(0, ATTENTION_LIMIT).map(sub => (
-                <SubscriptionCard
+                <AttentionRow
                   key={sub.id}
-                  subscription={sub}
-                  customerName={customerName(sub.customerId)}
+                  sub={sub}
+                  customer={customerName(sub.customerId)}
                   service={service(sub.serviceId)}
-                  menu={menuFor(sub)}
                   onRenew={() => setRenewing(sub)}
                   onShare={() => share(sub)}
                 />
               ))}
-            </div>
+            </ul>
           ) : (
             <p className="rounded-xl border border-dashed border-border px-4 py-8 text-center text-sm text-content-muted">
               Todo al día: nada vencido ni por vencer.
@@ -250,12 +249,32 @@ function DashboardPageComponent() {
         </Section>
 
         <div className="flex flex-col gap-6">
+          <div className="rounded-2xl bg-brand-600 p-4 text-white">
+            <p className="text-[11px] font-semibold tracking-wider uppercase opacity-80">
+              Ingreso mensual
+            </p>
+            <p className="mt-1 text-3xl font-extrabold tracking-tight">
+              {formatMoney(summary.mrr)}
+            </p>
+            <p className="mt-0.5 text-xs opacity-80">
+              {plural(summary.running, 'suscripción vigente', 'suscripciones vigentes')}
+            </p>
+            {summary.due > 0 && (
+              <div className="mt-3.5 border-t border-white/20 pt-3">
+                <p className="text-xs opacity-80">Por cobrar</p>
+                <p className="text-base font-bold">
+                  {formatMoney(summary.due)} · {plural(summary.dueCustomers, 'cliente', 'clientes')}
+                </p>
+              </div>
+            )}
+          </div>
+
           {slotsByService.length > 0 && (
             <Section
               title="Cupos libres"
               link={{ to: PROVIDER_ACCOUNTS_ROUTE, label: `${freeSlots} disponibles` }}
             >
-              <div className="flex flex-col gap-3.5 rounded-xl border border-border bg-surface p-3.5 shadow-sm">
+              <div className="flex flex-col gap-3.5 rounded-xl border border-border bg-surface p-3.5">
                 {slotsByService.map(({ svc, capacity, used }) => (
                   <div key={svc.id} className="flex flex-col gap-1.5">
                     <div className="flex items-center justify-between gap-2">
@@ -266,7 +285,7 @@ function DashboardPageComponent() {
                       <span
                         className={cn(
                           'shrink-0 text-xs font-semibold',
-                          capacity > used ? 'text-success' : 'text-content-subtle',
+                          capacity > used ? 'text-success-ink' : 'text-content-subtle',
                         )}
                       >
                         {capacity > used ? `${capacity - used} de ${capacity} libres` : 'Llena'}
@@ -281,7 +300,7 @@ function DashboardPageComponent() {
 
           {expiringAccounts.length > 0 && (
             <Section title="Cuentas por renovar">
-              <div className="flex flex-col divide-y divide-border rounded-xl border border-border bg-surface shadow-sm">
+              <div className="flex flex-col divide-y divide-border rounded-xl border border-border bg-surface">
                 {expiringAccounts.map(({ account, days }) => {
                   const svc = service(account.serviceId);
                   return (
@@ -302,7 +321,11 @@ function DashboardPageComponent() {
                       <span
                         className={cn(
                           'shrink-0 text-xs font-semibold',
-                          days < 0 ? 'text-danger' : days <= 15 ? 'text-warning' : 'text-content-muted',
+                          days < 0
+                            ? 'text-danger-ink'
+                            : days <= 15
+                              ? 'text-warning-ink'
+                              : 'text-content-muted',
                         )}
                       >
                         {dueLabel(days)}

@@ -428,9 +428,9 @@ export function SubscriptionFormModal({ open, onClose, preset }: Props) {
                 <p
                   className={`-mt-1 mb-4 text-xs ${
                     daysToExpiry !== null && daysToExpiry < 0
-                      ? 'text-danger'
+                      ? 'text-danger-ink'
                       : daysToExpiry !== null && daysToExpiry <= 15
-                        ? 'text-warning'
+                        ? 'text-warning-ink'
                         : 'text-content-muted'
                   }`}
                 >

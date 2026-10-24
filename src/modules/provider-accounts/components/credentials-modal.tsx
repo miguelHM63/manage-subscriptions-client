@@ -53,7 +53,7 @@ function CredentialRow({ label, value, secret }: { label: string; value?: string
       {value && (
         <Button
           aria-label={`Copiar ${label.toLowerCase()}`}
-          icon={copied ? <CheckOutlined className="text-success" /> : <CopyOutlined />}
+          icon={copied ? <CheckOutlined className="text-success-ink" /> : <CopyOutlined />}
           className="!h-10 !w-10"
           onClick={copy}
         />

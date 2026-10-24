@@ -39,8 +39,8 @@ export function EmptyState({
       >
         <div
           className={cn(
-            'flex h-14 w-14 items-center justify-center rounded-2xl bg-surface text-3xl shadow-sm',
-            tone === 'danger' ? 'text-danger' : 'text-brand-ink',
+            'flex h-14 w-14 items-center justify-center rounded-2xl bg-surface text-3xl',
+            tone === 'danger' ? 'text-danger-ink' : 'text-brand-ink',
           )}
         >
           {icon}

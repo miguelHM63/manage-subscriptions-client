@@ -22,12 +22,12 @@ export function PromoSaleSummary({ sale, onRemove }: Props) {
       <div className="flex items-start gap-2.5">
         <TagOutlined className="mt-1 text-brand-ink" />
         <div className="min-w-0 flex-1">
-          <p className="text-[13px] text-content-muted">
+          <p className="text-xs text-content-muted">
             {promotion.title} ·{' '}
             <span className="font-mono font-bold text-brand-ink">{item.code}</span>
           </p>
           <p className="text-[15px] font-semibold text-content">{title}</p>
-          <p className="text-[12.5px] text-content-muted">
+          <p className="text-xs text-content-muted">
             {[
               bundle && 'Paquete',
               item.fullAccount ? 'Cuenta completa' : 'Por perfil',

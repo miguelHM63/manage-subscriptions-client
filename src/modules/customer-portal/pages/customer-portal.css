@@ -1,0 +1,61 @@
+/* Animaciones del portal del cliente: PIN incorrecto, carga y entrada del contenido. */
+@keyframes portal-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes portal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise-from, 8px));
+  }
+}
+
+@keyframes portal-shake {
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+/* PIN incorrecto: se reinicia desde JS en cada intento fallido. */
+.portal-shake {
+  animation: portal-shake 320ms var(--ease-out);
+}
+
+/* Mensaje de error del PIN (se remonta con key en cada intento). */
+.portal-fade {
+  animation: portal-fade-in 150ms var(--ease-out);
+}
+
+/* El spinner espera 300ms: si la respuesta llega antes, nunca se ve. */
+.portal-spinner {
+  animation: portal-fade-in 200ms var(--ease-out) 300ms both;
+}
+
+/* Contenido tras desbloquear (--i = orden; tope en 4 para no hacer esperar). */
+.portal-enter {
+  animation: portal-rise 300ms var(--ease-out) both;
+  animation-delay: calc(min(var(--i, 0), 4) * 50ms);
+}
+
+/* Movimiento reducido: sin sacudida ni desplazamiento, solo opacidad. */
+@media (prefers-reduced-motion: reduce) {
+  .portal-shake {
+    animation: none;
+  }
+  .portal-enter {
+    --rise-from: 0px;
+    animation-duration: 200ms;
+    animation-delay: 0ms;
+  }
+}

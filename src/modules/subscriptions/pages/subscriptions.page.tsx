@@ -274,7 +274,7 @@ function SubscriptionsPageComponent() {
       const req = (ok: boolean, text: string) => (
         <li className="flex items-center gap-2.5 text-left text-sm">
           {ok ? (
-            <CheckCircleFilled className="text-lg text-success" />
+            <CheckCircleFilled className="text-lg text-success-ink" />
           ) : (
             <span className="h-[18px] w-[18px] shrink-0 rounded-full border-[1.5px] border-dashed border-content-subtle" />
           )}
