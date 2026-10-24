@@ -135,7 +135,7 @@ function SubscriptionsPageComponent() {
       { key: 'payments', label: 'Cobros y comprobantes', icon: <FileTextOutlined /> },
       { key: 'change', label: 'Cambiar de servicio', icon: <SwapOutlined /> },
       ...(sub.replacesId
-        ? [{ key: 'detail', label: 'Ver cambio anterior', icon: <HistoryOutlined /> }]
+        ? [{ key: 'detail', label: 'Ver historial de cambios', icon: <HistoryOutlined /> }]
         : []),
       sub.status === 'paused'
         ? { key: 'resume', label: 'Reanudar' }

@@ -25,6 +25,8 @@ export interface ISubscription {
   status: SubscriptionStatus;
   /** Suscripción a la que reemplaza (cambio de servicio). */
   replacesId?: string;
+  /** Vencimiento con el que se creó en un cambio de servicio (las renovaciones no lo mueven). */
+  initialEndDate?: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -59,6 +61,8 @@ export interface ChangeServiceBody {
   providerAccountId: string;
   fullAccount?: boolean;
   price?: number;
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface RenewBody {

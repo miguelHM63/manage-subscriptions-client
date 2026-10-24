@@ -1,4 +1,5 @@
-import { Form, InputNumber, Segmented, Select } from 'antd';
+import { DatePicker, Form, InputNumber, Segmented, Select } from 'antd';
+import dayjs, { type Dayjs } from 'dayjs';
 import { useEffect, useMemo, useState } from 'react';
 
 import { ResponsiveModal } from '@/components/panel/responsive-modal';
@@ -16,6 +17,8 @@ interface FormValues {
   serviceId: string;
   providerAccountId: string;
   price: number;
+  startDate: Dayjs;
+  endDate: Dayjs;
 }
 
 interface Props {
@@ -27,7 +30,7 @@ interface Props {
 /**
  * Pasa al cliente a otro servicio (o a otra cuenta del mismo). La suscripción
  * actual queda como "Cambiada" con sus pagos, y la nueva conserva el
- * vencimiento.
+ * vencimiento salvo que se ajusten las fechas (p. ej. días de regalo).
  */
 export function ChangeServiceModal({ subscription, open, onClose }: Props) {
   const [invalidateForm, form] = useFormErrorHandler();
@@ -46,11 +49,20 @@ export function ChangeServiceModal({ subscription, open, onClose }: Props) {
   useEffect(() => {
     if (open && subscription) {
       form.resetFields();
-      form.setFieldsValue({ price: centsToSoles(subscription.price) });
+      // Igual que el valor por defecto del backend: hoy, o el inicio actual si es futuro.
+      const start = dayjs(subscription.startDate);
+      form.setFieldsValue({
+        price: centsToSoles(subscription.price),
+        startDate: start.isAfter(dayjs()) ? start : dayjs(),
+        endDate: dayjs(subscription.endDate),
+      });
     }
   }, [open, subscription, form]);
 
   const selectedServiceId = Form.useWatch('serviceId', form);
+  const startDate = Form.useWatch('startDate', form);
+  const endDate = Form.useWatch('endDate', form);
+  const keepsEnd = subscription && endDate?.isSame(subscription.endDate, 'day');
 
   // Igual que en "Nueva venta", sin la cuenta en la que ya está.
   const availableAccounts = useMemo(
@@ -73,6 +85,8 @@ export function ChangeServiceModal({ subscription, open, onClose }: Props) {
           providerAccountId: values.providerAccountId,
           fullAccount,
           price: solesToCents(values.price),
+          startDate: values.startDate.toISOString(),
+          endDate: values.endDate.toISOString(),
         },
       },
       { onError: invalidateForm },
@@ -171,12 +185,55 @@ export function ChangeServiceModal({ subscription, open, onClose }: Props) {
         >
           <InputNumber min={0} step={0.5} precision={2} prefix="S/" className="!w-full" placeholder="0.00" />
         </Form.Item>
+        <div className="grid grid-cols-2 gap-3">
+          <Form.Item label="Inicio" name="startDate" rules={REQUIRED}>
+            <DatePicker
+              className="w-full"
+              format="DD/MM/YYYY"
+              allowClear={false}
+              inputReadOnly
+              onChange={(value: Dayjs | null) => {
+                // Mover el inicio desplaza el vencimiento: se conservan los días restantes.
+                if (!value || !startDate || !endDate) return;
+                form.setFieldValue('endDate', endDate.add(value.diff(startDate, 'day'), 'day'));
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Vencimiento"
+            name="endDate"
+            dependencies={['startDate']}
+            rules={[
+              ...REQUIRED,
+              ({ getFieldValue }) => ({
+                validator: (_, value?: Dayjs) => {
+                  const start: Dayjs | undefined = getFieldValue('startDate');
+                  return !value || !start || value.isAfter(start, 'day')
+                    ? Promise.resolve()
+                    : Promise.reject(new Error('Debe ser posterior al inicio'));
+                },
+              }),
+            ]}
+          >
+            <DatePicker
+              className="w-full"
+              format="DD/MM/YYYY"
+              allowClear={false}
+              inputReadOnly
+              disabledDate={d => !!startDate && !d.isAfter(startDate, 'day')}
+            />
+          </Form.Item>
+        </div>
       </Form>
 
       {subscription && (
         <p className="text-xs text-content-muted">
-          Mantiene el vencimiento del {formatDate(subscription.endDate, 'DD/MM/YYYY')}. La suscripción
-          actual quedará como “Cambiada” con sus pagos y se liberará su cupo.
+          {keepsEnd
+            ? `Mantiene el vencimiento del ${formatDate(subscription.endDate, 'DD/MM/YYYY')}.`
+            : `El vencimiento pasa del ${formatDate(subscription.endDate, 'DD/MM/YYYY')} al ${
+                endDate?.format('DD/MM/YYYY') ?? '—'
+              }.`}{' '}
+          La suscripción actual quedará como “Cambiada” con sus pagos y se liberará su cupo.
         </p>
       )}
     </ResponsiveModal>
